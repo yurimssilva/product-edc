@@ -25,7 +25,7 @@
     <parent>
         <groupId>org.eclipse.tractusx.edc</groupId>
         <artifactId>product-edc-parent</artifactId>
-        <version>0.1.3</version>
+        <version>0.1.4</version>
     </parent>
 
     <groupId>org.eclipse.tractusx.edc.tests</groupId>
@@ -186,6 +186,10 @@
                 <dependency>
                     <groupId>org.eclipse.tractusx.edc.extensions</groupId>
                     <artifactId>control-plane-adapter</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>org.eclipse.tractusx.edc.extensions</groupId>
+                    <artifactId>custom-jsonld</artifactId>
                 </dependency>
                 <!-- edc-controlplane -->
                 <dependency>
