@@ -25,7 +25,7 @@
 
     <groupId>org.eclipse.tractusx.edc</groupId>
     <artifactId>product-edc-parent</artifactId>
-    <version>0.1.4-SNAPSHOT</version>
+    <version>0.1.5-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>product-edc</name>
@@ -360,6 +360,11 @@
             <dependency>
                 <groupId>org.eclipse.tractusx.edc.extensions</groupId>
                 <artifactId>control-plane-adapter</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.tractusx.edc.extensions</groupId>
+                <artifactId>custom-jsonld</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -1065,7 +1070,12 @@
                 <version>${org.eclipse.edc.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.eclipse.edc</groupId>
+                <groupId>org.eclipse.dataspaceconnector</groupId>
+                <artifactId>ids-jsonld-serdes</artifactId>
+                <version>${org.eclipse.dataspaceconnector.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.dataspaceconnector</groupId>
                 <artifactId>jersey</artifactId>
                 <version>${org.eclipse.edc.version}</version>
             </dependency>

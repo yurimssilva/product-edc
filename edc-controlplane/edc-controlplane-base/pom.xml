@@ -24,7 +24,7 @@
     <parent>
         <artifactId>edc-controlplane</artifactId>
         <groupId>org.eclipse.tractusx.edc</groupId>
-        <version>0.1.4-SNAPSHOT</version>
+        <version>0.1.5-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -72,6 +72,10 @@
         <dependency>
             <groupId>org.eclipse.tractusx.edc.extensions</groupId>
             <artifactId>cx-oauth2</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.tractusx.edc.extensions</groupId>
+            <artifactId>custom-jsonld</artifactId>
         </dependency>
 
         <!-- Core -->

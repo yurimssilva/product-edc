@@ -23,7 +23,7 @@
     <parent>
         <groupId>org.eclipse.tractusx.edc</groupId>
         <artifactId>product-edc-parent</artifactId>
-        <version>0.1.4-SNAPSHOT</version>
+        <version>0.1.5-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -41,8 +41,9 @@
         <module>hashicorp-vault</module>
         <module>dataplane-selector-configuration</module>
         <module>data-encryption</module>
-        <module>cx-oauth2</module>
         <module>control-plane-adapter</module>
+        <module>custom-jsonld</module>
+        <module>cx-oauth2</module>
     </modules>
 
 </project>
