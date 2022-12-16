@@ -93,6 +93,7 @@
         <org.slf4j.version>2.0.3</org.slf4j.version>
         <ch.qos.logback.logback-core.version>1.4.5</ch.qos.logback.logback-core.version>
         <org.hamcrest.hamcrest.version>2.2</org.hamcrest.hamcrest.version>
+        <org.apache.sshd.version>2.9.2</org.apache.sshd.version>
 
         <!-- TODO: parametrize so that forks can utilize sonar also -->
         <sonar.organization>catenax-ng</sonar.organization>
@@ -367,6 +368,21 @@
                 <artifactId>custom-jsonld</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.eclipse.tractusx.edc.extensions</groupId>
+                <artifactId>transferprocess-sftp-client</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.tractusx.edc.extensions</groupId>
+                <artifactId>transferprocess-sftp-common</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.tractusx.edc.extensions</groupId>
+                <artifactId>transferprocess-sftp-provisioner</artifactId>
+                <version>${project.version}</version>
+            </dependency>
 
             <!-- CX Control-/Data-Plane modules -->
             <dependency>
@@ -459,6 +475,16 @@
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-core</artifactId>
                 <version>${ch.qos.logback.logback-core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.sshd</groupId>
+                <artifactId>sshd-core</artifactId>
+                <version>${org.apache.sshd.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.sshd</groupId>
+                <artifactId>sshd-sftp</artifactId>
+                <version>${org.apache.sshd.version}</version>
             </dependency>
 
             <!-- EDC Extensions -->
@@ -813,6 +839,16 @@
             <dependency>
                 <groupId>org.eclipse.edc</groupId>
                 <artifactId>data-plane-api</artifactId>
+                <version>${org.eclipse.edc.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.edc</groupId>
+                <artifactId>data-plane-core</artifactId>
+                <version>${org.eclipse.edc.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.edc</groupId>
+                <artifactId>data-plane-util</artifactId>
                 <version>${org.eclipse.edc.version}</version>
             </dependency>
             <dependency>
@@ -1469,6 +1505,12 @@
             <dependency>
                 <groupId>org.testcontainers</groupId>
                 <artifactId>junit-jupiter</artifactId>
+                <version>${org.testcontainers.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.testcontainers</groupId>
+                <artifactId>testcontainers</artifactId>
                 <version>${org.testcontainers.version}</version>
                 <scope>test</scope>
             </dependency>

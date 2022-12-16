@@ -18,16 +18,25 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-package org.eclipse.tractusx.edc.tests.features;
+package org.eclipse.tractusx.edc.transferprocess.sftp.provisioner;
 
-import io.cucumber.java.ParameterType;
-import org.eclipse.tractusx.edc.tests.Connector;
-import org.eclipse.tractusx.edc.tests.ConnectorFactory;
+import org.eclipse.tractusx.edc.transferprocess.sftp.common.SftpLocation;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
-public class ParameterTypes {
+class SftpLocationFactoryImplTest {
+  private final SftpLocationFactoryImpl sftpLocationFactoryImpl = new SftpLocationFactoryImpl();
 
-  @ParameterType("Plato|Sokrates")
-  public Connector connector(String name) {
-    return ConnectorFactory.byName(name);
+  @Test
+  void generateSftpLocation() {
+    final String host = "host";
+    final Integer port = 22;
+    final String path = "path";
+
+    final SftpLocation location = sftpLocationFactoryImpl.createSftpLocation(host, port, path);
+
+    Assertions.assertEquals(host, location.getHost());
+    Assertions.assertEquals(port, location.getPort());
+    Assertions.assertEquals(path, location.getPath());
   }
 }
