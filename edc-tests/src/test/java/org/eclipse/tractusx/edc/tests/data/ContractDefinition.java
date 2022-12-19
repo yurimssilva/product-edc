@@ -30,6 +30,7 @@ public class ContractDefinition {
 
   @NonNull String contractPolicyId;
   @NonNull String acccessPolicyId;
+  @NonNull Long validity;
 
   List<String> assetIds;
 }
