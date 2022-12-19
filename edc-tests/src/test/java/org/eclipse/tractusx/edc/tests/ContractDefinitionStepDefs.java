@@ -46,7 +46,9 @@ public class ContractDefinitionStepDefs {
       String accessPolicyId = map.get("access policy");
       String contractPolicyId = map.get("contract policy");
       String assetId = map.get("asset");
-      Long validity = Long.parseLong(map.get("validity"));
+      //If the tests do not have a specified validity, the value will be 1 Year in seconds.
+      String mapValidity = map.get("validity");
+      Long validity = mapValidity.equals(null) ? 32140800 : Long.parseLong(mapValidity);
       List<String> assetIds = assetId == null ? new ArrayList<>() : List.of(assetId);
 
       contractDefinitions.add(
