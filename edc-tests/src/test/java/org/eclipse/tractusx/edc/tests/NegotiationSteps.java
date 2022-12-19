@@ -82,7 +82,7 @@ public class NegotiationSteps {
       final Policy policy = new Policy("foo", List.of(permission));
 
       final Negotiation negotiation =
-              dataManagementAPI.initiateNegotiation(receiverIdsUrl, definitionId, assetId, policy);
+          dataManagementAPI.initiateNegotiation(receiverIdsUrl, definitionId, assetId, policy);
 
       // wait for negotiation to complete
       negotiation.waitUntilComplete(dataManagementAPI);
