@@ -69,7 +69,7 @@ public class NegotiationSteps {
 
   @When("'{connector}' sends '{connector}' an offer without constraints")
   public void sendAnOfferWithoutConstraints(Connector sender, Connector receiver, DataTable table)
-          throws IOException {
+      throws IOException {
 
     final DataManagementAPI dataManagementAPI = sender.getDataManagementAPI();
     final String receiverIdsUrl = receiver.getEnvironment().getIdsUrl() + "/data";
@@ -82,7 +82,7 @@ public class NegotiationSteps {
       final Policy policy = new Policy("foo", List.of(permission));
 
       final Negotiation negotiation =
-              dataManagementAPI.initiateNegotiation(receiverIdsUrl, definitionId, assetId, policy);
+          dataManagementAPI.initiateNegotiation(receiverIdsUrl, definitionId, assetId, policy);
 
       // wait for negotiation to complete
       negotiation.waitUntilComplete(dataManagementAPI);
