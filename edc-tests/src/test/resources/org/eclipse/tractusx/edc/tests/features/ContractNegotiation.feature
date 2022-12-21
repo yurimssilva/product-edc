@@ -39,3 +39,20 @@ Feature: Contract Negotiation
       | definition id         | asset id |
       | contract-definition-1 | asset-1  |
     Then the negotiation is declined
+
+
+  Scenario: An offer is rejected
+    Given 'Plato' has the following assets
+      | id      | description   |
+      | asset-1 | Example Asset |
+    And 'Plato' has the following policies
+      | id            | action | payMe |
+      | policy-1      | USE    |       |
+      | policy-pay-me | USE    | 1000  |
+    And 'Plato' has the following contract definitions
+      | id                    | access policy | contract policy | asset   | validity |
+      | contract-definition-1 | policy-1      | policy-pay-me   | asset-1 | 1        |
+    When 'Sokrates' sends 'Plato' an offer without constraints
+      | definition id         | asset id |
+      | contract-definition-1 | asset-1  |
+    Then the negotiation is declined
