@@ -1,0 +1,38 @@
+---
+txdc:
+  dataplane:
+    ingresses:
+      - enabled: true
+        hostname: "plato-txdc.int.demo.catena-x.net"
+        endpoints:
+          - public
+        className: "nginx"
+        # -- Enables TLS on the ingress resource
+        tls:
+          enabled: true
+          secretName: tls-secret
+  controlplane:
+    ingresses:
+      - enabled: true
+        hostname: "plato-txdc.int.demo.catena-x.net"
+        endpoints:
+          - data
+          - ids
+        className: "nginx"
+        # -- Enables TLS on the ingress resource
+        tls:
+          enabled: true
+          secretName: tls-secret
+  daps:
+    clientId: 99:83:A7:17:86:FF:98:93:CE:A0:DD:A1:F1:36:FA:F6:0F:75:0A:23:keyid:99:83:A7:17:86:FF:98:93:CE:A0:DD:A1:F1:36:FA:F6:0F:75:0A:23
+  backendService:
+    httpProxyTokenReceiverUrl: "http://plato-txdc-backend"
+  postgresql:
+    jdbcUrl: "jdbc:postgresql://plato-txdc-postgres:5432/edc"
+  vault:
+    secretNames:
+      dapsPrivateKey: dev-plato-EDC_OAUTH_PRIVATE_KEY_ALIAS
+      dapsPublicKey: dev-plato-EDC_OAUTH_PUBLIC_KEY_ALIAS
+      transferProxyTokenEncryptionAesKey: dev-plato-EDC_DATA_ENCRYPTION_KEYS_ALIAS
+      transferProxyTokenSignerPrivateKey: dev-plato-EDC_TRANSFER_PROXY_TOKEN_SIGNER_PRIVATEKEY_ALIAS
+      transferProxyTokenSignerPublicKey: dev-plato-EDC_TRANSFER_PROXY_TOKEN_VERIFIER_PUBLICKEY_ALIAS
