@@ -189,7 +189,7 @@ spec:
             - name: "EDC_DATASOURCE_ASSET_USER"
               value: {{ .Values.postgresql.username | required ".Values.postgresql.username is required" | quote }}
             - name: "EDC_DATASOURCE_ASSET_PASSWORD"
-              value: {{ include "txdc.psql.password.value" | required ".Values.postgresql.password is required" }}
+              value: {{ include "txdc.psql.password.value" . | required ".Values.postgresql.password is required" }}
             - name: "EDC_DATASOURCE_ASSET_URL"
               value: {{ .Values.postgresql.jdbcUrl | required ".Values.postgresql.jdbcUrl is required" | quote }}
 
@@ -199,7 +199,7 @@ spec:
             - name: "EDC_DATASOURCE_CONTRACTDEFINITION_USER"
               value: {{ .Values.postgresql.username | required ".Values.postgresql.username is required" | quote }}
             - name: "EDC_DATASOURCE_CONTRACTDEFINITION_PASSWORD"
-              value: {{ include "txdc.psql.password.value" | required ".Values.postgresql.password is required" }}
+              value: {{ include "txdc.psql.password.value" . | required ".Values.postgresql.password is required" }}
             - name: "EDC_DATASOURCE_CONTRACTDEFINITION_URL"
               value: {{ .Values.postgresql.jdbcUrl | required ".Values.postgresql.jdbcUrl is required" | quote }}
 
@@ -209,7 +209,7 @@ spec:
             - name: "EDC_DATASOURCE_CONTRACTNEGOTIATION_USER"
               value: {{ .Values.postgresql.username | required ".Values.postgresql.username is required" | quote }}
             - name: "EDC_DATASOURCE_CONTRACTNEGOTIATION_PASSWORD"
-              value: {{ include "txdc.psql.password.value" | required ".Values.postgresql.password is required" }}
+              value: {{ include "txdc.psql.password.value" . | required ".Values.postgresql.password is required" }}
             - name: "EDC_DATASOURCE_CONTRACTNEGOTIATION_URL"
               value: {{ .Values.postgresql.jdbcUrl | required ".Values.postgresql.jdbcUrl is required" | quote }}
 
@@ -219,7 +219,7 @@ spec:
             - name: "EDC_DATASOURCE_POLICY_USER"
               value: {{ .Values.postgresql.username | required ".Values.postgresql.username is required" | quote }}
             - name: "EDC_DATASOURCE_POLICY_PASSWORD"
-              value: {{ include "txdc.psql.password.value" | required ".Values.postgresql.password is required" }}
+              value: {{ include "txdc.psql.password.value" . | required ".Values.postgresql.password is required" }}
             - name: "EDC_DATASOURCE_POLICY_URL"
               value: {{ .Values.postgresql.jdbcUrl | required ".Values.postgresql.jdbcUrl is required" | quote }}
 
@@ -229,7 +229,7 @@ spec:
             - name: "EDC_DATASOURCE_TRANSFERPROCESS_USER"
               value: {{ .Values.postgresql.username | required ".Values.postgresql.username is required" | quote }}
             - name: "EDC_DATASOURCE_TRANSFERPROCESS_PASSWORD"
-              value: {{ include "txdc.psql.password.value" | required ".Values.postgresql.password is required" }}
+              value: {{ include "txdc.psql.password.value" . | required ".Values.postgresql.password is required" }}
             - name: "EDC_DATASOURCE_TRANSFERPROCESS_URL"
               value: {{ .Values.postgresql.jdbcUrl | required ".Values.postgresql.jdbcUrl is required" | quote }}
           {{- end }}
