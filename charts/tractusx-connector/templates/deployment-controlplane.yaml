@@ -112,8 +112,13 @@ spec:
             #######
             # API #
             #######
+            {{- if .Values.controlplane.endpoints.data.authKeySecretRef }}
+            - name: "EDC_API_AUTH_KEY"
+              valueFrom: {{ .Values.controlplane.endpoints.data.authKeySecretRef | required ".Values.controlplane.endpoints.data.authKeySecretRef is required" }}
+            {{- else }}
             - name: "EDC_API_AUTH_KEY"
               value: {{ .Values.controlplane.endpoints.data.authKey | required ".Values.controlplane.endpoints.data.authKey is required" | quote }}
+            {{- end }}
             - name: "WEB_HTTP_DEFAULT_PORT"
               value: {{ .Values.controlplane.endpoints.default.port | quote }}
             - name: "WEB_HTTP_DEFAULT_PATH"
@@ -184,7 +189,7 @@ spec:
             - name: "EDC_DATASOURCE_ASSET_USER"
               value: {{ .Values.postgresql.username | required ".Values.postgresql.username is required" | quote }}
             - name: "EDC_DATASOURCE_ASSET_PASSWORD"
-              value: {{ .Values.postgresql.password | required ".Values.postgresql.password is required" | quote }}
+              value: {{ include "txdc.psql.password.value" | required ".Values.postgresql.password is required" }}
             - name: "EDC_DATASOURCE_ASSET_URL"
               value: {{ .Values.postgresql.jdbcUrl | required ".Values.postgresql.jdbcUrl is required" | quote }}
 
@@ -194,7 +199,7 @@ spec:
             - name: "EDC_DATASOURCE_CONTRACTDEFINITION_USER"
               value: {{ .Values.postgresql.username | required ".Values.postgresql.username is required" | quote }}
             - name: "EDC_DATASOURCE_CONTRACTDEFINITION_PASSWORD"
-              value: {{ .Values.postgresql.password | required ".Values.postgresql.password is required" | quote }}
+              value: {{ include "txdc.psql.password.value" | required ".Values.postgresql.password is required" }}
             - name: "EDC_DATASOURCE_CONTRACTDEFINITION_URL"
               value: {{ .Values.postgresql.jdbcUrl | required ".Values.postgresql.jdbcUrl is required" | quote }}
 
@@ -204,7 +209,7 @@ spec:
             - name: "EDC_DATASOURCE_CONTRACTNEGOTIATION_USER"
               value: {{ .Values.postgresql.username | required ".Values.postgresql.username is required" | quote }}
             - name: "EDC_DATASOURCE_CONTRACTNEGOTIATION_PASSWORD"
-              value: {{ .Values.postgresql.password | required ".Values.postgresql.password is required" | quote }}
+              value: {{ include "txdc.psql.password.value" | required ".Values.postgresql.password is required" }}
             - name: "EDC_DATASOURCE_CONTRACTNEGOTIATION_URL"
               value: {{ .Values.postgresql.jdbcUrl | required ".Values.postgresql.jdbcUrl is required" | quote }}
 
@@ -214,7 +219,7 @@ spec:
             - name: "EDC_DATASOURCE_POLICY_USER"
               value: {{ .Values.postgresql.username | required ".Values.postgresql.username is required" | quote }}
             - name: "EDC_DATASOURCE_POLICY_PASSWORD"
-              value: {{ .Values.postgresql.password | required ".Values.postgresql.password is required" | quote }}
+              value: {{ include "txdc.psql.password.value" | required ".Values.postgresql.password is required" }}
             - name: "EDC_DATASOURCE_POLICY_URL"
               value: {{ .Values.postgresql.jdbcUrl | required ".Values.postgresql.jdbcUrl is required" | quote }}
 
@@ -224,7 +229,7 @@ spec:
             - name: "EDC_DATASOURCE_TRANSFERPROCESS_USER"
               value: {{ .Values.postgresql.username | required ".Values.postgresql.username is required" | quote }}
             - name: "EDC_DATASOURCE_TRANSFERPROCESS_PASSWORD"
-              value: {{ .Values.postgresql.password | required ".Values.postgresql.password is required" | quote }}
+              value: {{ include "txdc.psql.password.value" | required ".Values.postgresql.password is required" }}
             - name: "EDC_DATASOURCE_TRANSFERPROCESS_URL"
               value: {{ .Values.postgresql.jdbcUrl | required ".Values.postgresql.jdbcUrl is required" | quote }}
           {{- end }}
@@ -265,8 +270,13 @@ spec:
             # see extension https://github.com/catenax-ng/product-edc/tree/develop/edc-extensions/hashicorp-vault
             - name: "EDC_VAULT_HASHICORP_URL"
               value: {{ .Values.vault.hashicorp.url | required ".Values.vault.hashicorp.url is required" | quote }}
+            {{- if .Values.vault.hashicorp.tokenSecretRef }}
+            - name: "EDC_VAULT_HASHICORP_TOKEN"
+              valueFrom:  {{ .Values.vault.hashicorp.tokenSecretRef | required ".Values.vault.hashicorp.tokenSecretRef is required" }}
+            {{- else }}
             - name: "EDC_VAULT_HASHICORP_TOKEN"
               value: {{ .Values.vault.hashicorp.token | required ".Values.vault.hashicorp.token is required" | quote }}
+            {{- end }}
             - name: "EDC_VAULT_HASHICORP_TIMEOUT_SECONDS"
               value: {{ .Values.vault.hashicorp.timeout | quote }}
             - name: "EDC_VAULT_HASHICORP_HEALTH_CHECK_ENABLED"
@@ -286,10 +296,19 @@ spec:
               value: {{ .Values.vault.azure.tenant | required ".Values.vault.azure.tenant is required" | quote }}
             - name: "EDC_VAULT_NAME"
               value: {{ .Values.vault.azure.name | required ".Values.vault.azure.name is required" | quote }}
+            {{- if .Values.vault.azure.secretSecretRef }}
+            - name: "EDC_VAULT_CLIENTSECRET"
+              value: {{ .Values.vault.azure.secretSecretRef | required ".Values.vault.azure.secretSecretRef is required" }}
+            {{- else if .Values.vault.azure.secret }}
             - name: "EDC_VAULT_CLIENTSECRET"
               value: {{ .Values.vault.azure.secret | required ".Values.vault.azure.secret is required" | quote }}
+            {{- else if .Values.vault.azure.certificateSecretRef }}
+            - name: "EDC_VAULT_CERTIFICATE"
+              value: {{ .Values.vault.azure.certificateSecretRef | required ".Values.vault.azure.certificateSecretRef is required" }}
+            {{- else if .Values.vault.azure.certificate }}
             - name: "EDC_VAULT_CERTIFICATE"
               value: {{ .Values.vault.azure.certificate | required ".Values.vault.azure.certificate is required" | quote }}
+            {{- end }}
           {{- end }}
 
             #####################

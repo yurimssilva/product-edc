@@ -73,6 +73,9 @@ controlplane:
       path: /data
       # -- authentication key, must be attached to each 'X-Api-Key' request header
       authKey: ""
+      authKeySecretRef: {}
+        #  - secretKeyRef:
+        #      key: ""
     # -- validation api, only used by the data plane and should not be added to any ingress
     validation:
       # -- port for incoming api calls
@@ -456,12 +459,18 @@ postgresql:
   jdbcUrl: ""
   username: ""
   password: ""
+  passwordSecretRef: {}
+  #  - secretKeyRef:
+  #      key: ""
 
 vault:
   hashicorp:
     enabled: false
     url: ""
     token: ""
+    tokenSecretRef: {}
+    #  - secretKeyRef:
+    #      key: ""
     timeout: 30
     healthCheck:
       enabled: true
@@ -475,7 +484,13 @@ vault:
     client: ""
     tenant: ""
     secret: ""
+    secretSecretRef: {}
+    #  - secretKeyRef:
+    #      key: ""
     certificate: ""
+    certificateSecretRef: {}
+    #  - secretKeyRef:
+    #      key: ""
   secretNames:
     transferProxyTokenSignerPrivateKey: transfer-proxy-token-signer-private-key
     transferProxyTokenSignerPublicKey: transfer-proxy-token-signer-public-key

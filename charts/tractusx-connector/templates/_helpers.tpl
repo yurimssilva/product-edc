@@ -173,3 +173,15 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+
+{{/*
+Create value of environment variable for postgresql password
+*/}}
+{{- define "txdc.psql.password.value" -}}
+{{- if .Values.postgresql.passwordSecretRef }}
+{{- .Values.postgresql.passwordSecretRef }}
+{{- else }}
+{{- .Values.postgresql.password | quote }}
+{{- end }}
+{{- end }}
