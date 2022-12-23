@@ -35,7 +35,7 @@ Feature: Contract Negotiation
     And 'Plato' has the following contract definitions
       | id                    | access policy | contract policy | asset   |
       | contract-definition-1 | policy-1      | policy-pay-me   | asset-1 |
-    When 'Sokrates' sends 'Plato' a counter offer without constraints
+    When 'Sokrates' sends 'Plato' an offer without constraints
       | definition id         | asset id |
       | contract-definition-1 | asset-1  |
     Then the negotiation is declined

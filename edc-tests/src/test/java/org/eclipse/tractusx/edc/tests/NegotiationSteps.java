@@ -43,30 +43,6 @@ public class NegotiationSteps {
 
   private ContractNegotiation lastInitiatedNegotiation;
 
-  @When("'{connector}' sends '{connector}' a counter offer without constraints")
-  public void sendOfferWithoutConstraints(Connector sender, Connector receiver, DataTable table)
-      throws IOException {
-
-    final DataManagementAPI dataManagementAPI = sender.getDataManagementAPI();
-    final String receiverIdsUrl = receiver.getEnvironment().getIdsUrl() + "/data";
-
-    for (Map<String, String> map : table.asMaps()) {
-      final String definitionId = map.get(DEFINITION_ID);
-      final String assetId = map.get(ASSET_ID);
-
-      final Permission permission = new Permission("USE", null, new ArrayList<>());
-      final Policy policy = new Policy("foo", List.of(permission));
-
-      final Negotiation negotiation =
-          dataManagementAPI.initiateNegotiation(receiverIdsUrl, definitionId, assetId, policy);
-
-      // wait for negotiation to complete
-      negotiation.waitUntilComplete(dataManagementAPI);
-
-      lastInitiatedNegotiation = dataManagementAPI.getNegotiation(negotiation.getId());
-    }
-  }
-
   @When("'{connector}' sends '{connector}' an offer without constraints")
   public void sendAnOfferWithoutConstraints(Connector sender, Connector receiver, DataTable table)
       throws IOException {
