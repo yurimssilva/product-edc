@@ -42,7 +42,6 @@ public class SsiWebExtension implements ServiceExtension {
     public void initialize(ServiceExtensionContext context) {
         this.context = context;
         this.monitor = context.getMonitor();
-
     }
 
 }
