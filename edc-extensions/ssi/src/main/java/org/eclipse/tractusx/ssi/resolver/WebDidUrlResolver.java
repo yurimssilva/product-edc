@@ -12,7 +12,7 @@
  *
  */
 
-package org.eclipse.tractusx.ssi.web.resolver;
+package org.eclipse.tractusx.ssi.resolver;
 
 import java.net.MalformedURLException;
 import java.net.URI;

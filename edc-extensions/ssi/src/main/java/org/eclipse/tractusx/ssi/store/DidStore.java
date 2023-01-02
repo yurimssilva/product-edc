@@ -12,10 +12,10 @@
  *
  */
 
-package org.eclipse.tractusx.ssi.web.store;
+package org.eclipse.tractusx.ssi.store;
 
 import org.eclipse.edc.runtime.metamodel.annotation.ExtensionPoint;
-import org.eclipse.tractusx.ssi.web.document.DidDocument;
+import org.eclipse.tractusx.ssi.document.DidDocument;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;

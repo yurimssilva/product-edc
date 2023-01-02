@@ -12,7 +12,7 @@
  *
  */
 
-package org.eclipse.tractusx.ssi.web.resolver;
+package org.eclipse.tractusx.ssi.resolver;
 
 import org.eclipse.edc.runtime.metamodel.annotation.ExtensionPoint;
 

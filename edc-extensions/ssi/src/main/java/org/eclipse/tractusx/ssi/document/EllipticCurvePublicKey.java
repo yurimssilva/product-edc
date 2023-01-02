@@ -12,7 +12,7 @@
  *
  */
 
-package org.eclipse.tractusx.ssi.web.document;
+package org.eclipse.tractusx.ssi.document;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.eclipse.edc.iam.did.spi.document.JwkPublicKey;

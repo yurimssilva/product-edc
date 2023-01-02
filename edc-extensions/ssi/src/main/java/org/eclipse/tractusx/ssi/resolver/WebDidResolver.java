@@ -1,11 +1,11 @@
-package org.eclipse.tractusx.ssi.web.resolver;
+package org.eclipse.tractusx.ssi.resolver;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.eclipse.edc.spi.monitor.Monitor;
-import org.eclipse.tractusx.ssi.web.document.DidDocument;
+import org.eclipse.tractusx.ssi.document.DidDocument;
 
 import okhttp3.OkHttpClient;
 

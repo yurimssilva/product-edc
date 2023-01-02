@@ -12,7 +12,7 @@
  *
  */
 
-package org.eclipse.tractusx.ssi.web.document;
+package org.eclipse.tractusx.ssi.document;
 
 import org.eclipse.edc.runtime.metamodel.annotation.Setting;
 

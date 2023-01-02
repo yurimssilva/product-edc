@@ -17,4 +17,4 @@
 #
 #  SPDX-License-Identifier: Apache-2.0
 #
-org.eclipse.tractusx.ssi.web.SsiWebExtension
+org.eclipse.tractusx.ssi.SsiWebExtension

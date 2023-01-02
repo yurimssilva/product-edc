@@ -12,22 +12,24 @@
  *
  */
 
-package org.eclipse.tractusx.ssi.web.resolver;
+package org.eclipse.tractusx.ssi.resolver;
 
-import org.eclipse.tractusx.ssi.web.document.DidDocument;
+import org.eclipse.edc.runtime.metamodel.annotation.ExtensionPoint;
+import org.eclipse.tractusx.ssi.document.DidDocument;
 
 /**
- * Resolves a DID against an external resolver service.
+ * Delegates to a {@link DidResolver} to resolve a DID document.
  */
-public interface DidResolver {
+@ExtensionPoint
+public interface DidResolverRegistry {
 
     /**
-     * Returns the DID method this resolver supports.
+     * Registers a DID resolver.
      */
-    String getMethod();
+    void register(DidResolver resolver);
 
     /**
-     * Resolves the DID document.
+     * Resolves a DID document based on the DID method.
      */
     DidDocument resolve(String didKey);
 

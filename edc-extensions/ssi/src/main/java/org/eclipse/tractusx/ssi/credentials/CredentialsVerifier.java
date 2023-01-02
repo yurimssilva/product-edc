@@ -12,11 +12,11 @@
  *
  */
 
-package org.eclipse.tractusx.ssi.web.credentials;
+package org.eclipse.tractusx.ssi.credentials;
 
 import org.eclipse.edc.runtime.metamodel.annotation.ExtensionPoint;
 import org.eclipse.edc.spi.result.Result;
-import org.eclipse.tractusx.ssi.web.document.DidDocument;
+import org.eclipse.tractusx.ssi.document.DidDocument;
 
 import java.util.Map;
 
