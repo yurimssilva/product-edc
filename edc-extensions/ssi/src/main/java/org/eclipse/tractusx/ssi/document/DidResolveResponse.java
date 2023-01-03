@@ -15,17 +15,15 @@
 package org.eclipse.tractusx.ssi.document;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.eclipse.edc.iam.did.spi.document.DidDocument;
-import org.eclipse.edc.iam.did.spi.document.DidDocumentMetadata;
 
 /**
  * POJO representation of the JSON response that ION returns after a resolve request.
- * Consists of a context string, a {@link DidDocument} object and a {@link org.eclipse.edc.iam.did.spi.document.DidDocumentMetadata} object.
+ * Consists of a context string, a {@link DidDocument} object and a {@link DidDocumentMetadata} object.
  */
 public class DidResolveResponse {
     private String context;
     private DidDocument didDocument;
-    private org.eclipse.edc.iam.did.spi.document.DidDocumentMetadata didDocumentMetadata;
+    private DidDocumentMetadata didDocumentMetadata;
 
     public DidResolveResponse() {
     }
@@ -49,7 +47,7 @@ public class DidResolveResponse {
     }
 
     @JsonProperty("didDocumentMetadata")
-    public org.eclipse.edc.iam.did.spi.document.DidDocumentMetadata getDidDocumentMetadata() {
+    public DidDocumentMetadata getDidDocumentMetadata() {
         return didDocumentMetadata;
     }
 

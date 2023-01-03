@@ -15,7 +15,6 @@
 package org.eclipse.tractusx.ssi.document;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.eclipse.edc.iam.did.spi.document.JwkPublicKey;
 
 /**
  * Public part of an Elliptic Curve key

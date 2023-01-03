@@ -18,7 +18,6 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
-import org.eclipse.edc.iam.did.spi.document.JwkPublicKey;
 
 @JsonDeserialize(builder = VerificationMethod.Builder.class)
 public class VerificationMethod {
