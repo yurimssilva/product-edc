@@ -2,8 +2,6 @@ package org.eclipse.tractusx.ssi.fakes;
 
 import com.danubetech.verifiablecredentials.CredentialSubject;
 import com.danubetech.verifiablecredentials.VerifiableCredential;
-import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialContexts;
-import foundation.identity.jsonld.JsonLDUtils;
 import org.eclipse.tractusx.ssi.store.VerifiableCredentialStore;
 
 import java.net.URI;
@@ -36,7 +34,7 @@ public class VerifiableCredentialStoreFake implements VerifiableCredentialStore 
                 .types(List.of("MembershipCredential", "VerifiableCredential"))
                 .issuanceDate(new Date())
                 .expirationDate(new Date(2024, 1, 1))
-                .issuer(URI.create("urn:test:bpn"))
+                .issuer(URI.create(TestDidHandler.DID_TEST_ROOT))
                 .credentialSubject(credentialSubject)
                 .build();
     }
