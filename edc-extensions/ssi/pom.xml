@@ -91,6 +91,11 @@
             <groupId>org.eclipse.edc</groupId>
             <artifactId>http</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.danubetech</groupId>
+            <artifactId>verifiable-credentials-java</artifactId>
+            <version>1.0.0</version>
+        </dependency>
 
         <!-- External Dependencies -->
         <dependency>

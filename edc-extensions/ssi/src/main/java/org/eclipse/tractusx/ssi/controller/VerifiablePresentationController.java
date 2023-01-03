@@ -1,17 +1,15 @@
 package org.eclipse.tractusx.ssi.controller;
 
+import com.danubetech.verifiablecredentials.VerifiableCredential;
+import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
-import org.eclipse.tractusx.ssi.credentials.VerifiableCredential;
-import org.eclipse.tractusx.ssi.credentials.VerifiablePresentation;
-import org.eclipse.tractusx.ssi.credentials.VerifiablePresentationImpl;
-import org.eclipse.tractusx.ssi.store.CredentialStore;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.eclipse.tractusx.ssi.credentials.SerializedJwtPresentation;
+import org.eclipse.tractusx.ssi.credentials.SerializedJwtPresentationFactory;
+import org.eclipse.tractusx.ssi.store.VerifiableCredentialStore;
 
 /**
  * Internet facing API for other connector to request verifiable credentials
@@ -20,32 +18,28 @@ import java.util.List;
 @Path("/ssi")
 public class VerifiablePresentationController {
 
-    private final CredentialStore credentialStore;
+    private final VerifiableCredentialStore credentialStore;
+    private final SerializedJwtPresentationFactory presentationFactory;
 
-    public VerifiablePresentationController(CredentialStore credentialStore) {
-        this.credentialStore = credentialStore;
+    public VerifiablePresentationController(VerifiableCredentialStore verifiableCredentialStore, SerializedJwtPresentationFactory presentationFactory) {
+        this.credentialStore = verifiableCredentialStore;
+        this.presentationFactory = presentationFactory;
     }
 
     @GET
-    @Path("/verifiable-presentation")
-    public VerifiablePresentation request(@QueryParam("credential") List<String> requestedCredentialTypes) {
+    @Path("/verifiable-presentation/{requestedCredentialType}")
+    public String request(@PathParam("requestedCredentialType") String requestedCredentialType) {
 
         // TODO Don't just give out credentials to anybody. There should be some check here for the requestor
+        final String audience = "TODO";
 
-        final List<VerifiableCredential> credentials = new ArrayList<>();
-
-        for (var requestedCredentialType : requestedCredentialTypes) {
-            if (credentials.stream().anyMatch(c -> c.getTypes().contains(requestedCredentialType))) {
-                continue;
-            }
-
-            final List<VerifiableCredential> matchingCredential = credentialStore.Get(requestedCredentialType);
-            if (matchingCredential.isEmpty()) {
-                return null; // TODO handle if requested credential cannot be provided
-            }
-            credentials.add(matchingCredential.get(0)); // TODO always get first?
+        switch (requestedCredentialType) {
+            case "MembershipCredential": // TODO Magic string
+                final VerifiableCredential membershipCredential = credentialStore.GetMembershipCredential();
+                final SerializedJwtPresentation membershipPresentation = presentationFactory.createPresentation(membershipCredential, audience);
+                return membershipPresentation.getValue();
+            default:
+                throw new BadRequestException();
         }
-
-        return new VerifiablePresentationImpl(credentials); // TODO Presentation should be created by an factory, that does all this signature and audience stuff, etc.
     }
 }
