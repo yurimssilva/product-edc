@@ -4,6 +4,7 @@ import com.danubetech.verifiablecredentials.VerifiableCredential;
 import com.danubetech.verifiablecredentials.VerifiablePresentation;
 import com.danubetech.verifiablecredentials.jwt.JwtJwtVerifiablePresentation;
 import com.danubetech.verifiablecredentials.jwt.JwtVerifiableCredential;
+import com.danubetech.verifiablecredentials.jwt.JwtVerifiablePresentation;
 import com.danubetech.verifiablecredentials.jwt.ToJwtConverter;
 import com.nimbusds.jose.JOSEException;
 import org.apache.commons.codec.DecoderException;
@@ -23,17 +24,16 @@ public class SerializedJwtPresentationFactoryImpl implements SerializedJwtPresen
             // TODO get private key
             final byte[] privateKey = Hex.decodeHex("984b589e121040156838303f107e13150be4a80fc5088ccba0b0bdc9b1d89090de8777a28f8da1a74e7a13090ed974d879bf692d001cddee16e4cc9f84b60580".toCharArray());
 
+            // TODO Maybe add more properties
             final VerifiablePresentation verifiablePresentation = VerifiablePresentation.builder()
                     .verifiableCredential(verifiableCredential)
                     .build();
-            ToJwtConverter.toJwtVerifiablePresentation(verifiableCredential, audience);
 
-            final JwtVerifiableCredential jwtCredential = ToJwtConverter.toJwtVerifiableCredential(verifiableCredential, audience);
-            final JwtJwtVerifiablePresentation jwtPresentation = JwtJwtVerifiablePresentation.fromJwtVerifiableCredential(jwtCredential, audience);
+            final JwtVerifiablePresentation jwtPresentation = ToJwtConverter.toJwtVerifiablePresentation(verifiablePresentation, audience);
             final String jwtSerialized = jwtPresentation.sign_Ed25519_EdDSA(privateKey);
 
             return new SerializedJwtPresentation(jwtSerialized);
-        } catch (DecoderException | IOException | JOSEException e) {
+        } catch (DecoderException | JOSEException e) {
             throw new RuntimeException(e); // TODO
         }
 

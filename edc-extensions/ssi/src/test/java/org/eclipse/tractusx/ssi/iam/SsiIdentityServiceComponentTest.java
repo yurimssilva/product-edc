@@ -39,5 +39,9 @@ public class SsiIdentityServiceComponentTest {
 
         final Result<ClaimToken> claimTokenResult = ssiIdentityService.verifyJwtToken(tokenRepresentation, AUDIENCE);
         final ClaimToken claimToken = claimTokenResult.getContent();
+
+        for (var keyValue : claimToken.getClaims().entrySet()) {
+            System.out.println(String.format("Key: %s, Value: %s", keyValue.getKey(), keyValue.getValue()));
+        }
     }
 }
