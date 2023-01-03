@@ -2,15 +2,12 @@ package org.eclipse.tractusx.ssi.credentials;
 
 import com.danubetech.verifiablecredentials.VerifiableCredential;
 import com.danubetech.verifiablecredentials.VerifiablePresentation;
-import com.danubetech.verifiablecredentials.jwt.JwtJwtVerifiablePresentation;
-import com.danubetech.verifiablecredentials.jwt.JwtVerifiableCredential;
 import com.danubetech.verifiablecredentials.jwt.JwtVerifiablePresentation;
 import com.danubetech.verifiablecredentials.jwt.ToJwtConverter;
 import com.nimbusds.jose.JOSEException;
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
 
-import java.io.IOException;
 import java.net.URI;
 
 public class SerializedJwtPresentationFactoryImpl implements SerializedJwtPresentationFactory {
