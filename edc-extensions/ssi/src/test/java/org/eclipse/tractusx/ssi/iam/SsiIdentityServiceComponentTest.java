@@ -6,7 +6,13 @@ import org.eclipse.edc.spi.iam.TokenRepresentation;
 import org.eclipse.edc.spi.result.Result;
 import org.eclipse.tractusx.ssi.credentials.SerializedJwtPresentationFactory;
 import org.eclipse.tractusx.ssi.credentials.SerializedJwtPresentationFactoryImpl;
+import org.eclipse.tractusx.ssi.fakes.TestDidHandler;
 import org.eclipse.tractusx.ssi.fakes.VerifiableCredentialStoreFake;
+import org.eclipse.tractusx.ssi.resolver.DidPublicKeyResolverHandler;
+import org.eclipse.tractusx.ssi.resolver.DidPublicKeyResolverImpl;
+import org.eclipse.tractusx.ssi.verification.VerifiableCredentialVerificationImpl;
+import org.eclipse.tractusx.ssi.verification.VerifiablePresentationVerification;
+import org.eclipse.tractusx.ssi.verification.VerifiablePresentationVerificationImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -23,8 +29,14 @@ public class SsiIdentityServiceComponentTest {
     public void setup() {
         credentialStore = new VerifiableCredentialStoreFake();
 
+        final DidPublicKeyResolverHandler publicKeyHandler = new TestDidHandler();
+        final DidPublicKeyResolverImpl publicKeyResolver = new DidPublicKeyResolverImpl();
+        publicKeyResolver.registerHandler(publicKeyHandler);
+
         final SerializedJwtPresentationFactory serializedJwtPresentationFactory = new SerializedJwtPresentationFactoryImpl();
-        ssiIdentityService = new SsiIdentityService(serializedJwtPresentationFactory, credentialStore);
+        ssiIdentityService = new SsiIdentityService(serializedJwtPresentationFactory, credentialStore,
+                VerifiableCredentialVerificationImpl.withAllHandlers(),
+                VerifiablePresentationVerificationImpl.withAllHandlers(publicKeyResolver));
     }
 
     @Test
@@ -41,7 +53,7 @@ public class SsiIdentityServiceComponentTest {
         final ClaimToken claimToken = claimTokenResult.getContent();
 
         for (var keyValue : claimToken.getClaims().entrySet()) {
-            System.out.println(String.format("Key: %s, Value: %s", keyValue.getKey(), keyValue.getValue()));
+            System.out.printf("Key: %s, Value: %s%n", keyValue.getKey(), keyValue.getValue());
         }
     }
 }

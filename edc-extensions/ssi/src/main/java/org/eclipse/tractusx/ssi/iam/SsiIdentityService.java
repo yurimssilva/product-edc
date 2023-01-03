@@ -3,14 +3,8 @@ package org.eclipse.tractusx.ssi.iam;
 import com.danubetech.verifiablecredentials.CredentialSubject;
 import com.danubetech.verifiablecredentials.VerifiableCredential;
 import com.danubetech.verifiablecredentials.VerifiablePresentation;
-import com.danubetech.verifiablecredentials.jwt.FromJwtConverter;
-import com.danubetech.verifiablecredentials.jwt.JwtJwtVerifiablePresentation;
 import com.danubetech.verifiablecredentials.jwt.JwtKeywords;
-import com.danubetech.verifiablecredentials.jwt.JwtObject;
-import com.danubetech.verifiablecredentials.jwt.JwtVerifiableCredential;
 import com.danubetech.verifiablecredentials.jwt.JwtVerifiablePresentation;
-import com.danubetech.verifiablecredentials.jwt.JwtWrappingObject;
-import com.danubetech.verifiablecredentials.jwt.ToJwtConverter;
 import com.danubetech.verifiablecredentials.validation.Validation;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
@@ -22,6 +16,8 @@ import org.eclipse.edc.spi.result.Result;
 import org.eclipse.tractusx.ssi.credentials.SerializedJwtPresentation;
 import org.eclipse.tractusx.ssi.credentials.SerializedJwtPresentationFactory;
 import org.eclipse.tractusx.ssi.store.VerifiableCredentialStore;
+import org.eclipse.tractusx.ssi.verification.VerifiableCredentialVerification;
+import org.eclipse.tractusx.ssi.verification.VerifiablePresentationVerification;
 
 import java.text.ParseException;
 import java.util.LinkedHashMap;
@@ -31,10 +27,14 @@ public class SsiIdentityService implements IdentityService {
 
     private final SerializedJwtPresentationFactory presentationFactory;
     private final VerifiableCredentialStore credentialStore;
+    private final VerifiableCredentialVerification credentialVerification;
+    private final VerifiablePresentationVerification presentationVerification;
 
-    public SsiIdentityService(SerializedJwtPresentationFactory serializedJwtPresentationFactory, VerifiableCredentialStore credentialStore) {
+    public SsiIdentityService(SerializedJwtPresentationFactory serializedJwtPresentationFactory, VerifiableCredentialStore credentialStore, VerifiableCredentialVerification credentialVerification, VerifiablePresentationVerification presentationVerification) {
         this.presentationFactory = serializedJwtPresentationFactory;
         this.credentialStore = credentialStore;
+        this.credentialVerification = credentialVerification;
+        this.presentationVerification = presentationVerification;
     }
 
     /**
@@ -57,14 +57,17 @@ public class SsiIdentityService implements IdentityService {
     public Result<ClaimToken> verifyJwtToken(TokenRepresentation tokenRepresentation, String audience) {
         try {
             final JwtVerifiablePresentation jwtVerifiablePresentation = fromCompactSerialization(tokenRepresentation.getToken()); // expects credential
-            // jwtVerifiablePresentation.verify_Ed25519_EdDSA() // TODO
             final VerifiablePresentation verifiablePresentation = jwtVerifiablePresentation.getPayloadObject();
             Validation.validate(verifiablePresentation);
-            // TODO Validate Presentation more (e.g. with public key)
+            if (!presentationVerification.checkTrust(jwtVerifiablePresentation)) {
+                throw new RuntimeException(); // TODO
+            }
 
             final VerifiableCredential verifiableCredential = verifiablePresentation.getVerifiableCredential();
             Validation.validate(verifiableCredential);
-            // TODO Validate Each Credential more (e.g. with public key)
+            if (!credentialVerification.checkTrust(verifiableCredential)) {
+                throw new RuntimeException(); // TODO
+            }
 
             final CredentialSubject subject = verifiableCredential.getCredentialSubject();
             final ClaimToken token = ClaimToken.Builder.newInstance().claims(subject.getClaims()).build();

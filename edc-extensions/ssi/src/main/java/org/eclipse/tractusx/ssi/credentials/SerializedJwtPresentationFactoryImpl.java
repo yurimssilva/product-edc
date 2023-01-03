@@ -11,6 +11,7 @@ import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
 
 import java.io.IOException;
+import java.net.URI;
 
 public class SerializedJwtPresentationFactoryImpl implements SerializedJwtPresentationFactory {
 
@@ -26,6 +27,7 @@ public class SerializedJwtPresentationFactoryImpl implements SerializedJwtPresen
 
             // TODO Maybe add more properties
             final VerifiablePresentation verifiablePresentation = VerifiablePresentation.builder()
+                    .holder(URI.create("http://localhost")) // TODO must be DID test, do this with config
                     .verifiableCredential(verifiableCredential)
                     .build();
 
