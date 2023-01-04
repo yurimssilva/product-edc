@@ -24,9 +24,9 @@ public class VerifiablePresentationSignatureHandler implements VerifiablePresent
 
     @Override
     public boolean checkTrust(JwtVerifiablePresentation presentation) {
-        final URI issuerUri = presentation.getPayloadObject().getHolder();
-        final Did issuerDid = UriToDidConverter.convert(issuerUri);
-        final PublicKey key = didPublicKeyResolver.resolve(issuerDid);
+        final URI holderUri = presentation.getPayloadObject().getHolder();
+        final Did holderDid = UriToDidConverter.convert(holderUri);
+        final PublicKey key = didPublicKeyResolver.resolve(holderDid);
 
         try {
             return presentation.verify_Ed25519_EdDSA(key.getEncoded());
