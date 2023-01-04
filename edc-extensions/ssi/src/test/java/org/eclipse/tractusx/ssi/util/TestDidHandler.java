@@ -11,7 +11,7 @@ import java.util.Map;
 public class TestDidHandler implements DidPublicKeyResolverHandler {
 
     private static final String METHOD = "test";
-    public static final Did DID_TEST_ROOT = new Did(METHOD, "root");
+    public static final Did DID_TEST_OPERATOR = new Did(METHOD, "operator");
 
     private final Map<Did, PublicKey> didMap = new LinkedHashMap<>();
 
@@ -34,7 +34,7 @@ public class TestDidHandler implements DidPublicKeyResolverHandler {
 
 
     private void initializeDids() {
-        didMap.put(DID_TEST_ROOT, null);
+        didMap.put(DID_TEST_OPERATOR, null);
     }
 
 }

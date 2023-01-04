@@ -42,7 +42,7 @@ public class VerifiableCredentialStoreFake implements VerifiableCredentialStore 
                 .types(List.of("MembershipCredential", "VerifiableCredential"))
                 .issuanceDate(new Date())
                 .expirationDate(Date.from(Instant.now().plusSeconds(300 /* Five Minutes */)))
-                .issuer(URI.create(TestDidHandler.DID_TEST_ROOT.toString()))
+                .issuer(URI.create(TestDidHandler.DID_TEST_OPERATOR.toString()))
                 .credentialSubject(credentialSubject)
                 .build();
     }

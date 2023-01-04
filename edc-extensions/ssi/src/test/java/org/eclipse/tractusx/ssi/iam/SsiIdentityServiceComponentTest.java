@@ -30,7 +30,7 @@ public class SsiIdentityServiceComponentTest {
     public void setup() {
         final byte[] privateKey = KeyResourceLoader.readPrivateKey();
         final byte[] publicKey = KeyResourceLoader.readPublicKey();
-        final SsiSettings settings = new SsiSettings(TestDidHandler.DID_TEST_ROOT, TestDidHandler.DID_TEST_ROOT, privateKey, publicKey);
+        final SsiSettings settings = new SsiSettings(TestDidHandler.DID_TEST_OPERATOR, TestDidHandler.DID_TEST_OPERATOR, privateKey, publicKey);
         final DidPublicKeyResolverHandler publicKeyHandler = new TestDidHandler();
         final DidPublicKeyResolverImpl publicKeyResolver = new DidPublicKeyResolverImpl();
         publicKeyResolver.registerHandler(publicKeyHandler);
