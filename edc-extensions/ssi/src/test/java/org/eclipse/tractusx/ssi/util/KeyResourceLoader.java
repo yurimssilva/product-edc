@@ -2,10 +2,7 @@ package org.eclipse.tractusx.ssi.util;
 
 import lombok.NonNull;
 import lombok.SneakyThrows;
-import org.bouncycastle.crypto.params.AsymmetricKeyParameter;
 import org.bouncycastle.crypto.params.Ed25519PrivateKeyParameters;
-import org.bouncycastle.crypto.params.Ed25519PublicKeyParameters;
-import org.bouncycastle.crypto.util.OpenSSHPublicKeyUtil;
 import org.bouncycastle.util.encoders.Hex;
 import org.bouncycastle.util.io.pem.PemReader;
 
@@ -34,12 +31,9 @@ public class KeyResourceLoader {
 
         var bytes = pemReader.readPemObject().getContent();
         Ed25519PrivateKeyParameters privateKey = new Ed25519PrivateKeyParameters(bytes, 0);
-        bytes = privateKey.getEncoded();
+        bytes = Hex.encode(privateKey.getEncoded());
 
-
-        System.out.println("LEN " + bytes.length);
-
-        return bytes;
+        return  bytes;
     }
 
 

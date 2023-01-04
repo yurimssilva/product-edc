@@ -1,15 +1,16 @@
 package org.eclipse.tractusx.ssi.verification;
 
 import com.danubetech.verifiablecredentials.VerifiableCredential;
+import org.eclipse.tractusx.ssi.setting.SsiSettings;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class VerifiableCredentialVerificationImpl implements VerifiableCredentialVerification {
 
-    public static VerifiableCredentialVerification withAllHandlers() {
+    public static VerifiableCredentialVerification withAllHandlers(SsiSettings settings) {
         final VerifiableCredentialVerificationImpl verification = new VerifiableCredentialVerificationImpl();
-        verification.registerHandler(new MembershipCredentialIssuerHandler());
+        verification.registerHandler(new MembershipCredentialIssuerHandler(settings));
         verification.registerHandler(new MembershipCredentialStatusHandler());
 
         return verification;

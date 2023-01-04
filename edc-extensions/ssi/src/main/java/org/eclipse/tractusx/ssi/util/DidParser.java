@@ -9,11 +9,11 @@ public class DidParser {
 
     public static Did parse(URI uri) {
         if (!uri.getScheme().equals("did"))
-            throw new DidParseException("URI is not a DID");
+            throw new DidParseException("URI is not a DID. URI: '" + uri + "'");
 
         var parts = uri.toString().split(":");
         if (parts.length != 3) {
-            throw new DidParseException("DID does not contain of three parts split by ':'");
+            throw new DidParseException("DID does not contain of three parts split by ':'. URI: '" + uri + "'");
         }
 
         return new Did(parts[1], parts[2]);

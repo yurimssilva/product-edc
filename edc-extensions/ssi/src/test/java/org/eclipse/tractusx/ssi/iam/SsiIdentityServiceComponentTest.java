@@ -1,8 +1,5 @@
 package org.eclipse.tractusx.ssi.iam;
 
-import lombok.SneakyThrows;
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.codec.binary.Hex;
 import org.eclipse.edc.spi.iam.ClaimToken;
 import org.eclipse.edc.spi.iam.TokenParameters;
 import org.eclipse.edc.spi.iam.TokenRepresentation;
@@ -33,7 +30,7 @@ public class SsiIdentityServiceComponentTest {
     public void setup() {
         final byte[] privateKey = KeyResourceLoader.readPrivateKey();
         final byte[] publicKey = KeyResourceLoader.readPublicKey();
-        final SsiSettings settings = new SsiSettings(TestDidHandler.DID_TEST_ROOT, privateKey, publicKey);
+        final SsiSettings settings = new SsiSettings(TestDidHandler.DID_TEST_ROOT, TestDidHandler.DID_TEST_ROOT, privateKey, publicKey);
         final DidPublicKeyResolverHandler publicKeyHandler = new TestDidHandler();
         final DidPublicKeyResolverImpl publicKeyResolver = new DidPublicKeyResolverImpl();
         publicKeyResolver.registerHandler(publicKeyHandler);
@@ -41,7 +38,7 @@ public class SsiIdentityServiceComponentTest {
         final SerializedJwtPresentationFactory serializedJwtPresentationFactory = new SerializedJwtPresentationFactoryImpl(settings);
         credentialStore = new VerifiableCredentialStoreFake(settings);
         ssiIdentityService = new SsiIdentityService(serializedJwtPresentationFactory, credentialStore,
-                VerifiableCredentialVerificationImpl.withAllHandlers(),
+                VerifiableCredentialVerificationImpl.withAllHandlers(settings),
                 VerifiablePresentationVerificationImpl.withAllHandlers(publicKeyResolver));
     }
 
@@ -61,25 +58,5 @@ public class SsiIdentityServiceComponentTest {
         for (var keyValue : claimToken.getClaims().entrySet()) {
             System.out.printf("Key: %s, Value: %s%n", keyValue.getKey(), keyValue.getValue());
         }
-    }
-
-    @Test
-    @SneakyThrows
-    public void test2() {
-        byte[] testEd25519PrivateKey = Hex.decodeHex("984b589e121040156838303f107e13150be4a80fc5088ccba0b0bdc9b1d89090de8777a28f8da1a74e7a13090ed974d879bf692d001cddee16e4cc9f84b60580".toCharArray());
-        System.out.println("EXPECTED " + new String(testEd25519PrivateKey));
-
-        var test = "b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZWQyNTUxOQAAACDF36DQQiH8dMpv8fqd2PX77XOTSWqNu7pZCrE4cSJWVAAAAKCV5ePzleXj8wAAAAtzc2gtZWQyNTUxOQAAACDF36DQQiH8dMpv8fqd2PX77XOTSWqNu7pZCrE4cSJWVAAAAEA0Gxs9VHyMyeA6zDjqbGbFuzUOI1jFCNsDMC/TGKX4MMXfoNBCIfx0ym/x+p3Y9fvtc5NJao27ulkKsThxIlZUAAAAF2RvbWluaWtAZGVza3RvcC1NUy03QzU2AQIDBAUG";
-        System.out.println("TEST " + test);
-        var test64 = new String(Base64.decodeBase64(test.getBytes()));
-        System.out.println("TEST64 " + test64);
-
-        for (var part: test64.split(" ")) {
-             System.out.println("PART " + part);
-        }
-
-        var test64Hex = Hex.encodeHexString(test64.getBytes());
-        System.out.println("TEST64Hex " + test64Hex);
-
     }
 }

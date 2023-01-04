@@ -34,7 +34,8 @@ public class SsiWebExtension implements ServiceExtension {
     public static final String EXTENSION_NAME = "SSI Web Extension Extension";
 
     public static final String SETTING_DID_DEFAULT = "did:null:connector";
-    public static final String SETTING_DID = "edc.ssi.did";
+    public static final String SETTING_DID_CONNECTOR = "edc.ssi.did.connector";
+    public static final String SETTING_DID_OPERATOR = "edc.ssi.did.operator";
     public static final String SETTING_DID_KEY_PRIVATE = "edc.ssi.did.key.private";
     public static final String SETTING_DID_KEY_PRIVATE_ALIAS = "edc.ssi.did.key.private.alias";
     public static final String SETTING_DID_KEY_PUBLIC  ="edc.ssi.did.key.public";

@@ -17,7 +17,7 @@ public class SsiSettingsFactoryImpl implements SsiSettingsFactory {
     private static final String EXCEPTION_KEY_CONFIG_MISSING = "SSI Settings: Configuration of %s or %s is mandatory";
     private static final String EXCEPTION_CANNOT_DECODE_PUBLIC_KEY = "SSI Settings: No valid public key configured.";
     private static final String EXCEPTION_CANNOT_DECODE_PRIVATE_KEY = "SSI Settings: No valid private key configured.";
-    private static final String WARNING_NO_DID_CONFIGURED = "SSI Settings: No DID configured. Using (invalid) default DID: %s";
+    private static final String WARNING_NO_DID_CONFIGURED = "SSI Settings: No DID configured. Using (invalid) default DID: %s"; // TODO split for operator and connector
 
     private final Monitor monitor;
     private final Vault vault;
@@ -62,16 +62,29 @@ public class SsiSettingsFactoryImpl implements SsiSettingsFactory {
         }
         // TODO verify 'didPublicKey' is a valid key
 
-        final String didString = context.getSetting(SsiWebExtension.SETTING_DID, SsiWebExtension.SETTING_DID_DEFAULT);
-        if (didString.equals(SsiWebExtension.SETTING_DID_DEFAULT)) {
+        final String didConnectorString = context.getSetting(SsiWebExtension.SETTING_DID_CONNECTOR, SsiWebExtension.SETTING_DID_DEFAULT);
+        if (didConnectorString.equals(SsiWebExtension.SETTING_DID_DEFAULT)) {
             monitor.warning(String.format(WARNING_NO_DID_CONFIGURED, SsiWebExtension.SETTING_DID_DEFAULT));
         }
 
-        final Did did;
+        final Did didConnector;
         try {
-            did = DidParser.parse(didString);
+            didConnector = DidParser.parse(didConnectorString);
         } catch (DidParseException e) {
-            throw new SsiSettingException(String.format(EXCEPTION_NO_VALID_DID, SsiWebExtension.SETTING_DID, didString), e);
+            throw new SsiSettingException(String.format(EXCEPTION_NO_VALID_DID, SsiWebExtension.SETTING_DID_CONNECTOR, didConnectorString), e);
+        }
+
+
+        final String didOperatorString = context.getSetting(SsiWebExtension.SETTING_DID_OPERATOR, SsiWebExtension.SETTING_DID_DEFAULT);
+        if (didOperatorString.equals(SsiWebExtension.SETTING_DID_DEFAULT)) {
+            monitor.warning(String.format(WARNING_NO_DID_CONFIGURED, SsiWebExtension.SETTING_DID_DEFAULT));
+        }
+
+        final Did didOperator;
+        try {
+            didOperator = DidParser.parse(didOperatorString);
+        } catch (DidParseException e) {
+            throw new SsiSettingException(String.format(EXCEPTION_NO_VALID_DID, SsiWebExtension.SETTING_DID_OPERATOR, didConnectorString), e);
         }
 
         byte[] decodedPrivateKey;
@@ -82,13 +95,12 @@ public class SsiSettingsFactoryImpl implements SsiSettingsFactory {
             throw new SsiSettingException(EXCEPTION_CANNOT_DECODE_PRIVATE_KEY);
         }
 
-
         try {
             decodedPublicKey = Hex.decodeHex(didPublicKey);
         } catch (DecoderException e) {
             throw new SsiSettingException(EXCEPTION_CANNOT_DECODE_PUBLIC_KEY);
         }
 
-        return new SsiSettings(did, decodedPrivateKey, decodedPublicKey);
+        return new SsiSettings(didOperator, didConnector, decodedPrivateKey, decodedPublicKey);
     }
 }

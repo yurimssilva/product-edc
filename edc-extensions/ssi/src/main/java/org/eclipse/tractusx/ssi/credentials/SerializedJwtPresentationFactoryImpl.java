@@ -26,7 +26,7 @@ public class SerializedJwtPresentationFactoryImpl implements SerializedJwtPresen
 
             // TODO Maybe add more properties
             final VerifiablePresentation verifiablePresentation = VerifiablePresentation.builder()
-                    .holder(settings.getDid().toUri())
+                    .holder(settings.getDidConnector().toUri())
                     .verifiableCredential(verifiableCredential)
                     .build();
 

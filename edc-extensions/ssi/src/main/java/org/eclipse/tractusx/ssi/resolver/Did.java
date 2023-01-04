@@ -27,7 +27,7 @@ public class Did {
 
     @Override
     public String toString() {
-        return String.format("urn:%s:%s", method, methodIdentifier);
+        return String.format("did:%s:%s", method, methodIdentifier);
     }
 
     @Override
