@@ -23,11 +23,11 @@ public class SsiIdentityServiceComponentTest {
     private SsiIdentityService ssiIdentityService;
 
     // fakes
-    private VerifiableCredentialStoreFake credentialStore = new VerifiableCredentialStoreFake();
+    private VerifiableCredentialStoreFake credentialStore = new VerifiableCredentialStoreFake(settings);
 
     @BeforeEach
     public void setup() {
-        credentialStore = new VerifiableCredentialStoreFake();
+        credentialStore = new VerifiableCredentialStoreFake(settings);
 
         final SsiSettings settings = new SsiSettings(TestDidHandler.DID_TEST_ROOT.toUri(), new byte[0], new byte[0]);
         final DidPublicKeyResolverHandler publicKeyHandler = new TestDidHandler();

@@ -2,6 +2,7 @@ package org.eclipse.tractusx.ssi.fakes;
 
 import com.danubetech.verifiablecredentials.CredentialSubject;
 import com.danubetech.verifiablecredentials.VerifiableCredential;
+import org.eclipse.tractusx.ssi.setting.SsiSettings;
 import org.eclipse.tractusx.ssi.store.VerifiableCredentialStore;
 
 import java.net.URI;
@@ -14,6 +15,12 @@ import java.util.Map;
 public class VerifiableCredentialStoreFake implements VerifiableCredentialStore {
 
     private VerifiableCredential membershipCredential;
+
+    private final SsiSettings settings;
+
+    public VerifiableCredentialStoreFake(SsiSettings settings) {
+        this.settings = settings;
+    }
 
     @Override
     public VerifiableCredential GetMembershipCredential() {

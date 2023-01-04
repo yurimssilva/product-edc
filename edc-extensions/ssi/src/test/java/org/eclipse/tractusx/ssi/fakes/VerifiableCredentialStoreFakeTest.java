@@ -13,7 +13,7 @@ public class VerifiableCredentialStoreFakeTest {
 
     @BeforeEach
     public void setup() {
-        verifiableCredentialStoreFake = new VerifiableCredentialStoreFake();
+        verifiableCredentialStoreFake = new VerifiableCredentialStoreFake(settings);
     }
 
     @Test
