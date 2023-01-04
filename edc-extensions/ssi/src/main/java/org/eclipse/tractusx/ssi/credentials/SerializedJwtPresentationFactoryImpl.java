@@ -5,11 +5,7 @@ import com.danubetech.verifiablecredentials.VerifiablePresentation;
 import com.danubetech.verifiablecredentials.jwt.JwtVerifiablePresentation;
 import com.danubetech.verifiablecredentials.jwt.ToJwtConverter;
 import com.nimbusds.jose.JOSEException;
-import org.apache.commons.codec.DecoderException;
-import org.apache.commons.codec.binary.Hex;
 import org.eclipse.tractusx.ssi.setting.SsiSettings;
-
-import java.net.URI;
 
 public class SerializedJwtPresentationFactoryImpl implements SerializedJwtPresentationFactory {
 
@@ -30,7 +26,7 @@ public class SerializedJwtPresentationFactoryImpl implements SerializedJwtPresen
 
             // TODO Maybe add more properties
             final VerifiablePresentation verifiablePresentation = VerifiablePresentation.builder()
-                    .holder(settings.getDid())
+                    .holder(settings.getDid().toUri())
                     .verifiableCredential(verifiableCredential)
                     .build();
 

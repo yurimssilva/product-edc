@@ -6,9 +6,10 @@ import org.eclipse.edc.spi.monitor.Monitor;
 import org.eclipse.edc.spi.security.Vault;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
 import org.eclipse.tractusx.ssi.SsiWebExtension;
+import org.eclipse.tractusx.ssi.exception.DidParseException;
 import org.eclipse.tractusx.ssi.exception.SsiSettingException;
-
-import java.net.URI;
+import org.eclipse.tractusx.ssi.resolver.Did;
+import org.eclipse.tractusx.ssi.util.DidParser;
 
 public class SsiSettingsFactoryImpl implements SsiSettingsFactory {
 
@@ -61,20 +62,16 @@ public class SsiSettingsFactoryImpl implements SsiSettingsFactory {
         }
         // TODO verify 'didPublicKey' is a valid key
 
-        final String did = context.getSetting(SsiWebExtension.SETTING_DID, SsiWebExtension.SETTING_DID_DEFAULT);
-        if (did.equals(SsiWebExtension.SETTING_DID_DEFAULT)) {
+        final String didString = context.getSetting(SsiWebExtension.SETTING_DID, SsiWebExtension.SETTING_DID_DEFAULT);
+        if (didString.equals(SsiWebExtension.SETTING_DID_DEFAULT)) {
             monitor.warning(String.format(WARNING_NO_DID_CONFIGURED, SsiWebExtension.SETTING_DID_DEFAULT));
         }
 
-        if (!did.startsWith("did:")) {
-            throw new SsiSettingException(String.format(EXCEPTION_NO_VALID_DID, SsiWebExtension.SETTING_DID, did));
-        }
-
-        final URI didUri;
+        final Did did;
         try {
-            didUri = URI.create(did);
-        } catch (IllegalArgumentException e) {
-            throw new SsiSettingException(String.format(EXCEPTION_NO_VALID_DID, SsiWebExtension.SETTING_DID, did), e);
+            did = DidParser.parse(didString);
+        } catch (DidParseException e) {
+            throw new SsiSettingException(String.format(EXCEPTION_NO_VALID_DID, SsiWebExtension.SETTING_DID, didString), e);
         }
 
         byte[] decodedPrivateKey;
@@ -92,6 +89,6 @@ public class SsiSettingsFactoryImpl implements SsiSettingsFactory {
             throw new SsiSettingException(EXCEPTION_CANNOT_DECODE_PUBLIC_KEY);
         }
 
-        return new SsiSettings(didUri, decodedPrivateKey, decodedPublicKey);
+        return new SsiSettings(did, decodedPrivateKey, decodedPublicKey);
     }
 }

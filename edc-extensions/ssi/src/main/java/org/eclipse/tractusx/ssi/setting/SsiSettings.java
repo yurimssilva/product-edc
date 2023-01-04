@@ -1,12 +1,11 @@
 package org.eclipse.tractusx.ssi.setting;
 
 import lombok.Value;
-
-import java.net.URI;
+import org.eclipse.tractusx.ssi.resolver.Did;
 
 @Value
 public class SsiSettings {
-    URI did;
+    Did did;
     byte[] didPrivateKey;
     byte[] didPublicKey;
 }

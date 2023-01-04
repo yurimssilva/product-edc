@@ -23,18 +23,18 @@ public class SsiIdentityServiceComponentTest {
     private SsiIdentityService ssiIdentityService;
 
     // fakes
-    private VerifiableCredentialStoreFake credentialStore = new VerifiableCredentialStoreFake(settings);
+    private VerifiableCredentialStoreFake credentialStore;
 
     @BeforeEach
     public void setup() {
-        credentialStore = new VerifiableCredentialStoreFake(settings);
 
-        final SsiSettings settings = new SsiSettings(TestDidHandler.DID_TEST_ROOT.toUri(), new byte[0], new byte[0]);
+        final SsiSettings settings = new SsiSettings(TestDidHandler.DID_TEST_ROOT, new byte[0], new byte[0]);
         final DidPublicKeyResolverHandler publicKeyHandler = new TestDidHandler();
         final DidPublicKeyResolverImpl publicKeyResolver = new DidPublicKeyResolverImpl();
         publicKeyResolver.registerHandler(publicKeyHandler);
 
         final SerializedJwtPresentationFactory serializedJwtPresentationFactory = new SerializedJwtPresentationFactoryImpl(settings);
+        credentialStore = new VerifiableCredentialStoreFake(settings);
         ssiIdentityService = new SsiIdentityService(serializedJwtPresentationFactory, credentialStore,
                 VerifiableCredentialVerificationImpl.withAllHandlers(),
                 VerifiablePresentationVerificationImpl.withAllHandlers(publicKeyResolver));
