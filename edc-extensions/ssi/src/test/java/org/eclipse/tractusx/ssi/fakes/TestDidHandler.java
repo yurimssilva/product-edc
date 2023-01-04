@@ -20,8 +20,8 @@ public class TestDidHandler implements DidPublicKeyResolverHandler {
     }
 
     @Override
-    public boolean canHandle(Did did) {
-        return did.getMethod().equals(METHOD);
+    public String getMethod() {
+        return METHOD;
     }
 
     @Override

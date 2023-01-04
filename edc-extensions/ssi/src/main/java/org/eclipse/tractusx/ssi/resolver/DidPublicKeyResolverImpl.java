@@ -13,10 +13,10 @@ public class DidPublicKeyResolverImpl implements DidPublicKeyResolver {
     @Override
     public PublicKey resolve(Did did) {
         return handlers.stream()
-                .filter(h -> h.canHandle(did))
+                .filter(h -> h.getMethod().equalsIgnoreCase(did.getMethod()))
                 .map(h -> h.resolve(did))
                 .findFirst()
-                .orElseThrow(NotFoundException::new);
+                .orElseThrow(NotFoundException::new); // TODO inform user about supported did methods
     }
 
     @Override

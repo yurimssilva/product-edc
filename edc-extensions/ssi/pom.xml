@@ -147,4 +147,13 @@
             <scope>compile</scope>
         </dependency>
     </dependencies>
+
+    <profiles>
+        <profile>
+            <id>delombok</id>
+            <properties>
+                <sourceDir>${delombokSourceDirectory}</sourceDir>
+            </properties>
+        </profile>
+    </profiles>
 </project>

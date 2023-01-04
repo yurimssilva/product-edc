@@ -18,7 +18,7 @@ import java.security.PublicKey;
 
 public interface DidPublicKeyResolverHandler {
 
-    boolean canHandle(Did did);
+    String getMethod();
 
     PublicKey resolve(Did did);
 }

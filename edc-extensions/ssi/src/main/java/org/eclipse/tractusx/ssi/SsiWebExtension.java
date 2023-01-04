@@ -19,19 +19,30 @@
  */
 package org.eclipse.tractusx.ssi;
 
+import org.eclipse.edc.runtime.metamodel.annotation.Inject;
 import org.eclipse.edc.spi.monitor.Monitor;
 import org.eclipse.edc.spi.security.Vault;
 import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
+import org.eclipse.tractusx.ssi.setting.SsiSettings;
+import org.eclipse.tractusx.ssi.setting.SsiSettingsFactory;
+import org.eclipse.tractusx.ssi.setting.SsiSettingsFactoryImpl;
 
 
 public class SsiWebExtension implements ServiceExtension {
 
     public static final String EXTENSION_NAME = "SSI Web Extension Extension";
 
+    public static final String SETTING_DID_WEB_HOST = "edc.ssi.did.web.host";
+    public static final String SETTING_DID_KEY_PRIVATE = "edc.ssi.did.key.private";
+    public static final String SETTING_DID_KEY_PRIVATE_ALIAS = "edc.ssi.did.key.private.alias";
+    public static final String SETTING_DID_KEY_PUBLIC  ="edc.ssi.did.key.public";
+    public static final String SETTING_DID_KEY_PUBLIC_ALIAS  ="edc.ssi.did.key.public.alias";
+
     private Monitor monitor;
+
+    @Inject
     private Vault vault;
-    private ServiceExtensionContext context;
 
     @Override
     public String name() {
@@ -40,8 +51,9 @@ public class SsiWebExtension implements ServiceExtension {
 
     @Override
     public void initialize(ServiceExtensionContext context) {
-        this.context = context;
         this.monitor = context.getMonitor();
-    }
 
+        final SsiSettingsFactory settingsFactory = new SsiSettingsFactoryImpl(vault, context);
+        final SsiSettings settings = settingsFactory.createSettings();
+    }
 }
