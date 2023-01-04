@@ -15,11 +15,14 @@ import org.eclipse.edc.spi.iam.TokenRepresentation;
 import org.eclipse.edc.spi.result.Result;
 import org.eclipse.tractusx.ssi.credentials.SerializedJwtPresentation;
 import org.eclipse.tractusx.ssi.credentials.SerializedJwtPresentationFactory;
+import org.eclipse.tractusx.ssi.exception.JwtParseException;
+import org.eclipse.tractusx.ssi.exception.SsiException;
 import org.eclipse.tractusx.ssi.store.VerifiableCredentialStore;
 import org.eclipse.tractusx.ssi.verification.VerifiableCredentialVerification;
 import org.eclipse.tractusx.ssi.verification.VerifiablePresentationVerification;
 
 import java.text.ParseException;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -55,38 +58,55 @@ public class SsiIdentityService implements IdentityService {
 
     @Override
     public Result<ClaimToken> verifyJwtToken(TokenRepresentation tokenRepresentation, String audience) {
-        try {
-            final JwtVerifiablePresentation jwtVerifiablePresentation = fromCompactSerialization(tokenRepresentation.getToken()); // expects credential
-            final VerifiablePresentation verifiablePresentation = jwtVerifiablePresentation.getPayloadObject();
-            Validation.validate(verifiablePresentation);
-            if (!presentationVerification.checkTrust(jwtVerifiablePresentation)) {
-                throw new RuntimeException(); // TODO
-            }
+        final JwtVerifiablePresentation jwtVerifiablePresentation = fromCompactSerialization(tokenRepresentation.getToken());
 
-            final VerifiableCredential verifiableCredential = verifiablePresentation.getVerifiableCredential();
-            Validation.validate(verifiableCredential);
-            if (!credentialVerification.checkTrust(verifiableCredential)) {
-                throw new RuntimeException(); // TODO
-            }
+        final VerifiablePresentation verifiablePresentation = jwtVerifiablePresentation.getPayloadObject();
+        Validation.validate(verifiablePresentation);
 
-            final CredentialSubject subject = verifiableCredential.getCredentialSubject();
-            final ClaimToken token = ClaimToken.Builder.newInstance().claims(subject.getClaims()).build();
-            return Result.success(token);
-
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
+        if (!presentationVerification.checkTrust(jwtVerifiablePresentation)) {
+            throw new RuntimeException(); // TODO
         }
+
+        final VerifiableCredential verifiableCredential = verifiablePresentation.getVerifiableCredential();
+        Validation.validate(verifiableCredential);
+        if (!credentialVerification.checkTrust(verifiableCredential)) {
+            throw new RuntimeException(); // TODO
+        }
+
+        final CredentialSubject subject = verifiableCredential.getCredentialSubject();
+        final ClaimToken token = ClaimToken.Builder.newInstance().claims(subject.getClaims()).build();
+        return Result.success(token);
+
     }
 
     // From https://github.com/danubetech/verifiable-credentials-java/blob/main/src/main/java/com/danubetech/verifiablecredentials/jwt/JwtVerifiablePresentation.java
     // the release version uses a VC enum keyword, and the fix with the VP is not released yet.
     // Therefore, we use this code snipped as workaround
-    public static JwtVerifiablePresentation fromCompactSerialization(String compactSerialization) throws ParseException {
+    public static JwtVerifiablePresentation fromCompactSerialization(String compactSerialization) {
 
-        SignedJWT signedJWT = SignedJWT.parse(compactSerialization);
+        SignedJWT signedJWT = null;
+        JWTClaimsSet jwtPayload = null;
+        try {
+            signedJWT = SignedJWT.parse(compactSerialization);
+            jwtPayload = signedJWT.getJWTClaimsSet();
+        } catch (ParseException e) {
+            throw new JwtParseException("no valid JWT", e);
+        }
 
-        JWTClaimsSet jwtPayload = signedJWT.getJWTClaimsSet();
-        Map<String, Object> jsonObject = (Map<String, Object>) jwtPayload.getClaims().get(JwtKeywords.JWT_CLAIM_VP);
+        if (jwtPayload == null) {
+            throw new SsiException("no valid JWT");
+        }
+
+        Map<String, Object> jsonObject = new HashMap<>();
+
+        final Map<String, Object> claims = jwtPayload.getClaims();
+        if (claims.containsKey(JwtKeywords.JWT_CLAIM_VP)) {
+            final Object vp = claims.get(JwtKeywords.JWT_CLAIM_VP);
+            if (vp instanceof Map) {
+                jsonObject.putAll((Map<String, Object>) claims.get(JwtKeywords.JWT_CLAIM_VP));
+            }
+        }
+
         VerifiablePresentation payloadVerifiablePresentation = VerifiablePresentation.fromJsonObject(new LinkedHashMap<>(jsonObject));
 
         return new JwtVerifiablePresentation(jwtPayload, payloadVerifiablePresentation, signedJWT, compactSerialization);

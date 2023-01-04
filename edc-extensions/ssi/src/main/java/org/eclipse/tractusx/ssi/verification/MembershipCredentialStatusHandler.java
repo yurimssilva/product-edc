@@ -1,7 +1,6 @@
 package org.eclipse.tractusx.ssi.verification;
 
 import com.danubetech.verifiablecredentials.VerifiableCredential;
-import com.danubetech.verifiablecredentials.jwt.JwtVerifiableCredential;
 import org.eclipse.tractusx.ssi.credentials.CredentialType;
 
 public class MembershipCredentialStatusHandler implements VerifiableCredentialVerificationHandler {
