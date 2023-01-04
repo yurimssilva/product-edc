@@ -4,9 +4,8 @@ import com.danubetech.verifiablecredentials.jwt.JwtVerifiablePresentation;
 import com.nimbusds.jose.JOSEException;
 import org.eclipse.tractusx.ssi.resolver.Did;
 import org.eclipse.tractusx.ssi.resolver.DidPublicKeyResolver;
-import org.eclipse.tractusx.ssi.util.UriToDidConverter;
+import org.eclipse.tractusx.ssi.util.DidParser;
 
-import java.net.URI;
 import java.security.PublicKey;
 
 public class VerifiablePresentationSignatureHandler implements VerifiablePresentationVerificationHandler {
@@ -24,8 +23,8 @@ public class VerifiablePresentationSignatureHandler implements VerifiablePresent
 
     @Override
     public boolean checkTrust(JwtVerifiablePresentation presentation) {
-        final URI holderUri = presentation.getPayloadObject().getHolder();
-        final Did holderDid = UriToDidConverter.convert(holderUri);
+        final String subject = presentation.getPayload().getSubject(); // holder
+        final Did holderDid = DidParser.parse(subject); // TODO might be a URI, handle this. Maybe check for DID:Web URI
         final PublicKey key = didPublicKeyResolver.resolve(holderDid);
 
         try {

@@ -4,9 +4,9 @@ import org.eclipse.tractusx.ssi.resolver.Did;
 
 import java.net.URI;
 
-public class UriToDidConverter {
+public class DidParser {
 
-    public static Did convert(URI uri) {
+    public static Did parse(URI uri) {
         if (!uri.getScheme().equals("did"))
             throw new IllegalArgumentException("URI is not a DID");
 
@@ -16,5 +16,10 @@ public class UriToDidConverter {
         }
 
         return new Did(parts[1], parts[2]);
+    }
+
+    public static Did parse(String did) {
+        final URI uri = URI.create(did);
+        return parse(uri);
     }
 }
