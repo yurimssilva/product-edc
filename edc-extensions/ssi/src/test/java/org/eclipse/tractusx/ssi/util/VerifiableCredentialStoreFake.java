@@ -1,4 +1,4 @@
-package org.eclipse.tractusx.ssi.fakes;
+package org.eclipse.tractusx.ssi.util;
 
 import com.danubetech.verifiablecredentials.CredentialSubject;
 import com.danubetech.verifiablecredentials.VerifiableCredential;

@@ -1,4 +1,4 @@
-package org.eclipse.tractusx.ssi.fakes;
+package org.eclipse.tractusx.ssi.util;
 
 import jakarta.ws.rs.NotFoundException;
 import org.eclipse.tractusx.ssi.resolver.Did;
