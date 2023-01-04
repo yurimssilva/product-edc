@@ -4,7 +4,6 @@ import org.eclipse.tractusx.ssi.exception.DidParseException;
 import org.eclipse.tractusx.ssi.resolver.Did;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 
 public class DidParser {
 

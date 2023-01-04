@@ -22,13 +22,14 @@ public class VerifiablePresentationSignatureHandler implements VerifiablePresent
     }
 
     @Override
-    public boolean checkTrust(JwtVerifiablePresentation presentation) {
-        final String subject = presentation.getPayload().getSubject(); // holder
+    public boolean checkTrust(JwtVerifiablePresentation jwt) {
+
+        final String subject = jwt.getPayload().getSubject(); // holder
         final Did holderDid = DidParser.parse(subject); // TODO might be a URI, handle this. Maybe check for DID:Web URI
         final PublicKey key = didPublicKeyResolver.resolve(holderDid);
 
         try {
-            return presentation.verify_Ed25519_EdDSA(key.getEncoded());
+            return jwt.verify_Ed25519_EdDSA(key.getEncoded());
         } catch (JOSEException e) {
             throw new RuntimeException(e); // TODO
         }
