@@ -5,6 +5,7 @@ import com.danubetech.verifiablecredentials.VerifiableCredential;
 import org.eclipse.tractusx.ssi.store.VerifiableCredentialStore;
 
 import java.net.URI;
+import java.time.Instant;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -33,7 +34,7 @@ public class VerifiableCredentialStoreFake implements VerifiableCredentialStore 
                 .contexts(List.of(URI.create("https://www.w3.org/2018/credentials/v1"), URI.create("https://www.w3.org/2018/credentials/examples/v1")))
                 .types(List.of("MembershipCredential", "VerifiableCredential"))
                 .issuanceDate(new Date())
-                .expirationDate(new Date(2024, 1, 1))
+                .expirationDate(Date.from(Instant.now().plusSeconds(300 /* Five Minutes */)))
                 .issuer(URI.create(TestDidHandler.DID_TEST_ROOT.toString()))
                 .credentialSubject(credentialSubject)
                 .build();

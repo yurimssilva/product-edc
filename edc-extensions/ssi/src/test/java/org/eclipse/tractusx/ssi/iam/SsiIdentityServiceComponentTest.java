@@ -10,8 +10,8 @@ import org.eclipse.tractusx.ssi.fakes.TestDidHandler;
 import org.eclipse.tractusx.ssi.fakes.VerifiableCredentialStoreFake;
 import org.eclipse.tractusx.ssi.resolver.DidPublicKeyResolverHandler;
 import org.eclipse.tractusx.ssi.resolver.DidPublicKeyResolverImpl;
+import org.eclipse.tractusx.ssi.setting.SsiSettings;
 import org.eclipse.tractusx.ssi.verification.VerifiableCredentialVerificationImpl;
-import org.eclipse.tractusx.ssi.verification.VerifiablePresentationVerification;
 import org.eclipse.tractusx.ssi.verification.VerifiablePresentationVerificationImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,11 +29,12 @@ public class SsiIdentityServiceComponentTest {
     public void setup() {
         credentialStore = new VerifiableCredentialStoreFake();
 
+        final SsiSettings settings = new SsiSettings(TestDidHandler.DID_TEST_ROOT.toUri(), new byte[0], new byte[0]);
         final DidPublicKeyResolverHandler publicKeyHandler = new TestDidHandler();
         final DidPublicKeyResolverImpl publicKeyResolver = new DidPublicKeyResolverImpl();
         publicKeyResolver.registerHandler(publicKeyHandler);
 
-        final SerializedJwtPresentationFactory serializedJwtPresentationFactory = new SerializedJwtPresentationFactoryImpl();
+        final SerializedJwtPresentationFactory serializedJwtPresentationFactory = new SerializedJwtPresentationFactoryImpl(settings);
         ssiIdentityService = new SsiIdentityService(serializedJwtPresentationFactory, credentialStore,
                 VerifiableCredentialVerificationImpl.withAllHandlers(),
                 VerifiablePresentationVerificationImpl.withAllHandlers(publicKeyResolver));

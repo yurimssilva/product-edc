@@ -1,5 +1,6 @@
 package org.eclipse.tractusx.ssi.resolver;
 
+import java.net.URI;
 import java.util.Objects;
 
 public class Did {
@@ -18,6 +19,10 @@ public class Did {
 
     public String getMethodIdentifier() {
         return methodIdentifier;
+    }
+
+    public URI toUri() {
+        return URI.create(toString());
     }
 
     @Override

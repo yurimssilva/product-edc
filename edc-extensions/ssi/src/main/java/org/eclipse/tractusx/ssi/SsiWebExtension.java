@@ -33,7 +33,8 @@ public class SsiWebExtension implements ServiceExtension {
 
     public static final String EXTENSION_NAME = "SSI Web Extension Extension";
 
-    public static final String SETTING_DID_WEB_HOST = "edc.ssi.did.web.host";
+    public static final String SETTING_DID_DEFAULT = "did:null:connector";
+    public static final String SETTING_DID = "edc.ssi.did";
     public static final String SETTING_DID_KEY_PRIVATE = "edc.ssi.did.key.private";
     public static final String SETTING_DID_KEY_PRIVATE_ALIAS = "edc.ssi.did.key.private.alias";
     public static final String SETTING_DID_KEY_PUBLIC  ="edc.ssi.did.key.public";
@@ -53,7 +54,7 @@ public class SsiWebExtension implements ServiceExtension {
     public void initialize(ServiceExtensionContext context) {
         this.monitor = context.getMonitor();
 
-        final SsiSettingsFactory settingsFactory = new SsiSettingsFactoryImpl(vault, context);
+        final SsiSettingsFactory settingsFactory = new SsiSettingsFactoryImpl(monitor, vault, context);
         final SsiSettings settings = settingsFactory.createSettings();
     }
 }

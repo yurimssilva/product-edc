@@ -7,10 +7,17 @@ import com.danubetech.verifiablecredentials.jwt.ToJwtConverter;
 import com.nimbusds.jose.JOSEException;
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
+import org.eclipse.tractusx.ssi.setting.SsiSettings;
 
 import java.net.URI;
 
 public class SerializedJwtPresentationFactoryImpl implements SerializedJwtPresentationFactory {
+
+    private final SsiSettings settings;
+
+    public SerializedJwtPresentationFactoryImpl(SsiSettings settings) {
+        this.settings = settings;
+    }
 
     @Override
     public SerializedJwtPresentation createPresentation(VerifiableCredential credentials, String audience) {
@@ -19,12 +26,11 @@ public class SerializedJwtPresentationFactoryImpl implements SerializedJwtPresen
 
     private SerializedJwtPresentation createPresentationTokenForCredential(VerifiableCredential verifiableCredential, String audience) {
         try {
-            // TODO get private key
-            final byte[] privateKey = Hex.decodeHex("984b589e121040156838303f107e13150be4a80fc5088ccba0b0bdc9b1d89090de8777a28f8da1a74e7a13090ed974d879bf692d001cddee16e4cc9f84b60580".toCharArray());
+            final byte[] privateKey = settings.getDidPrivateKey();
 
             // TODO Maybe add more properties
             final VerifiablePresentation verifiablePresentation = VerifiablePresentation.builder()
-                    .holder(URI.create("http://localhost")) // TODO must be DID test, do this with config
+                    .holder(settings.getDid())
                     .verifiableCredential(verifiableCredential)
                     .build();
 
@@ -32,7 +38,7 @@ public class SerializedJwtPresentationFactoryImpl implements SerializedJwtPresen
             final String jwtSerialized = jwtPresentation.sign_Ed25519_EdDSA(privateKey);
 
             return new SerializedJwtPresentation(jwtSerialized);
-        } catch (DecoderException | JOSEException e) {
+        } catch (JOSEException e) {
             throw new RuntimeException(e); // TODO
         }
 

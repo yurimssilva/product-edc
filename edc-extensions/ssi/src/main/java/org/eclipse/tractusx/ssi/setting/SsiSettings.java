@@ -2,9 +2,11 @@ package org.eclipse.tractusx.ssi.setting;
 
 import lombok.Value;
 
+import java.net.URI;
+
 @Value
 public class SsiSettings {
-    String didWebHost;
-    String didPrivateKey;
-    String didPublicKey;
+    URI did;
+    byte[] didPrivateKey;
+    byte[] didPublicKey;
 }
