@@ -3,6 +3,7 @@ package org.eclipse.tractusx.ssi.util;
 import lombok.NonNull;
 import lombok.SneakyThrows;
 import org.bouncycastle.crypto.params.Ed25519PrivateKeyParameters;
+import org.bouncycastle.crypto.params.Ed25519PublicKeyParameters;
 import org.bouncycastle.util.encoders.Hex;
 import org.bouncycastle.util.io.pem.PemReader;
 
@@ -44,7 +45,10 @@ public class KeyResourceLoader {
             throw new IllegalArgumentException(PUBLIC_KEY + " not found!");
         }
 
-        String publicKeyBody = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8).split(" ")[1];
-        return publicKeyBody.getBytes();
+        final String publicKeyBody = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8).split(" ")[1];
+        final Ed25519PublicKeyParameters privateKey = new Ed25519PublicKeyParameters(publicKeyBody.getBytes(), 0);
+        final byte[] bytes = Hex.encode(privateKey.getEncoded());
+
+        return  bytes;
     }
 }
