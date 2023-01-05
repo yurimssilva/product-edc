@@ -20,5 +20,5 @@ public interface DidPublicKeyResolverHandler {
 
     String getMethod();
 
-    PublicKey resolve(Did did);
+    byte[] resolve(Did did);
 }

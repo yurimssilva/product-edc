@@ -26,10 +26,10 @@ public class VerifiablePresentationSignatureHandler implements VerifiablePresent
 
         final String subject = jwt.getPayload().getSubject(); // holder
         final Did holderDid = DidParser.parse(subject); // TODO might be a URI, handle this. Maybe check for DID:Web URI
-        final PublicKey key = didPublicKeyResolver.resolve(holderDid);
+        final byte[] key = didPublicKeyResolver.resolve(holderDid);
 
         try {
-            return jwt.verify_Ed25519_EdDSA(key.getEncoded());
+            return jwt.verify_Ed25519_EdDSA(key);
         } catch (JOSEException e) {
             throw new RuntimeException(e); // TODO
         }

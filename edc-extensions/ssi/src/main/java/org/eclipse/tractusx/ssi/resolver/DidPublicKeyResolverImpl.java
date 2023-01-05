@@ -11,7 +11,7 @@ public class DidPublicKeyResolverImpl implements DidPublicKeyResolver {
     private List<DidPublicKeyResolverHandler> handlers = new ArrayList<>();
 
     @Override
-    public PublicKey resolve(Did did) {
+    public byte[] resolve(Did did) {
         return handlers.stream()
                 .filter(h -> h.getMethod().equalsIgnoreCase(did.getMethod()))
                 .map(h -> h.resolve(did))

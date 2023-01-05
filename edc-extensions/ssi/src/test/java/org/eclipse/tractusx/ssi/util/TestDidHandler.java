@@ -13,7 +13,7 @@ public class TestDidHandler implements DidPublicKeyResolverHandler {
     private static final String METHOD = "test";
     public static final Did DID_TEST_OPERATOR = new Did(METHOD, "operator");
 
-    private final Map<Did, PublicKey> didMap = new LinkedHashMap<>();
+    private final Map<Did, byte[]> didMap = new LinkedHashMap<>();
 
     public TestDidHandler() {
         initializeDids();
@@ -25,7 +25,7 @@ public class TestDidHandler implements DidPublicKeyResolverHandler {
     }
 
     @Override
-    public PublicKey resolve(Did did) {
+    public byte[] resolve(Did did) {
         if (didMap.containsKey(did))
             return didMap.get(did);
 
@@ -34,7 +34,7 @@ public class TestDidHandler implements DidPublicKeyResolverHandler {
 
 
     private void initializeDids() {
-        didMap.put(DID_TEST_OPERATOR, null);
+        didMap.put(DID_TEST_OPERATOR, KeyResourceLoader.readPublicKey());
     }
 
 }
