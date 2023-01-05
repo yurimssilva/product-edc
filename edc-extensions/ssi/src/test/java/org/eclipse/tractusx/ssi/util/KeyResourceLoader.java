@@ -3,12 +3,15 @@ package org.eclipse.tractusx.ssi.util;
 import lombok.NonNull;
 import lombok.SneakyThrows;
 import org.bouncycastle.crypto.params.Ed25519PrivateKeyParameters;
+import org.bouncycastle.crypto.params.Ed25519PublicKeyParameters;
 import org.bouncycastle.util.encoders.Hex;
+import org.bouncycastle.util.io.pem.PemObject;
 import org.bouncycastle.util.io.pem.PemReader;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.security.KeyFactory;
 import java.util.Base64;
 
 public class KeyResourceLoader {
@@ -45,6 +48,12 @@ public class KeyResourceLoader {
         }
 
         String publicKeyBody = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8).split(" ")[1];
-        return publicKeyBody.getBytes();
+        byte[] encoded = Base64.getDecoder().decode(publicKeyBody);
+        Ed25519PublicKeyParameters publicKey = new Ed25519PublicKeyParameters(encoded, 0);
+        byte[] bytes = publicKey.getEncoded();
+        if(bytes.length != 32){
+            throw new Exception("Invalid PK Length should be 32");
+        }
+        return bytes;
     }
 }
