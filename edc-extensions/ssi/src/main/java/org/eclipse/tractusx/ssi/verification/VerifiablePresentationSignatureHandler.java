@@ -6,8 +6,6 @@ import org.eclipse.tractusx.ssi.resolver.Did;
 import org.eclipse.tractusx.ssi.resolver.DidPublicKeyResolver;
 import org.eclipse.tractusx.ssi.util.DidParser;
 
-import java.security.PublicKey;
-
 public class VerifiablePresentationSignatureHandler implements VerifiablePresentationVerificationHandler {
 
     private final DidPublicKeyResolver didPublicKeyResolver;
