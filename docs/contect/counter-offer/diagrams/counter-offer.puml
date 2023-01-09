@@ -1,0 +1,10 @@
+@startuml
+
+
+!define BobColor EFEFEF
+!define AliceColor ABABAB
+
+participant Bob<<Connector>> #BobColor
+participant Alice<<Connector>> #AliceColor
+
+@enduml
