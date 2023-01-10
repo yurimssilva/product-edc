@@ -6,6 +6,7 @@ import org.eclipse.edc.spi.iam.TokenRepresentation;
 import org.eclipse.edc.spi.result.Result;
 import org.eclipse.tractusx.ssi.credentials.SerializedJwtPresentationFactory;
 import org.eclipse.tractusx.ssi.credentials.SerializedJwtPresentationFactoryImpl;
+import org.eclipse.tractusx.ssi.jwt.JwtUtils;
 import org.eclipse.tractusx.ssi.util.KeyResourceLoader;
 import org.eclipse.tractusx.ssi.util.TestDidHandler;
 import org.eclipse.tractusx.ssi.util.VerifiableCredentialStoreFake;
@@ -30,12 +31,13 @@ public class SsiIdentityServiceComponentTest {
     public void setup() {
         final byte[] privateKey = KeyResourceLoader.readPrivateKey();
         final byte[] publicKey = KeyResourceLoader.readPublicKey();
-        final SsiSettings settings = new SsiSettings(TestDidHandler.DID_TEST_OPERATOR, TestDidHandler.DID_TEST_OPERATOR, privateKey, publicKey);
+        final SsiSettings settings = new SsiSettings(TestDidHandler.DID_TEST_OPERATOR, TestDidHandler.DID_TEST_OPERATOR, privateKey);
         final DidPublicKeyResolverHandler publicKeyHandler = new TestDidHandler();
         final DidPublicKeyResolverImpl publicKeyResolver = new DidPublicKeyResolverImpl();
         publicKeyResolver.registerHandler(publicKeyHandler);
+        final JwtUtils jwtUtils = new JwtUtils();
 
-        final SerializedJwtPresentationFactory serializedJwtPresentationFactory = new SerializedJwtPresentationFactoryImpl(settings);
+        final SerializedJwtPresentationFactory serializedJwtPresentationFactory = new SerializedJwtPresentationFactoryImpl(settings, jwtUtils);
         credentialStore = new VerifiableCredentialStoreFake(settings);
         ssiIdentityService = new SsiIdentityService(serializedJwtPresentationFactory, credentialStore,
                 VerifiableCredentialVerificationImpl.withAllHandlers(settings),

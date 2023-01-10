@@ -2,7 +2,8 @@ package org.eclipse.tractusx.ssi.credentials;
 
 
 import com.danubetech.verifiablecredentials.VerifiableCredential;
+import com.nimbusds.jwt.SignedJWT;
 
 public interface SerializedJwtPresentationFactory {
-    SerializedJwtPresentation createPresentation(VerifiableCredential credentials, String audience);
+    SignedJWT createPresentation(VerifiableCredential credentials, String audience);
 }

@@ -11,6 +11,7 @@ public class DidWebDocumentController {
 
     @GET
     public String request() {
-        return ""; // TODO
+        String didDoc = getClass().getResource("webdid/did-document.json").getFile();
+        return didDoc; // TODO
     }
 }

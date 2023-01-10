@@ -30,15 +30,14 @@ public class JwtUtils {
    * @param issuer     the value of the token issuer claim.
    * @param subject    the value of the token subject claim. For Distributed Identity, this value is identical to the issuer claim.
    * @param audience   the value of the token audience claim, e.g. the IDS Webhook address.
-   * @param clock      clock used to get current time.
    * @return a {@code SignedJWT} that is signed with the private key and contains all claims listed.
    */
-
-  public SignedJWT create(ECPrivateKey privateKey, String issuer, String subject, String audience) {
+  public SignedJWT create(ECPrivateKey privateKey, String issuer, String subject, String audience, String vpClaim) {
     var claimsSet = new JWTClaimsSet.Builder()
             .issuer(issuer)
             .subject(subject)
             .audience(audience)
+            .claim("vp", vpClaim)
             .expirationTime(new Date(new Date().getTime() + 60 * 1000))
             .jwtID(UUID.randomUUID().toString())
             .build();

@@ -50,8 +50,8 @@ public class SsiIdentityService implements IdentityService {
     public Result<TokenRepresentation> obtainClientCredentials(TokenParameters tokenParameters) {
         final String audience = tokenParameters.getAudience(); // IDS URL of another connector
         final VerifiableCredential membershipCredential = credentialStore.GetMembershipCredential();
-        final SerializedJwtPresentation membershipPresentation = presentationFactory.createPresentation(membershipCredential, audience);
-        final TokenRepresentation tokenRepresentation = TokenRepresentation.Builder.newInstance().token(membershipPresentation.getValue()).build();
+        final SignedJWT membershipPresentation = presentationFactory.createPresentation(membershipCredential, audience);
+        final TokenRepresentation tokenRepresentation = TokenRepresentation.Builder.newInstance().token(membershipPresentation.getParsedString()).build();
 
         return Result.success(tokenRepresentation);
     }
