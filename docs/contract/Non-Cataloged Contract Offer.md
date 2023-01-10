@@ -33,7 +33,7 @@ There are two different situations in which a **Contract Offer** occurs:
 There exists four different categories of contract offers. A contract offer may belong to none or multiple of the
 categories described below.
 
-The **Initial Contract Offer** is the first contract offer of each contract negotiation. It may be sent out by the 
+The **Initial Contract Offer** is the first contract offer of each contract negotiation. It may be sent out by the
 **Data Consumer** or **Data Provider**.
 
 The **Counter Contract Offer**, is send out _during_ a Contract Negotiation. It must be different than the previous
@@ -87,16 +87,16 @@ The roles are as follows:
 - Bob is the **Data Consumer**
 - Initial Contract Offer send out by Alice
 
-#### (New) 3. Bob intents to alert his suppliers in case of Quality Alerts
+#### (New) 3. Bob wants to be informed about Quality Alerts of his suppliers
 
-Bob wants to alert his suppliers in case of Quality Alerts. But not all suppliers have a Contract Offer for Quality Alerts,
-Bob can accept. So Bob sends out a different Contract Offer to Alice.
+Bob wants to be alert by suppliers in case of Quality Alerts. But not all suppliers have a Contract Offer for Quality
+Alerts, Bob can accept. So Bob sends out a different Contract Offer to Alice.
 
 The roles are as follows:
 
 - Contract Offer is non-cataloged
-- Alice is the **Data Consumer**
-- Bob is the **Data Provider**
+- Alice is the **Data Provider**
+- Bob is the **Data Consumer**
 - Initial Contract Offer send out by Bob
 
 > Please note: This is not a Counter Offer, as defined in the Terminology chapter.
@@ -109,11 +109,11 @@ In these examples the roles are split as follows.
 |:--------|:---------------|:--------------|:--------------|:------------------------------|
 | 1       | Cataloged      | Alice         | Bob           | Bob                           |
 | 2       | Non-Cataloged  | Alice         | Bob           | Alice                         |
-| 3       | Non-Cataloged  | Bob           | Alice         | Bob                           |
+| 3       | Non-Cataloged  | Alice         | Bob           | Bob                           |
 
 > Please note: The fourth case (Cataloged, with Alice as Data Consumer) is not possible within the current EDC. As this
 > case plays no role for Non-Cataloged Contract Offers, it will be skipped. The current uses of this example in
-> the EDC ( also called Data Push Scenarios) are technically possible from a transfer point of view, but cannot be
+> the EDC (also called Data Push Scenarios) are technically possible from a transfer point of view, but cannot be
 > reflected in the Contract between the two connectors.
 
 ## Conceptual
@@ -139,7 +139,7 @@ One party should identify another party using a non-forgeable, trusted piece of 
 prove its identity.
 
 **Is the connector URL a piece of information like this?** The answer is always no. The connector URL can be configured
-by any person, that runs a connector. This is nether a trusted, nor a non-forgeable nor a part of any identity token.
+by any person, that runs a connector. This is nether a trusted, nor a non-forgeable, nor a part of any identity token.
 In short: A party could get URL, run a connector behind it, negotiation a contract with a valid CX/DAPS identity,
 transfer some data, and unregisters at the URL. So with which party was the contract concluded? In case the data becomes
 public, who breached the contract? Impossible to know.
