@@ -8,5 +8,4 @@ public class SsiSettings {
     Did didDataspaceOperator;
     Did didConnector;
     byte[] didPrivateKey;
-    byte[] didPublicKey;
 }

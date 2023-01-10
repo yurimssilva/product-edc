@@ -30,7 +30,11 @@ public class SerializedJwtPresentationFactoryImpl implements SerializedJwtPresen
                     .verifiableCredential(verifiableCredential)
                     .build();
 
+            final String json = verifiablePresentation.toJson();
+
             final JwtVerifiablePresentation jwtPresentation = ToJwtConverter.toJwtVerifiablePresentation(verifiablePresentation, audience);
+
+
             final String jwtSerialized = jwtPresentation.sign_Ed25519_EdDSA(privateKey);
 
             return new SerializedJwtPresentation(jwtSerialized);

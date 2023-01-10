@@ -38,8 +38,6 @@ public class SsiWebExtension implements ServiceExtension {
     public static final String SETTING_DID_OPERATOR = "edc.ssi.did.operator";
     public static final String SETTING_DID_KEY_PRIVATE = "edc.ssi.did.key.private";
     public static final String SETTING_DID_KEY_PRIVATE_ALIAS = "edc.ssi.did.key.private.alias";
-    public static final String SETTING_DID_KEY_PUBLIC  ="edc.ssi.did.key.public";
-    public static final String SETTING_DID_KEY_PUBLIC_ALIAS  ="edc.ssi.did.key.public.alias";
 
     private Monitor monitor;
 
