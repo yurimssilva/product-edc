@@ -1,7 +1,5 @@
 package org.eclipse.tractusx.ssi.jwt;
 
-
-import com.nimbusds.jose.Algorithm;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.JWSHeader;
@@ -11,14 +9,10 @@ import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 import com.nimbusds.jwt.proc.BadJWTException;
 import com.nimbusds.jwt.proc.DefaultJWTClaimsVerifier;
-import org.eclipse.edc.spi.result.Result;
 
 import java.security.interfaces.ECPrivateKey;
 import java.security.interfaces.ECPublicKey;
 import java.text.ParseException;
-import java.time.Clock;
-import java.time.temporal.ChronoUnit;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.Set;
 import java.util.UUID;
@@ -32,7 +26,7 @@ public class JwtUtils {
    * Creates a signed JWT {@link SignedJWT} that contains a set of claims and an issuer. Although all private key types are possible, in the context of Distributed Identity
    * using an Elliptic Curve key ({@code P-256}) is advisable.
    *
-   * @param privateKey A Private Key represented as {@link PrivateKeyWrapper}.
+   * @param privateKey A Private Key
    * @param issuer     the value of the token issuer claim.
    * @param subject    the value of the token subject claim. For Distributed Identity, this value is identical to the issuer claim.
    * @param audience   the value of the token audience claim, e.g. the IDS Webhook address.
@@ -52,19 +46,14 @@ public class JwtUtils {
     ECDSASigner signer = null;
     try {
       signer = new ECDSASigner(privateKey);
-      var algorithm = signer.supportedJWSAlgorithms().contains(JWSAlgorithm.ES256) ?
-              JWSAlgorithm.ES256 :
-              signer.supportedJWSAlgorithms().stream().min(Comparator.comparing(Algorithm::getRequirement))
-                      .orElseThrow(() -> new Exception("No recommended JWS Algorithms for Private Key Signer"));
-      //prefer ES256 if available, otherwise use the "next best"
-
+      if(!signer.supportedJWSAlgorithms().contains(JWSAlgorithm.ES256)){
+        throw new RuntimeException("Invalid Signing Algorithm");
+      }
+      var algorithm = JWSAlgorithm.ES256;
       var header = new JWSHeader(algorithm);
-
       var vc = new SignedJWT(header, claimsSet);
       vc.sign(signer);
       return vc;
-    } catch (JOSEException e) {
-      throw new RuntimeException(e);
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
@@ -74,7 +63,7 @@ public class JwtUtils {
    * Verifies a VerifiableCredential using the issuer's public key
    *
    * @param jwt       a {@link SignedJWT} that was sent by the claiming party.
-   * @param publicKey The claiming party's public key, passed as a {@link PublicKeyWrapper}
+   * @param publicKey The claiming party's public key
    * @param audience  The intended audience
    * @return true if verified, false otherwise
    */

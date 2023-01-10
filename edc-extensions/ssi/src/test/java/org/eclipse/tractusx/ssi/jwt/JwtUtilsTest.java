@@ -1,11 +1,9 @@
 package org.eclipse.tractusx.ssi.jwt;
 
 import com.nimbusds.jwt.SignedJWT;
-import jakarta.validation.constraints.AssertTrue;
 import lombok.SneakyThrows;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -14,7 +12,6 @@ import java.security.interfaces.ECPrivateKey;
 import java.security.interfaces.ECPublicKey;
 import java.security.spec.ECGenParameterSpec;
 
-import static org.junit.jupiter.api.Assertions.fail;
 
 public class JwtUtilsTest {
 
@@ -22,22 +19,17 @@ public class JwtUtilsTest {
   ECPublicKey publicKey;
   JwtUtils jwtUtils;
 
+  @SneakyThrows
   @BeforeEach
   public void setUp(){
-    // Generate Keys
+    // Add BC as Provider
     Security.addProvider(new BouncyCastleProvider());
+    // Generate Keypair
     ECGenParameterSpec ecGenSpec = new ECGenParameterSpec("secp256r1");
     KeyPairGenerator keyPairGenerator = null;
-    try {
-      keyPairGenerator = KeyPairGenerator.getInstance("ECDSA", "BC");
-      keyPairGenerator.initialize(ecGenSpec, new SecureRandom());
-    } catch (NoSuchAlgorithmException e) {
-      throw new RuntimeException(e);
-    } catch (NoSuchProviderException e) {
-      throw new RuntimeException(e);
-    } catch (InvalidAlgorithmParameterException e) {
-      throw new RuntimeException(e);
-    }
+    keyPairGenerator = KeyPairGenerator.getInstance("ECDSA", "BC");
+    keyPairGenerator.initialize(ecGenSpec, new SecureRandom());
+
     java.security.KeyPair pair = keyPairGenerator.generateKeyPair();
     privateKey = (ECPrivateKey) pair.getPrivate();
     publicKey = (ECPublicKey) pair.getPublic();
@@ -46,18 +38,16 @@ public class JwtUtilsTest {
 
   @Test
   @SneakyThrows
-  public void testJwtCreation() {
-    //given
+  public void testJwtCreationValidation() {
+    // given
     boolean result = false;
-    //when
-    try{
-      SignedJWT jwt = jwtUtils.create(privateKey, "did:web:someurl/wellknown" ,"subject", "did:web:someaudience/wellknown");
-      result = jwtUtils.verify(jwt, this.publicKey, "did:web:someaudience/wellknown");
-      Assertions.assertTrue(result);
-    } catch (Exception e){
-      fail();
-    }
-
+    String issuer = "did:web:someurl/wellknown";
+    String subject = "subject";
+    String audience = "did:web:someaudience/wellknown";
+    // when
+    SignedJWT jwt = jwtUtils.create(privateKey, issuer,subject, audience);
+    result = jwtUtils.verify(jwt, this.publicKey, audience);
+    // then
+    Assertions.assertTrue(result);
   }
-
 }
