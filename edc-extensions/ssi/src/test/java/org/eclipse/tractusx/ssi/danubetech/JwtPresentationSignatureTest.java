@@ -24,7 +24,7 @@ public class JwtPresentationSignatureTest {
     public void testSignature() {
         final byte[] privateKey = KeyResourceLoader.readPrivateKey();
         final byte[] publicKey = KeyResourceLoader.readPublicKey();
-        final SsiSettings settings = new SsiSettings(TestDidHandler.DID_TEST_OPERATOR, TestDidHandler.DID_TEST_OPERATOR, privateKey, publicKey);
+        final SsiSettings settings = new SsiSettings(TestDidHandler.DID_TEST_OPERATOR, TestDidHandler.DID_TEST_OPERATOR, privateKey);
         final VerifiableCredentialStoreFake store = new VerifiableCredentialStoreFake(settings);
 
         final VerifiableCredential credential = store.GetMembershipCredential();

@@ -1,8 +1,9 @@
 package org.eclipse.tractusx.ssi.verification;
 
 import com.danubetech.verifiablecredentials.jwt.JwtVerifiablePresentation;
+import com.nimbusds.jwt.SignedJWT;
 
 public interface VerifiablePresentationVerificationHandler {
-    boolean canHandle(JwtVerifiablePresentation presentation);
-    boolean checkTrust(JwtVerifiablePresentation presentation);
+    boolean canHandle(SignedJWT presentation);
+    boolean checkTrust(SignedJWT presentation);
 }

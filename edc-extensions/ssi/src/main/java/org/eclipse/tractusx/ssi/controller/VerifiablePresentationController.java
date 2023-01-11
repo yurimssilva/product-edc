@@ -1,6 +1,7 @@
 package org.eclipse.tractusx.ssi.controller;
 
 import com.danubetech.verifiablecredentials.VerifiableCredential;
+import com.nimbusds.jwt.SignedJWT;
 import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
@@ -36,8 +37,8 @@ public class VerifiablePresentationController {
         switch (requestedCredentialType) {
             case "MembershipCredential": // TODO Magic string
                 final VerifiableCredential membershipCredential = credentialStore.GetMembershipCredential();
-                final SerializedJwtPresentation membershipPresentation = presentationFactory.createPresentation(membershipCredential, audience);
-                return membershipPresentation.getValue();
+                final SignedJWT membershipPresentation = presentationFactory.createPresentation(membershipCredential, audience);
+                return membershipPresentation.getParsedString();
             default:
                 throw new BadRequestException();
         }

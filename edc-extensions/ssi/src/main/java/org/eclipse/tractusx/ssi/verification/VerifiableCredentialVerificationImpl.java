@@ -25,6 +25,12 @@ public class VerifiableCredentialVerificationImpl implements VerifiableCredentia
                 .allMatch(h -> h.checkTrust(credential));
     }
 
+    @Override
+    public boolean validate(VerifiableCredential credential) {
+        //TODO
+        return true;
+    }
+
     public void registerHandler(VerifiableCredentialVerificationHandler handler) {
         this.handlers.add(handler);
     }

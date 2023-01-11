@@ -16,4 +16,3 @@ Generate ES256 Private and PublicKey
 openssl ecparam -name prime256v1 -genkey -noout -out ssi-private-key.pem
 openssl ec -in ssi-private-key.pem -pubout -out ssi-public-key.pem
 ```
-

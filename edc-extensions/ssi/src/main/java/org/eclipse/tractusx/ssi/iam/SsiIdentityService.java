@@ -58,7 +58,34 @@ public class SsiIdentityService implements IdentityService {
 
     @Override
     public Result<ClaimToken> verifyJwtToken(TokenRepresentation tokenRepresentation, String audience) {
-        final JwtVerifiablePresentation jwtVerifiablePresentation = fromCompactSerialization(tokenRepresentation.getToken());
+        try {
+            String token = tokenRepresentation.getToken();
+            SignedJWT jwt = SignedJWT.parse(token);
+            if(!presentationVerification.verifyJwtPresentation(jwt)){
+                return Result.failure(token);
+            }
+            if(!presentationVerification.checkTrust(jwt)){
+                return Result.failure(token);
+            }
+
+            final VerifiableCredential verifiableCredential = VerifiableCredential.fromJson(jwt.getPayload().toString());
+
+            if(credentialVerification.validate(verifiableCredential)){
+
+            }
+
+            if(credentialVerification.checkTrust(verifiableCredential)){
+
+            }
+
+            final CredentialSubject subject = verifiableCredential.getCredentialSubject();
+            final ClaimToken claimToken = ClaimToken.Builder.newInstance().claims(subject.getClaims()).build();
+            return Result.success(claimToken);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+        /**
+        //final JwtVerifiablePresentation jwtVerifiablePresentation = fromCompactSerialization();
 
         final VerifiablePresentation verifiablePresentation = jwtVerifiablePresentation.getPayloadObject();
         Validation.validate(verifiablePresentation);
@@ -76,6 +103,7 @@ public class SsiIdentityService implements IdentityService {
         final CredentialSubject subject = verifiableCredential.getCredentialSubject();
         final ClaimToken token = ClaimToken.Builder.newInstance().claims(subject.getClaims()).build();
         return Result.success(token);
+        **/
 
     }
 
