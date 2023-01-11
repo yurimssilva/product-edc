@@ -1,6 +1,9 @@
 # Non-Cataloged Contract Offer
 
-## Terminology
+## Used Terminology
+
+As there is no terminology (yet) for all scenarios that might occur in the context of Contract Offers, this document
+will use the terminology below. Please note that this is not an official terminology.
 
 ### Contract Agreement
 
@@ -33,17 +36,17 @@ There are two different situations in which a **Contract Offer** occurs:
 There exists four different categories of contract offers. A contract offer may belong to none or multiple of the
 categories described below.
 
+The **Cataloged Contract Offer** has identical terms and conditions than Contact Offers from the **Contract Offer
+Catalog**. Currently, all Contact Offers are Cataloged Contract Offers.
+
+The **Non-Cataloged Contract Offer** has different terms and conditions than Contract Offers from the **Contract Offer
+Catalog**. The Concept of Non-Cataloged Contract Offers is new and introduced by this document.
+
 The **Initial Contract Offer** is the first contract offer of each contract negotiation. It may be sent out by the
-**Data Consumer** or **Data Provider**.
+**Data Consumer** or **Data Provider** (as Non-Cataloged Contract Offer).
 
-The **Counter Contract Offer**, is send out _during_ a Contract Negotiation. It must be different than the previous
-exchanged Contract Offer. The TXDC does not support Counter Offers.
-
-The **Cataloged Contract Offer** has identical terms and conditions as any Contact Offer from the **Contract Offer
-Catalog**.
-
-The **Non-Cataloged Contract Offer** has different terms and conditions than all
-Contract Offer from the **Contract Offer Catalog**.
+The **Counter Contract Offer**, is sent out _during_ a Contract Negotiation. It must be different from the previous
+exchanged Contract Offer. At the time of writing the TXDC does not support Counter Offers.
 
 ### Contract Offer Catalog
 
@@ -62,7 +65,7 @@ called **Counter Contract Offer**. The first Contract Offer can never be a **Cou
 
 ### Examples
 
-#### (Old) 1. Alice offers data as part of a catalog
+#### (Current) 1. Alice offers data as part of a catalog
 
 This is the easiest example. Alice has a **Contract Offer Catalog**. Bob can pick an offer, and if a
 contract concludes, consume the data behind it.
@@ -118,7 +121,7 @@ In these examples the roles are split as follows.
 
 ## Conceptual
 
-## How identity a connector?
+## How identify a connector?
 
 At the time of writing a connector is identified by its IDS Callback URL (e.g. https://example.com/api/v1/ids/data).
 This identification is only stored in the Contract Negotiation, but never in the Contract Offer or -Agreement itself (
@@ -170,9 +173,8 @@ all pieces, that would have to change in the code and suggests how to change the
 At the time of writing the Contract Offer only has a single property for each connector to identify them. The `provider`
 URI and the `consumer` URI. But they are always set to some hard coded dummy value.
 
-For **Non-Cataloged Contract Offers** it will be important to have a clear distinction between **Data Consumer** and *
-*Data
-Provider**.
+For **Non-Cataloged Contract Offers** it will be important to have a clear distinction between **Data Consumer**
+and **Data Provider**.
 
 ### Contract Agreement
 
@@ -238,8 +240,8 @@ A new API Call to accept pending Contract Offers must be added.
 
 ##### Addition Improvement for Usability
 
-Using the proposed Model changes it would still be transparent whether a Contract Offer is Cataloged or Non-Cataloged.
-Hence, the user cannot tell without checking the catalog, whether its mandatory to manually approve/reject a Contract
+Using the proposed Model changes it wouldn't be transparent whether a Contract Offer is Cataloged or Non-Cataloged.
+Hence, the user cannot tell without checking the catalog, whether its mandatory to manually approve/reject a pending Contract
 Offer, or not.
 
 It would help the user, if he could use a filter in the (Data) Management API for Non-Cataloged Contract Offers.
