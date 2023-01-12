@@ -1,19 +1,18 @@
 package org.eclipse.tractusx.ssi.util;
 
 import jakarta.ws.rs.NotFoundException;
-import org.eclipse.tractusx.ssi.resolver.Did;
-import org.eclipse.tractusx.ssi.resolver.DidPublicKeyResolverHandler;
+import org.eclipse.tractusx.ssi.extensions.core.resolver.DidImpl;
+import org.eclipse.tractusx.ssi.spi.did.resolver.DidPublicKeyResolverHandler;
 
-import java.security.PublicKey;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class TestDidHandler implements DidPublicKeyResolverHandler {
 
     private static final String METHOD = "test";
-    public static final Did DID_TEST_OPERATOR = new Did(METHOD, "operator");
+    public static final DidImpl DID_TEST_OPERATOR = new DidImpl(METHOD, "operator");
 
-    private final Map<Did, byte[]> didMap = new LinkedHashMap<>();
+    private final Map<DidImpl, byte[]> didMap = new LinkedHashMap<>();
 
     public TestDidHandler() {
         initializeDids();
@@ -25,7 +24,7 @@ public class TestDidHandler implements DidPublicKeyResolverHandler {
     }
 
     @Override
-    public byte[] resolve(Did did) {
+    public byte[] resolve(DidImpl did) {
         if (didMap.containsKey(did))
             return didMap.get(did);
 

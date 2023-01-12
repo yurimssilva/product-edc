@@ -2,8 +2,8 @@ package org.eclipse.tractusx.ssi.util;
 
 import com.danubetech.verifiablecredentials.CredentialSubject;
 import com.danubetech.verifiablecredentials.VerifiableCredential;
-import org.eclipse.tractusx.ssi.setting.SsiSettings;
-import org.eclipse.tractusx.ssi.store.VerifiableCredentialStore;
+import org.eclipse.tractusx.ssi.extensions.core.setting.SsiSettings;
+import org.eclipse.tractusx.ssi.spi.wallet.VerifiableCredentialWallet;
 
 import java.net.URI;
 import java.time.Instant;
@@ -12,7 +12,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class VerifiableCredentialStoreFake implements VerifiableCredentialStore {
+public class VerifiableCredentialStoreFake implements VerifiableCredentialWallet {
 
     private VerifiableCredential membershipCredential;
 

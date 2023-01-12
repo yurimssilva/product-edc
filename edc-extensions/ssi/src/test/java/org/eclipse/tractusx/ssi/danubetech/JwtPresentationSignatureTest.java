@@ -5,15 +5,13 @@ import com.danubetech.verifiablecredentials.VerifiablePresentation;
 import com.danubetech.verifiablecredentials.jwt.JwtVerifiablePresentation;
 import com.danubetech.verifiablecredentials.jwt.ToJwtConverter;
 import lombok.SneakyThrows;
-import org.eclipse.tractusx.ssi.iam.SsiIdentityService;
-import org.eclipse.tractusx.ssi.setting.SsiSettings;
+import org.eclipse.tractusx.ssi.extensions.core.iam.SsiIdentityService;
+import org.eclipse.tractusx.ssi.extensions.core.setting.SsiSettings;
 import org.eclipse.tractusx.ssi.util.KeyResourceLoader;
 import org.eclipse.tractusx.ssi.util.TestDidHandler;
 import org.eclipse.tractusx.ssi.util.VerifiableCredentialStoreFake;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import java.net.URI;
 
 public class JwtPresentationSignatureTest {
 

@@ -3,6 +3,7 @@ package org.eclipse.tractusx.ssi.jwt;
 import com.nimbusds.jwt.SignedJWT;
 import lombok.SneakyThrows;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.eclipse.tractusx.ssi.extensions.core.jwt.JwtUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
