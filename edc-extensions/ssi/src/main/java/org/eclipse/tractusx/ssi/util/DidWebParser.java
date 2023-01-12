@@ -19,11 +19,11 @@ public class DidWebParser {
         }
 
         if(didParts[0].equals("did")){
-            throw new DidParseException("DID does not contain of three parts split by" + did + "'");
+            throw new DidParseException("DID does not contain the correct did identifier" + did + "'");
         }
 
         if(didParts[1].equals("web")){
-            throw new DidParseException("DID does not contain of three parts split by" + did + "'");
+            throw new DidParseException("DID does not contain the correct method name" + did + "'");
         }
 
         if(didParts.length > 3){
