@@ -3,6 +3,7 @@ package org.eclipse.tractusx.ssi.jwt;
 import com.nimbusds.jwt.SignedJWT;
 import lombok.SneakyThrows;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.eclipse.tractusx.ssi.extensions.core.credentials.SerializedVerifiablePresentation;
 import org.eclipse.tractusx.ssi.extensions.core.jwt.SignedJwtFactory;
 import org.eclipse.tractusx.ssi.extensions.core.jwt.SignedJwtVerifier;
 import org.eclipse.tractusx.ssi.extensions.core.resolver.key.SigningKeyResolver;
@@ -56,7 +57,7 @@ public class JwtSignerTest {
         boolean result = false;
         String audience = "did:web:someaudience/wellknown";
         // when
-        VerifiablePresentation verifiablePresentation = null;
+        SerializedVerifiablePresentation verifiablePresentation = null;
         SignedJWT jwt = signedJwtFactory.create(audience, verifiablePresentation);
         result = signedJwtVerifier.verify(jwt);
         // then

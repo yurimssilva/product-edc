@@ -1,7 +1,10 @@
 package org.eclipse.tractusx.ssi.spi.verifiable.credential;
 
+import lombok.Value;
+
 import java.util.Map;
 
-public interface VerifiableCredentialSubject {
-    Map<String, Object> getClaims();
+@Value
+public class VerifiableCredentialSubject {
+    Map<String, Object> claims;
 }

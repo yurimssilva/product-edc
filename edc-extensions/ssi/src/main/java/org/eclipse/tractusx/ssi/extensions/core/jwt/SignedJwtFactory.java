@@ -5,10 +5,10 @@ import com.nimbusds.jose.JWSHeader;
 import com.nimbusds.jose.crypto.ECDSASigner;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
+import org.eclipse.tractusx.ssi.extensions.core.credentials.SerializedVerifiablePresentation;
 import org.eclipse.tractusx.ssi.extensions.core.exception.SsiSettingException;
 import org.eclipse.tractusx.ssi.extensions.core.resolver.key.SigningKeyResolver;
 import org.eclipse.tractusx.ssi.extensions.core.setting.SsiSettings;
-import org.eclipse.tractusx.ssi.spi.verifiable.presentation.VerifiablePresentation;
 import org.jetbrains.annotations.NotNull;
 
 import java.security.PrivateKey;
@@ -41,7 +41,7 @@ public class SignedJwtFactory {
      * @param audience the value of the token audience claim, e.g. the IDS Webhook address.
      * @return a {@code SignedJWT} that is signed with the private key and contains all claims listed.
      */
-    public SignedJWT create(String audience, VerifiablePresentation verifiablePresentation) {
+    public SignedJWT create(String audience, SerializedVerifiablePresentation serializedPresentation) {
 
         final String issuer = settings.getDidConnector().toString();
         final String subject = settings.getDidConnector().toString();
@@ -50,7 +50,7 @@ public class SignedJwtFactory {
                 .issuer(issuer)
                 .subject(subject)
                 .audience(audience)
-                .claim("vp", verifiablePresentation)
+                .claim("vp", serializedPresentation.getValue())
                 .expirationTime(new Date(new Date().getTime() + 60 * 1000))
                 .jwtID(UUID.randomUUID().toString())
                 .build();
@@ -59,7 +59,7 @@ public class SignedJwtFactory {
         if (SIGNING_METHOD_ES256.equalsIgnoreCase(settings.getVerifiablePresentationSigningMethod())) {
             final PrivateKey signingKey = signingKeyResolver.getSigningKey(SIGNING_METHOD_ES256);
             return createSignedES256Jwt((ECPrivateKey) signingKey, claimsSet);
-        } else{
+        } else {
             throw new SsiSettingException("Unsupported signing method " + settings.getVerifiablePresentationSigningMethod());
         }
     }

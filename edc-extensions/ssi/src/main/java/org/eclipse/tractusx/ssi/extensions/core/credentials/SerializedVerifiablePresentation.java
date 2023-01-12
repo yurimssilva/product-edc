@@ -1,10 +1,10 @@
 package org.eclipse.tractusx.ssi.extensions.core.credentials;
 
-public class SerializedJwtPresentation {
+public class SerializedVerifiablePresentation {
 
     private final String value;
 
-    public SerializedJwtPresentation(String value) {
+    public SerializedVerifiablePresentation(String value) {
         this.value = value;
     }
 
