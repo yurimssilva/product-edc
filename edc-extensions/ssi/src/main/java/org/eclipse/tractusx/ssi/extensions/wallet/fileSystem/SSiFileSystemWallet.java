@@ -1,6 +1,6 @@
 package org.eclipse.tractusx.ssi.extensions.wallet.fileSystem;
 
-import com.danubetech.verifiablecredentials.VerifiableCredential;
+import org.eclipse.tractusx.ssi.spi.verifiable.credential.VerifiableCredential;
 import org.eclipse.tractusx.ssi.spi.wallet.VerifiableCredentialWallet;
 
 public class SSiFileSystemWallet implements VerifiableCredentialWallet {

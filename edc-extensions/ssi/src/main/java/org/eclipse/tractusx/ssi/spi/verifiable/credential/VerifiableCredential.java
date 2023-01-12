@@ -2,7 +2,7 @@ package org.eclipse.tractusx.ssi.spi.verifiable.credential;
 
 import lombok.NonNull;
 import lombok.Value;
-import org.eclipse.tractusx.ssi.spi.verifiable.Proof;
+import org.eclipse.tractusx.ssi.spi.verifiable.Ed25519Proof;
 
 import java.net.URI;
 import java.util.Date;
@@ -19,5 +19,5 @@ public class VerifiableCredential {
     @NonNull Date issuanceDate;
     Date expirationDate;
     VerifiableCredentialStatus status;
-    Proof proof;
+    Ed25519Proof proof;
 }

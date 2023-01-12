@@ -1,7 +1,6 @@
 package org.eclipse.tractusx.ssi.extensions.core.iam;
 
-import com.danubetech.verifiablecredentials.jwt.JwtVerifiablePresentation;
-import com.nimbusds.jwt.JWTClaimsSet;
+import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jwt.SignedJWT;
 import org.eclipse.edc.spi.iam.ClaimToken;
 import org.eclipse.edc.spi.iam.IdentityService;
@@ -9,31 +8,27 @@ import org.eclipse.edc.spi.iam.TokenParameters;
 import org.eclipse.edc.spi.iam.TokenRepresentation;
 import org.eclipse.edc.spi.result.Result;
 import org.eclipse.tractusx.ssi.extensions.core.credentials.SerializedJwtPresentationFactory;
-import org.eclipse.tractusx.ssi.extensions.core.exception.JwtParseException;
-import org.eclipse.tractusx.ssi.extensions.core.exception.SsiException;
+import org.eclipse.tractusx.ssi.extensions.core.jsonLd.JsonLdSerializer;
+import org.eclipse.tractusx.ssi.extensions.core.jwt.SignedJwtVerifier;
 import org.eclipse.tractusx.ssi.spi.verifiable.credential.VerifiableCredential;
+import org.eclipse.tractusx.ssi.spi.verifiable.presentation.VerifiablePresentation;
 import org.eclipse.tractusx.ssi.spi.wallet.VerifiableCredentialWallet;
-import org.eclipse.tractusx.ssi.extensions.core.verification.VerifiableCredentialVerification;
-import org.eclipse.tractusx.ssi.extensions.core.verification.VerifiablePresentationVerification;
 
 import java.text.ParseException;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 public class SsiIdentityService implements IdentityService {
 
     private final SerializedJwtPresentationFactory presentationFactory;
     private final VerifiableCredentialWallet credentialStore;
-    private final VerifiableCredentialVerification credentialVerification;
-    private final VerifiablePresentationVerification presentationVerification;
+    private final JsonLdSerializer jsonLdSerializer;
+    private final SignedJwtVerifier jwtVerifier;
 
-    public SsiIdentityService(SerializedJwtPresentationFactory serializedJwtPresentationFactory, VerifiableCredentialWallet credentialStore, VerifiableCredentialVerification credentialVerification, VerifiablePresentationVerification presentationVerification) {
+    public SsiIdentityService(SerializedJwtPresentationFactory serializedJwtPresentationFactory, VerifiableCredentialWallet credentialStore, JsonLdSerializer jsonLdSerializer, SignedJwtVerifier jwtVerifier) {
         this.presentationFactory = serializedJwtPresentationFactory;
         this.credentialStore = credentialStore;
-        this.credentialVerification = credentialVerification;
-        this.presentationVerification = presentationVerification;
+        this.jsonLdSerializer = jsonLdSerializer;
+        this.jwtVerifier = jwtVerifier;
     }
 
     /**
@@ -54,9 +49,28 @@ public class SsiIdentityService implements IdentityService {
 
     @Override
     public Result<ClaimToken> verifyJwtToken(TokenRepresentation tokenRepresentation, String audience) {
-//        try {
-//            String token = tokenRepresentation.getToken();
-//            SignedJWT jwt = SignedJWT.parse(token);
+
+        try {
+            String token = tokenRepresentation.getToken();
+            SignedJWT jwt = SignedJWT.parse(token);
+
+            jwtVerifier.verify(jwt);
+
+            // TODO where is audience and expiry etc. checked?
+
+            final String vpClaim = jwt.getJWTClaimsSet().getClaim("vp").toString();
+            VerifiablePresentation verifiablePresentation = jsonLdSerializer.deserializePresentation(vpClaim);
+
+            // TODO Validate & Verify Verifiable Credentials
+            // TODO Parse Information from Verifiable Credentials and add to ClaimToken (e.g. BusinessPartnerNumber)
+
+
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        } catch (JOSEException e) {
+            throw new RuntimeException(e);
+        }
+
 //            if(!presentationVerification.verifyJwtPresentation(jwt)){
 //                return Result.failure(token);
 //            }
@@ -70,26 +84,23 @@ public class SsiIdentityService implements IdentityService {
 //            final CredentialSubject subject = verifiableCredential.getCredentialSubject();
 //            final ClaimToken claimToken = ClaimToken.Builder.newInstance().claims(subject.getClaims()).build();
 //            return Result.success(claimToken);
-//        } catch (ParseException e) {
-//            throw new RuntimeException(e);
-//        }
         return null;
         /**
-        //final JwtVerifiablePresentation jwtVerifiablePresentation = fromCompactSerialization();
-        final VerifiablePresentation verifiablePresentation = jwtVerifiablePresentation.getPayloadObject();
-        Validation.validate(verifiablePresentation);
-        if (!presentationVerification.checkTrust(jwtVerifiablePresentation)) {
-            throw new RuntimeException(); // TODO
-        }
-        final VerifiableCredential verifiableCredential = verifiablePresentation.getVerifiableCredential();
-        Validation.validate(verifiableCredential);
-        if (!credentialVerification.checkTrust(verifiableCredential)) {
-            throw new RuntimeException(); // TODO
-        }
-        final CredentialSubject subject = verifiableCredential.getCredentialSubject();
-        final ClaimToken token = ClaimToken.Builder.newInstance().claims(subject.getClaims()).build();
-        return Result.success(token);
-        **/
+         //final JwtVerifiablePresentation jwtVerifiablePresentation = fromCompactSerialization();
+         final VerifiablePresentation verifiablePresentation = jwtVerifiablePresentation.getPayloadObject();
+         Validation.validate(verifiablePresentation);
+         if (!presentationVerification.checkTrust(jwtVerifiablePresentation)) {
+         throw new RuntimeException(); // TODO
+         }
+         final VerifiableCredential verifiableCredential = verifiablePresentation.getVerifiableCredential();
+         Validation.validate(verifiableCredential);
+         if (!credentialVerification.checkTrust(verifiableCredential)) {
+         throw new RuntimeException(); // TODO
+         }
+         final CredentialSubject subject = verifiableCredential.getCredentialSubject();
+         final ClaimToken token = ClaimToken.Builder.newInstance().claims(subject.getClaims()).build();
+         return Result.success(token);
+         **/
     }
 
     // From https://github.com/danubetech/verifiable-credentials-java/blob/main/src/main/java/com/danubetech/verifiablecredentials/jwt/JwtVerifiablePresentation.java

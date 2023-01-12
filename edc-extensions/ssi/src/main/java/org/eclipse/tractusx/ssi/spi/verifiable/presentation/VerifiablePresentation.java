@@ -2,7 +2,7 @@ package org.eclipse.tractusx.ssi.spi.verifiable.presentation;
 
 import lombok.Getter;
 import lombok.NonNull;
-import org.eclipse.tractusx.ssi.spi.verifiable.Proof;
+import org.eclipse.tractusx.ssi.spi.verifiable.Ed25519Proof;
 import org.eclipse.tractusx.ssi.spi.verifiable.credential.VerifiableCredential;
 
 import java.util.List;
@@ -16,7 +16,7 @@ public class VerifiablePresentation {
         this.proof = null;
     }
 
-    public VerifiablePresentation(List<VerifiableCredential> verifiableCredentials, Proof proof) {
+    public VerifiablePresentation(List<VerifiableCredential> verifiableCredentials, Ed25519Proof proof) {
         this.types = List.of(VerifiablePresentationType.VERIFIABLE_PRESENTATION);
         this.verifiableCredentials = verifiableCredentials;
         this.proof = proof;
@@ -28,7 +28,7 @@ public class VerifiablePresentation {
         this.proof = null;
     }
 
-    public VerifiablePresentation(List<String> types, List<VerifiableCredential> verifiableCredentials, Proof proof) {
+    public VerifiablePresentation(List<String> types, List<VerifiableCredential> verifiableCredentials, Ed25519Proof proof) {
         this.types = types;
         this.verifiableCredentials = verifiableCredentials;
         this.proof = proof;
@@ -39,5 +39,5 @@ public class VerifiablePresentation {
     @Getter
     @NonNull List<VerifiableCredential> verifiableCredentials;
     @Getter
-    Proof proof;
+    Ed25519Proof proof;
 }
