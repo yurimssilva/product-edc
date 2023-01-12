@@ -19,7 +19,12 @@ public class SigningKeyResolver {
         this.settings = settings;
     }
 
-    public PrivateKey getSigningKey() {
+    public PrivateKey getSigningKey(String signingMethod) {
+
+        if(!signingMethod.equals(SigningMethod.SIGNING_METHOD_ES256)){
+            throw new RuntimeException("not supported"); // TODO
+        }
+
         final String signingKey = vault.resolveSecret(settings.getVerifiablePresentationSigningKeyAlias());
         if (signingKey == null) {
             throw new RuntimeException(); // TODO

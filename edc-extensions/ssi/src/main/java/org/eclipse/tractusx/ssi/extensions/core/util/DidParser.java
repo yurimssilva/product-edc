@@ -2,8 +2,13 @@ package org.eclipse.tractusx.ssi.extensions.core.util;
 
 import org.eclipse.tractusx.ssi.extensions.core.exception.DidParseException;
 import org.eclipse.tractusx.ssi.spi.did.Did;
+import org.eclipse.tractusx.ssi.spi.did.DidMethod;
+import org.eclipse.tractusx.ssi.spi.did.DidMethodIdentifier;
 
 import java.net.URI;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class DidParser {
 
@@ -12,11 +17,15 @@ public class DidParser {
             throw new DidParseException("URI is not a DID. URI: '" + uri + "'");
 
         var parts = uri.toString().split(":");
-        if (parts.length != 3) {
-            throw new DidParseException("DID does not contain of three parts split by ':'. URI: '" + uri + "'");
+        if (parts.length < 3) {
+            throw new DidParseException("DID does not contain at least three parts split by ':'. URI: '" + uri + "'");
         }
 
-        return new Did(parts[1], parts[2]);
+        List<String> methodIdentifierParts = Arrays.stream(parts)
+                .skip(2)
+                .collect(Collectors.toList());
+
+        return new Did(new DidMethod(parts[1]), new DidMethodIdentifier(String.join(":", methodIdentifierParts)));
     }
 
     public static Did parse(String did) {

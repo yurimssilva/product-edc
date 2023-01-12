@@ -19,6 +19,7 @@
  */
 package org.eclipse.tractusx.ssi.extensions.core;
 
+import org.abstractj.kalium.keys.SigningKey;
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
 import org.eclipse.edc.runtime.metamodel.annotation.Provides;
 import org.eclipse.edc.spi.monitor.Monitor;
@@ -27,6 +28,7 @@ import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
 import org.eclipse.edc.web.spi.WebService;
 import org.eclipse.tractusx.ssi.extensions.core.jwt.SignedJwtFactory;
+import org.eclipse.tractusx.ssi.extensions.core.resolver.key.SigningMethod;
 import org.eclipse.tractusx.ssi.extensions.did.web.controler.DidWebDocumentController;
 import org.eclipse.tractusx.ssi.extensions.core.setting.SsiSettings;
 import org.eclipse.tractusx.ssi.extensions.core.setting.SsiSettingsFactory;
@@ -45,7 +47,7 @@ public class SsiCoreExtension implements ServiceExtension {
     public static final String SETTING_DID_CONNECTOR = "edc.ssi.did.connector";
     public static final String SETTING_DID_OPERATOR = "edc.ssi.did.operator";
     public static final String SETTING_VERIFIABLE_PRESENTATION_SIGNING_METHOD = "edc.ssi.verifiable.presentation.signing.method";
-    public static final String SETTING_VERIFIABLE_PRESENTATION_SIGNING_METHOD_DEFAULT = SignedJwtFactory.SIGNING_METHOD_ES256;
+    public static final String SETTING_VERIFIABLE_PRESENTATION_SIGNING_METHOD_DEFAULT = SigningMethod.SIGNING_METHOD_ES256;
     public static final String SETTING_VERIFIABLE_PRESENTATION_SIGNING_KEY_ALIAS = "edc.ssi.verifiable.presentation.signing.key.alias";
 
     @Inject

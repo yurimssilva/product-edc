@@ -5,8 +5,10 @@ import lombok.SneakyThrows;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.eclipse.tractusx.ssi.extensions.core.jwt.SignedJwtFactory;
 import org.eclipse.tractusx.ssi.extensions.core.jwt.SignedJwtVerifier;
+import org.eclipse.tractusx.ssi.extensions.core.resolver.key.SigningKeyResolver;
 import org.eclipse.tractusx.ssi.extensions.core.setting.SsiSettings;
 import org.eclipse.tractusx.ssi.spi.did.resolver.DidDocumentResolver;
+import org.eclipse.tractusx.ssi.spi.verifiable.presentation.VerifiablePresentation;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -39,10 +41,11 @@ public class JwtSignerTest {
 
         final SsiSettings settings = null;
         final DidDocumentResolver didDocumentResolver = null;
+        final SigningKeyResolver signingKeyResolver = null;
 
         privateKey = (ECPrivateKey) pair.getPrivate();
         publicKey = (ECPublicKey) pair.getPublic();
-        signedJwtFactory = new SignedJwtFactory(settings);
+        signedJwtFactory = new SignedJwtFactory(settings, signingKeyResolver);
         signedJwtVerifier = new SignedJwtVerifier(didDocumentResolver);
     }
 
@@ -53,7 +56,8 @@ public class JwtSignerTest {
         boolean result = false;
         String audience = "did:web:someaudience/wellknown";
         // when
-        SignedJWT jwt = signedJwtFactory.create(privateKey, audience, "claim");
+        VerifiablePresentation verifiablePresentation = null;
+        SignedJWT jwt = signedJwtFactory.create(audience, verifiablePresentation);
         result = signedJwtVerifier.verify(jwt);
         // then
         Assertions.assertTrue(result);

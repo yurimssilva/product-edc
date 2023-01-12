@@ -22,6 +22,7 @@ import org.eclipse.tractusx.ssi.extensions.core.verification.VerifiablePresentat
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 public class SsiIdentityService implements IdentityService {
@@ -48,7 +49,7 @@ public class SsiIdentityService implements IdentityService {
     public Result<TokenRepresentation> obtainClientCredentials(TokenParameters tokenParameters) {
         final String audience = tokenParameters.getAudience(); // IDS URL of another connector
         final VerifiableCredential membershipCredential = credentialStore.GetMembershipCredential();
-        final SignedJWT membershipPresentation = presentationFactory.createPresentation(membershipCredential, audience);
+        final SignedJWT membershipPresentation = presentationFactory.createPresentation(List.of(membershipCredential), audience);
         final TokenRepresentation tokenRepresentation = TokenRepresentation.Builder.newInstance().token(membershipPresentation.getParsedString()).build();
 
         return Result.success(tokenRepresentation);

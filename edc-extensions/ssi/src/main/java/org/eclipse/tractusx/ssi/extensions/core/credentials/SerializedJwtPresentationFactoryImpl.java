@@ -4,39 +4,34 @@ import com.danubetech.verifiablecredentials.VerifiableCredential;
 import com.nimbusds.jwt.SignedJWT;
 import org.eclipse.tractusx.ssi.extensions.core.jwt.SignedJwtFactory;
 import org.eclipse.tractusx.ssi.extensions.core.setting.SsiSettings;
+import org.eclipse.tractusx.ssi.spi.verifiable.presentation.VerifiablePresentation;
 
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.ECPrivateKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
+import java.util.List;
 
 public class SerializedJwtPresentationFactoryImpl implements SerializedJwtPresentationFactory {
 
     private final SsiSettings settings;
-    private final SignedJwtFactory jwtUtils;
+    private final SignedJwtFactory signedJwtFactory;
 
-    public SerializedJwtPresentationFactoryImpl(SsiSettings settings, SignedJwtFactory jwtUtils) {
+    public SerializedJwtPresentationFactoryImpl(SsiSettings settings, SignedJwtFactory signedJwtFactory) {
         this.settings = settings;
-        this.jwtUtils = jwtUtils;
+        this.signedJwtFactory = signedJwtFactory;
     }
 
     @Override
-    public SignedJWT createPresentation(VerifiableCredential credentials, String audience) {
+    public SignedJWT createPresentation(List<VerifiableCredential> credentials, String audience) {
         return createPresentationTokenForCredential(credentials, audience);
     }
 
-    private SignedJWT createPresentationTokenForCredential(VerifiableCredential verifiableCredential, String audience) {
-        try {
-            final byte[] privateKey = settings.getVerifibalePresentationSigningKey();
-            final String didConnector = settings.getDidConnector().toString();
-            KeyFactory kf = KeyFactory.getInstance("ECDSA");
-            ECPrivateKey ecPk = (ECPrivateKey) kf.generatePrivate(new PKCS8EncodedKeySpec(privateKey));
-            SignedJWT jwt = jwtUtils.create(ecPk,didConnector,didConnector, audience, verifiableCredential.toJson());
+    private SignedJWT createPresentationTokenForCredential(List<VerifiableCredential> verifiableCredentials, String audience) {
+            final VerifiablePresentation verifiablePresentation = null;
+            SignedJWT jwt = signedJwtFactory.create(audience, verifiablePresentation);
 
             return jwt;
-        } catch (InvalidKeySpecException | NoSuchAlgorithmException e) {
-            throw new RuntimeException(e); // TODO
-        }
     }
 }

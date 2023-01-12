@@ -6,37 +6,42 @@ import com.nimbusds.jose.crypto.ECDSASigner;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 import org.eclipse.tractusx.ssi.extensions.core.exception.SsiSettingException;
+import org.eclipse.tractusx.ssi.extensions.core.resolver.key.SigningKeyResolver;
 import org.eclipse.tractusx.ssi.extensions.core.setting.SsiSettings;
+import org.eclipse.tractusx.ssi.spi.verifiable.presentation.VerifiablePresentation;
 import org.jetbrains.annotations.NotNull;
 
+import java.security.PrivateKey;
 import java.security.interfaces.ECPrivateKey;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+
+import static org.eclipse.tractusx.ssi.extensions.core.resolver.key.SigningMethod.SIGNING_METHOD_ES256;
 
 /**
  * Convenience/helper class to generate and verify Signed JSON Web Tokens (JWTs) for communicating between connector instances.
  */
 public class SignedJwtFactory {
 
-    public static final String SIGNING_METHOD_ES256 = "ES256";
     public static final List<String> SUPPORTED_SIGNING_METHODS = List.of(SIGNING_METHOD_ES256);
 
     private final SsiSettings settings;
+    private final SigningKeyResolver signingKeyResolver;
 
-    public SignedJwtFactory(SsiSettings settings) {
+    public SignedJwtFactory(SsiSettings settings, SigningKeyResolver signingKeyResolver) {
         this.settings = settings;
+        this.signingKeyResolver = signingKeyResolver;
     }
 
     /**
      * Creates a signed JWT {@link SignedJWT} that contains a set of claims and an issuer. Although all private key types are possible, in the context of Distributed Identity
      * using an Elliptic Curve key ({@code P-256}) is advisable.
      *
-     * @param privateKey A Private Key
-     * @param audience   the value of the token audience claim, e.g. the IDS Webhook address.
+     * @param audience the value of the token audience claim, e.g. the IDS Webhook address.
      * @return a {@code SignedJWT} that is signed with the private key and contains all claims listed.
      */
-    public SignedJWT create(ECPrivateKey privateKey, String audience, String vpClaim) { // TODO Use Signing Key Resolver Instead
+    public SignedJWT create(String audience, VerifiablePresentation verifiablePresentation) {
 
         final String issuer = settings.getDidConnector().toString();
         final String subject = settings.getDidConnector().toString();
@@ -45,15 +50,16 @@ public class SignedJwtFactory {
                 .issuer(issuer)
                 .subject(subject)
                 .audience(audience)
-                .claim("vp", vpClaim)
+                .claim("vp", verifiablePresentation)
                 .expirationTime(new Date(new Date().getTime() + 60 * 1000))
                 .jwtID(UUID.randomUUID().toString())
                 .build();
 
 
-        if (settings.getVerifiablePresentationSigningMethod().equalsIgnoreCase(SIGNING_METHOD_ES256)) {
-            return createSignedES256Jwt(privateKey, claimsSet);
-        } else {
+        if (SIGNING_METHOD_ES256.equalsIgnoreCase(settings.getVerifiablePresentationSigningMethod())) {
+            final PrivateKey signingKey = signingKeyResolver.getSigningKey(SIGNING_METHOD_ES256);
+            return createSignedES256Jwt((ECPrivateKey) signingKey, claimsSet);
+        } else{
             throw new SsiSettingException("Unsupported signing method " + settings.getVerifiablePresentationSigningMethod());
         }
     }

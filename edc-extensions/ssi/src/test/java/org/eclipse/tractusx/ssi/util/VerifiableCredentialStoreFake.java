@@ -47,7 +47,7 @@ public class VerifiableCredentialStoreFake implements VerifiableCredentialWallet
                 .types(List.of("MembershipCredential", "VerifiableCredential"))
                 .issuanceDate(new Date())
                 .expirationDate(Date.from(Instant.now().plusSeconds(300 /* Five Minutes */)))
-                .issuer(URI.create(TestDidHandler.DID_TEST_OPERATOR.toString()))
+                .issuer(URI.create(TestDidDocumentResolver.DID_TEST_OPERATOR.toString()))
                 .credentialSubject(credentialSubject)
                 .build();
     }
