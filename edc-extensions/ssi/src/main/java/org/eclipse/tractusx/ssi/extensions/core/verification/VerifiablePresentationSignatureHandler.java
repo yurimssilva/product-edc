@@ -1,14 +1,14 @@
 package org.eclipse.tractusx.ssi.extensions.core.verification;
 
 import com.nimbusds.jwt.SignedJWT;
-import org.eclipse.tractusx.ssi.spi.did.resolver.DidPublicKeyResolver;
+import org.eclipse.tractusx.ssi.spi.did.resolver.DidDocumentResolver;
 
 public class VerifiablePresentationSignatureHandler implements VerifiablePresentationVerificationHandler {
 
-    private final DidPublicKeyResolver didPublicKeyResolver;
+    private final DidDocumentResolver didDocumentResolver;
 
-    public VerifiablePresentationSignatureHandler(DidPublicKeyResolver didPublicKeyResolver) {
-        this.didPublicKeyResolver = didPublicKeyResolver;
+    public VerifiablePresentationSignatureHandler(DidDocumentResolver didDocumentResolver) {
+        this.didDocumentResolver = didDocumentResolver;
     }
 
     @Override

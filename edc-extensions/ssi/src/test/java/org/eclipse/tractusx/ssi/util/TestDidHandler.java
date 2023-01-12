@@ -4,7 +4,6 @@ import jakarta.ws.rs.NotFoundException;
 import org.eclipse.tractusx.ssi.spi.did.Did;
 import org.eclipse.tractusx.ssi.spi.did.DidMethod;
 import org.eclipse.tractusx.ssi.spi.did.DidMethodIdentifier;
-import org.eclipse.tractusx.ssi.spi.did.resolver.DidPublicKeyResolverHandler;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

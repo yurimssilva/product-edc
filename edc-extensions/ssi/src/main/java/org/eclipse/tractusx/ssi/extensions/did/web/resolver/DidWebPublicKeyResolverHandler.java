@@ -5,10 +5,8 @@ import org.eclipse.tractusx.ssi.extensions.did.web.util.Constants;
 import org.eclipse.tractusx.ssi.extensions.did.web.util.DidWebParser;
 import org.eclipse.tractusx.ssi.spi.did.Did;
 import org.eclipse.tractusx.ssi.spi.did.DidMethod;
-import org.eclipse.tractusx.ssi.spi.did.resolver.DidPublicKeyResolverHandler;
 
 import java.net.URI;
-import java.util.ConcurrentModificationException;
 
 public class DidWebPublicKeyResolverHandler implements DidPublicKeyResolverHandler {
 

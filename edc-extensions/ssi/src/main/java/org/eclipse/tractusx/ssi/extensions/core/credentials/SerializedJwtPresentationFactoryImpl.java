@@ -2,7 +2,7 @@ package org.eclipse.tractusx.ssi.extensions.core.credentials;
 
 import com.danubetech.verifiablecredentials.VerifiableCredential;
 import com.nimbusds.jwt.SignedJWT;
-import org.eclipse.tractusx.ssi.extensions.core.jwt.JwtUtils;
+import org.eclipse.tractusx.ssi.extensions.core.jwt.SignedJwtFactory;
 import org.eclipse.tractusx.ssi.extensions.core.setting.SsiSettings;
 
 import java.security.KeyFactory;
@@ -14,9 +14,9 @@ import java.security.spec.PKCS8EncodedKeySpec;
 public class SerializedJwtPresentationFactoryImpl implements SerializedJwtPresentationFactory {
 
     private final SsiSettings settings;
-    private final JwtUtils jwtUtils;
+    private final SignedJwtFactory jwtUtils;
 
-    public SerializedJwtPresentationFactoryImpl(SsiSettings settings, JwtUtils jwtUtils) {
+    public SerializedJwtPresentationFactoryImpl(SsiSettings settings, SignedJwtFactory jwtUtils) {
         this.settings = settings;
         this.jwtUtils = jwtUtils;
     }
@@ -28,7 +28,7 @@ public class SerializedJwtPresentationFactoryImpl implements SerializedJwtPresen
 
     private SignedJWT createPresentationTokenForCredential(VerifiableCredential verifiableCredential, String audience) {
         try {
-            final byte[] privateKey = settings.getDidPrivateKey();
+            final byte[] privateKey = settings.getVerifibalePresentationSigningKey();
             final String didConnector = settings.getDidConnector().toString();
             KeyFactory kf = KeyFactory.getInstance("ECDSA");
             ECPrivateKey ecPk = (ECPrivateKey) kf.generatePrivate(new PKCS8EncodedKeySpec(privateKey));
