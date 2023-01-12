@@ -9,7 +9,7 @@ import org.eclipse.tractusx.ssi.SsiWebExtension;
 import org.eclipse.tractusx.ssi.exception.DidParseException;
 import org.eclipse.tractusx.ssi.exception.SsiSettingException;
 import org.eclipse.tractusx.ssi.resolver.Did;
-import org.eclipse.tractusx.ssi.util.DidParser;
+import org.eclipse.tractusx.ssi.util.DidWebParser;
 
 public class SsiSettingsFactoryImpl implements SsiSettingsFactory {
 
@@ -53,7 +53,7 @@ public class SsiSettingsFactoryImpl implements SsiSettingsFactory {
 
         final Did didConnector;
         try {
-            didConnector = DidParser.parse(didConnectorString);
+            didConnector = DidWebParser.parse(didConnectorString);
         } catch (DidParseException e) {
             throw new SsiSettingException(String.format(EXCEPTION_NO_VALID_DID, SsiWebExtension.SETTING_DID_CONNECTOR, didConnectorString), e);
         }
@@ -66,7 +66,7 @@ public class SsiSettingsFactoryImpl implements SsiSettingsFactory {
 
         final Did didOperator;
         try {
-            didOperator = DidParser.parse(didOperatorString);
+            didOperator = DidWebParser.parse(didOperatorString);
         } catch (DidParseException e) {
             throw new SsiSettingException(String.format(EXCEPTION_NO_VALID_DID, SsiWebExtension.SETTING_DID_OPERATOR, didConnectorString), e);
         }

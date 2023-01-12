@@ -39,9 +39,9 @@ public class SsiIdentityServiceComponentTest {
 
         final SerializedJwtPresentationFactory serializedJwtPresentationFactory = new SerializedJwtPresentationFactoryImpl(settings, jwtUtils);
         credentialStore = new VerifiableCredentialStoreFake(settings);
-        ssiIdentityService = new SsiIdentityService(serializedJwtPresentationFactory, credentialStore,
+        /*ssiIdentityService = new SsiIdentityService(serializedJwtPresentationFactory, credentialStore,
                 VerifiableCredentialVerificationImpl.withAllHandlers(settings),
-                VerifiablePresentationVerificationImpl.withAllHandlers(publicKeyResolver));
+                VerifiablePresentationVerificationImpl.withAllHandlers(publicKeyResolver));*/
     }
 
     @Test

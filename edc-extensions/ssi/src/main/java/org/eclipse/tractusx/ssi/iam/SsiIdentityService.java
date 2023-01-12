@@ -67,17 +67,13 @@ public class SsiIdentityService implements IdentityService {
             if(!presentationVerification.checkTrust(jwt)){
                 return Result.failure(token);
             }
-
             final VerifiableCredential verifiableCredential = VerifiableCredential.fromJson(jwt.getPayload().toString());
-
-            if(credentialVerification.validate(verifiableCredential)){
-
+            if(!credentialVerification.validate(verifiableCredential)){
+                return Result.failure(token);
             }
-
-            if(credentialVerification.checkTrust(verifiableCredential)){
-
+            if(!credentialVerification.checkTrust(verifiableCredential)){
+                return Result.failure(token);
             }
-
             final CredentialSubject subject = verifiableCredential.getCredentialSubject();
             final ClaimToken claimToken = ClaimToken.Builder.newInstance().claims(subject.getClaims()).build();
             return Result.success(claimToken);
@@ -86,25 +82,20 @@ public class SsiIdentityService implements IdentityService {
         }
         /**
         //final JwtVerifiablePresentation jwtVerifiablePresentation = fromCompactSerialization();
-
         final VerifiablePresentation verifiablePresentation = jwtVerifiablePresentation.getPayloadObject();
         Validation.validate(verifiablePresentation);
-
         if (!presentationVerification.checkTrust(jwtVerifiablePresentation)) {
             throw new RuntimeException(); // TODO
         }
-
         final VerifiableCredential verifiableCredential = verifiablePresentation.getVerifiableCredential();
         Validation.validate(verifiableCredential);
         if (!credentialVerification.checkTrust(verifiableCredential)) {
             throw new RuntimeException(); // TODO
         }
-
         final CredentialSubject subject = verifiableCredential.getCredentialSubject();
         final ClaimToken token = ClaimToken.Builder.newInstance().claims(subject.getClaims()).build();
         return Result.success(token);
         **/
-
     }
 
     // From https://github.com/danubetech/verifiable-credentials-java/blob/main/src/main/java/com/danubetech/verifiablecredentials/jwt/JwtVerifiablePresentation.java

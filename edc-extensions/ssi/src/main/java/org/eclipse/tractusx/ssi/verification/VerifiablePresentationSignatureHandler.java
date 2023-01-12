@@ -1,11 +1,7 @@
 package org.eclipse.tractusx.ssi.verification;
 
-import com.danubetech.verifiablecredentials.jwt.JwtVerifiablePresentation;
-import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jwt.SignedJWT;
-import org.eclipse.tractusx.ssi.resolver.Did;
 import org.eclipse.tractusx.ssi.resolver.DidPublicKeyResolver;
-import org.eclipse.tractusx.ssi.util.DidParser;
 
 public class VerifiablePresentationSignatureHandler implements VerifiablePresentationVerificationHandler {
 
