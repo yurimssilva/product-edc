@@ -1,11 +1,24 @@
 package org.eclipse.tractusx.ssi.spi.did;
 
+import lombok.EqualsAndHashCode;
+import lombok.NonNull;
+import lombok.Value;
+
 import java.net.URI;
 
-public interface Did {
-    String getMethod();
+@Value
+@EqualsAndHashCode
+public class Did {
 
-    String getMethodIdentifier();
+     @NonNull DidMethod method;
+    @NonNull DidMethodIdentifier methodIdentifier;
 
-    URI toUri();
+    public URI toUri() {
+        return URI.create(toString());
+    }
+
+    @Override
+    public String toString() {
+        return String.format("did:%s:%s", method, methodIdentifier);
+    }
 }

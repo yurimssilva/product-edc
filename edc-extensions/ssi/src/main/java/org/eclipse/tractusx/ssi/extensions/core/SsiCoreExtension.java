@@ -31,13 +31,14 @@ import org.eclipse.tractusx.ssi.extensions.core.setting.SsiSettings;
 import org.eclipse.tractusx.ssi.extensions.core.setting.SsiSettingsFactory;
 import org.eclipse.tractusx.ssi.extensions.core.setting.SsiSettingsFactoryImpl;
 import org.eclipse.tractusx.ssi.spi.wallet.VerifiableCredentialWalletRegistry;
+import org.eclipse.tractusx.ssi.spi.wallet.VerifiableCredentialWalletService;
 
-@Provides({VerifiableCredentialWalletRegistry.class})
+import static org.eclipse.tractusx.ssi.extensions.did.web.SsiDidWebExtension.API_DID_WEB_CONTEXT;
+
+@Provides({VerifiableCredentialWalletRegistry.class, VerifiableCredentialWalletService.class })
 public class SsiCoreExtension implements ServiceExtension {
+    public static final String EXTENSION_NAME = "SSI Core Extension";
 
-    public static final String API_DID_WEB_CONTEXT = "didweb";
-    public static final String API_SSI_CONTEXT = "ssi";
-    public static final String EXTENSION_NAME = "SSI Web Extension Extension";
     public static final String SETTINGS_WALLET = "edc.ssi.wallet";
     public static final String SETTING_DID_DEFAULT = "did:null:connector";
     public static final String SETTING_DID_CONNECTOR = "edc.ssi.did.connector";
@@ -47,9 +48,6 @@ public class SsiCoreExtension implements ServiceExtension {
 
     @Inject
     private Vault vault;
-
-    @Inject
-    private WebService webService;
 
     @Override
     public String name() {
@@ -67,9 +65,5 @@ public class SsiCoreExtension implements ServiceExtension {
 
         final SsiSettingsFactory settingsFactory = new SsiSettingsFactoryImpl(monitor, vault, context);
         final SsiSettings settings = settingsFactory.createSettings();
-
-        final DidWebDocumentController didWebDocumentController = new DidWebDocumentController(settings, monitor);
-
-        webService.registerResource(API_DID_WEB_CONTEXT, didWebDocumentController);
     }
 }

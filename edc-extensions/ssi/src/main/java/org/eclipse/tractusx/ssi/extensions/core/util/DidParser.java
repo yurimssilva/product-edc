@@ -1,7 +1,6 @@
 package org.eclipse.tractusx.ssi.extensions.core.util;
 
 import org.eclipse.tractusx.ssi.extensions.core.exception.DidParseException;
-import org.eclipse.tractusx.ssi.extensions.core.resolver.DidImpl;
 import org.eclipse.tractusx.ssi.spi.did.Did;
 
 import java.net.URI;
@@ -17,7 +16,7 @@ public class DidParser {
             throw new DidParseException("DID does not contain of three parts split by ':'. URI: '" + uri + "'");
         }
 
-        return new DidImpl(parts[1], parts[2]);
+        return new Did(parts[1], parts[2]);
     }
 
     public static Did parse(String did) {

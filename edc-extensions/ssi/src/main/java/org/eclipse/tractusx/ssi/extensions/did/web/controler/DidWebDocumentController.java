@@ -6,15 +6,16 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import org.eclipse.edc.spi.monitor.Monitor;
 import org.eclipse.tractusx.ssi.extensions.core.setting.SsiSettings;
+import org.eclipse.tractusx.ssi.extensions.did.web.settings.DidWebSettings;
 
 @Produces({MediaType.APPLICATION_JSON})
 @Path("./well-known/did.json")
 public class DidWebDocumentController {
 
-    private final SsiSettings settings;
+    private final DidWebSettings settings;
     private final Monitor monitor;
 
-    public DidWebDocumentController(SsiSettings settings, Monitor monitor) {
+    public DidWebDocumentController(DidWebSettings settings, Monitor monitor) {
         this.settings = settings;
         this.monitor = monitor;
     }

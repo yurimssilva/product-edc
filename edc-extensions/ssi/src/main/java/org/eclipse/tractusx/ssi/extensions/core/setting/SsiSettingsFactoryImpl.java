@@ -8,9 +8,7 @@ import org.eclipse.edc.spi.system.ServiceExtensionContext;
 import org.eclipse.tractusx.ssi.extensions.core.SsiCoreExtension;
 import org.eclipse.tractusx.ssi.extensions.core.exception.DidParseException;
 import org.eclipse.tractusx.ssi.extensions.core.exception.SsiSettingException;
-import org.eclipse.tractusx.ssi.extensions.core.resolver.DidImpl;
 import org.eclipse.tractusx.ssi.extensions.core.util.DidParser;
-import org.eclipse.tractusx.ssi.spi.did.Did;
 
 public class SsiSettingsFactoryImpl implements SsiSettingsFactory {
 

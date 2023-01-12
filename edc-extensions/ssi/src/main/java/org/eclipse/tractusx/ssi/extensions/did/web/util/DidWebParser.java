@@ -1,23 +1,20 @@
 package org.eclipse.tractusx.ssi.extensions.did.web.util;
 
-import org.eclipse.tractusx.ssi.extensions.core.exception.DidParseException;
 import org.eclipse.tractusx.ssi.spi.did.Did;
 
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 
 public class DidWebParser {
 
     private static String didPath = "/.well-known/did.json";
 
-
     public static URI parse(Did did) {
-        if (did.getMethod().equalsIgnoreCase(Constants.DID_WEB_METHOD)) {
+        if (did.getMethod().equals(Constants.DID_WEB_METHOD)) {
             throw new RuntimeException("TODO");
         }
 
-        String didUrl = did.getMethodIdentifier();
+        String didUrl = did.getMethodIdentifier().getValue();
         didUrl = didUrl.replace(':', '/');
         didUrl = java.net.URLDecoder.decode(didUrl, StandardCharsets.UTF_8);
 

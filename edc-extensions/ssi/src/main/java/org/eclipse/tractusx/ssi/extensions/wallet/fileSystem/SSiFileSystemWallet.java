@@ -14,5 +14,5 @@ public class SSiFileSystemWallet implements VerifiableCredentialWallet {
     @Override
     public VerifiableCredential GetMembershipCredential() {
         return null;
-    }
+    } // TODO
 }

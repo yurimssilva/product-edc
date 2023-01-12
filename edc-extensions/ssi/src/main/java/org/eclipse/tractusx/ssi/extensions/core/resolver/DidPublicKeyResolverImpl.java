@@ -15,7 +15,7 @@ public class DidPublicKeyResolverImpl implements DidPublicKeyResolver {
     @Override
     public byte[] resolve(Did did) {
         return handlers.stream()
-                .filter(h -> h.getMethod().equalsIgnoreCase(did.getMethod()))
+                .filter(h -> h.getSupportedMethod().equals(did.getMethod()))
                 .map(h -> h.resolve(did))
                 .findFirst()
                 .orElseThrow(NotFoundException::new); // TODO inform user about supported did methods

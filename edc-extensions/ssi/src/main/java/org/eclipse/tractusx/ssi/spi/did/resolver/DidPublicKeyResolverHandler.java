@@ -14,12 +14,12 @@
 
 package org.eclipse.tractusx.ssi.spi.did.resolver;
 
-import org.eclipse.tractusx.ssi.extensions.core.resolver.DidImpl;
 import org.eclipse.tractusx.ssi.spi.did.Did;
+import org.eclipse.tractusx.ssi.spi.did.DidMethod;
 
 public interface DidPublicKeyResolverHandler {
 
-    String getMethod();
+    DidMethod getSupportedMethod();
 
     byte[] resolve(Did did);
 }
