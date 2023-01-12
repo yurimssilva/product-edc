@@ -2,6 +2,7 @@ package org.eclipse.tractusx.ssi.util;
 
 import jakarta.ws.rs.NotFoundException;
 import org.eclipse.tractusx.ssi.extensions.core.resolver.DidImpl;
+import org.eclipse.tractusx.ssi.spi.did.Did;
 import org.eclipse.tractusx.ssi.spi.did.resolver.DidPublicKeyResolverHandler;
 
 import java.util.LinkedHashMap;
@@ -24,7 +25,7 @@ public class TestDidHandler implements DidPublicKeyResolverHandler {
     }
 
     @Override
-    public byte[] resolve(DidImpl did) {
+    public byte[] resolve(Did did) {
         if (didMap.containsKey(did))
             return didMap.get(did);
 

@@ -2,12 +2,13 @@ package org.eclipse.tractusx.ssi.extensions.core.util;
 
 import org.eclipse.tractusx.ssi.extensions.core.exception.DidParseException;
 import org.eclipse.tractusx.ssi.extensions.core.resolver.DidImpl;
+import org.eclipse.tractusx.ssi.spi.did.Did;
 
 import java.net.URI;
 
 public class DidParser {
 
-    public static DidImpl parse(URI uri) {
+    public static Did parse(URI uri) {
         if (!uri.getScheme().equals("did"))
             throw new DidParseException("URI is not a DID. URI: '" + uri + "'");
 
@@ -19,7 +20,7 @@ public class DidParser {
         return new DidImpl(parts[1], parts[2]);
     }
 
-    public static DidImpl parse(String did) {
+    public static Did parse(String did) {
         final URI uri;
         try {
             uri = URI.create(did);

@@ -23,6 +23,11 @@ public class VerifiableCredentialStoreFake implements VerifiableCredentialWallet
     }
 
     @Override
+    public String getIdentifier() {
+        return "Test";
+    }
+
+    @Override
     public VerifiableCredential GetMembershipCredential() {
         return membershipCredential;
     }

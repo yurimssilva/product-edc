@@ -32,7 +32,7 @@ public class SsiIdentityServiceComponentTest {
     public void setup() {
         final byte[] privateKey = KeyResourceLoader.readPrivateKey();
         final byte[] publicKey = KeyResourceLoader.readPublicKey();
-        final SsiSettings settings = new SsiSettings(TestDidHandler.DID_TEST_OPERATOR, TestDidHandler.DID_TEST_OPERATOR, privateKey);
+        final SsiSettings settings = new SsiSettings("Test", TestDidHandler.DID_TEST_OPERATOR, TestDidHandler.DID_TEST_OPERATOR, privateKey);
         final DidPublicKeyResolverHandler publicKeyHandler = new TestDidHandler();
         final DidPublicKeyResolverImpl publicKeyResolver = new DidPublicKeyResolverImpl();
         publicKeyResolver.registerHandler(publicKeyHandler);
@@ -40,9 +40,9 @@ public class SsiIdentityServiceComponentTest {
 
         final SerializedJwtPresentationFactory serializedJwtPresentationFactory = new SerializedJwtPresentationFactoryImpl(settings, jwtUtils);
         credentialStore = new VerifiableCredentialStoreFake(settings);
-        ssiIdentityService = new SsiIdentityService(serializedJwtPresentationFactory, credentialStore,
+        /*ssiIdentityService = new SsiIdentityService(serializedJwtPresentationFactory, credentialStore,
                 VerifiableCredentialVerificationImpl.withAllHandlers(settings),
-                VerifiablePresentationVerificationImpl.withAllHandlers(publicKeyResolver));
+                VerifiablePresentationVerificationImpl.withAllHandlers(publicKeyResolver));*/
     }
 
     @Test

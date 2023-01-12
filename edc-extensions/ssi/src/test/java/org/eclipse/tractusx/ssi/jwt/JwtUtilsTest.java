@@ -46,7 +46,7 @@ public class JwtUtilsTest {
     String subject = "subject";
     String audience = "did:web:someaudience/wellknown";
     // when
-    SignedJWT jwt = jwtUtils.create(privateKey, issuer,subject, audience);
+    SignedJWT jwt = jwtUtils.create(privateKey, issuer,subject, audience, "claim");
     result = jwtUtils.verify(jwt, this.publicKey, audience);
     // then
     Assertions.assertTrue(result);

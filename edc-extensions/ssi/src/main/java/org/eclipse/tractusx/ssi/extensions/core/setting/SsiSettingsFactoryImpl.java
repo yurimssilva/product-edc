@@ -10,6 +10,7 @@ import org.eclipse.tractusx.ssi.extensions.core.exception.DidParseException;
 import org.eclipse.tractusx.ssi.extensions.core.exception.SsiSettingException;
 import org.eclipse.tractusx.ssi.extensions.core.resolver.DidImpl;
 import org.eclipse.tractusx.ssi.extensions.core.util.DidParser;
+import org.eclipse.tractusx.ssi.spi.did.Did;
 
 public class SsiSettingsFactoryImpl implements SsiSettingsFactory {
 
@@ -52,7 +53,7 @@ public class SsiSettingsFactoryImpl implements SsiSettingsFactory {
             monitor.warning(String.format(WARNING_NO_DID_CONFIGURED, SsiCoreExtension.SETTING_DID_DEFAULT));
         }
 
-        final DidImpl didConnector;
+        final Did didConnector;
         try {
             didConnector = DidParser.parse(didConnectorString);
         } catch (DidParseException e) {
@@ -65,7 +66,7 @@ public class SsiSettingsFactoryImpl implements SsiSettingsFactory {
             monitor.warning(String.format(WARNING_NO_DID_CONFIGURED, SsiCoreExtension.SETTING_DID_DEFAULT));
         }
 
-        final DidImpl didOperator;
+        final Did didOperator;
         try {
             didOperator = DidParser.parse(didOperatorString);
         } catch (DidParseException e) {
