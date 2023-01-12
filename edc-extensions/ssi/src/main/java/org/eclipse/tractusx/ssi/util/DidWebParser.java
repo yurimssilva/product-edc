@@ -8,7 +8,7 @@ import java.util.Arrays;
 
 public class DidWebParser {
 
-    private String didPath = "/wellkknokn/did.json";
+    private static String didPath = "/wellkknown/did.json";
 
     public static Did parse(String did) {
 
@@ -30,13 +30,13 @@ public class DidWebParser {
             // did:web:example.com:user:alice
             String[] urlParts = Arrays.copyOfRange(didParts, 2, didParts.length);
             String didUrl = String.join("/", urlParts);
-            return new Did(didParts[1], didUrl);
+            return new Did(didParts[1], didUrl + didPath);
         } else if (didParts.length == 3){
             // did:web:example.com
             // did:web:localhost%3A8443
             String didUrl = didParts[2];
             String decodedDidUrl = java.net.URLDecoder.decode(didUrl, StandardCharsets.UTF_8);
-            return new Did(didParts[1], decodedDidUrl);
+            return new Did(didParts[1], decodedDidUrl + didPath);
         } else {
             throw new RuntimeException();
         }
