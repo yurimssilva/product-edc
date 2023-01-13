@@ -9,7 +9,6 @@ install:
   vault: true
   minio: true
   backendservice: true
-  hydra: true
 
 ###################
 # Backend Service #
@@ -161,31 +160,6 @@ minio:
             - "s3:GetObject"
             - "s3:DeleteObject"
             - "s3:DeleteBucket"
-
-#########
-# HYDRA #
-#########
-hydra:
-  fullnameOverride: hydra
-  image:
-    tag: latest-sqlite
-  service:
-    type: NodePort
-    public:
-      port: 4444
-    admin:
-      port: 4445
-  hydra:
-    autoMigrate: true
-    dangerousForceHttp: true
-    config:
-      dsn: memory
-      urls:
-        self:
-          issuer: https://127.0.0.1:4444
-        consent: http://127.0.0.1:3000/consent
-        login: http://127.0.0.1:3000/login
-        logout: http://127.0.0.1:3000/logout
 
 #########
 # VAULT #

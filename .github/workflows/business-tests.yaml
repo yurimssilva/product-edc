@@ -136,7 +136,6 @@ jobs:
           kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=sokrates-postgresql --timeout=120s || ( kubectl logs -l app.kubernetes.io/name=sokrates-postgresql --tail 500 && exit 1 )
           kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=plato-postgresql --timeout=120s || ( kubectl logs -l app.kubernetes.io/name=plato-postgresql --tail 500 && exit 1 )
           kubectl wait --for=condition=ready pod -l app=minio --timeout=120s || ( kubectl logs -l app=minio --tail 500 && exit 1 )
-          kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=hydra --timeout=120s || ( kubectl logs -l app.kubernetes.io/name=hydra --tail 500 && exit 1 )
 
           # Install Plato
           helm install plato charts/tractusx-connector  \
