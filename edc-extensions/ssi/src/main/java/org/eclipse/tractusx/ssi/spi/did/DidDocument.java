@@ -3,6 +3,7 @@ package org.eclipse.tractusx.ssi.spi.did;
 import lombok.Builder;
 import lombok.NonNull;
 import lombok.Value;
+import org.eclipse.tractusx.ssi.extensions.core.base.Base58Bitcoin;
 
 import java.util.List;
 
@@ -16,6 +17,9 @@ public class DidDocument {
     @NonNull List<String> context;
 
     @NonNull List<DidVerificationMethod> verificationMethods;
+
+    @NonNull Base58Bitcoin base58Bitcoin;
+
     /**
      *     val id: String,
      *     @SerialName("@context") @JsonProperty("@context")
