@@ -52,7 +52,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <!-- plugins -->
-        <org.apache.maven.plugins.maven.dependency.plugin.version>3.4.0</org.apache.maven.plugins.maven.dependency.plugin.version>
+        <org.apache.maven.plugins.maven.dependency.plugin.version>3.4.0
+        </org.apache.maven.plugins.maven.dependency.plugin.version>
         <org.apache.maven.plugins.maven.jar.plugin.version>3.3.0</org.apache.maven.plugins.maven.jar.plugin.version>
         <com.diffplug.spotless.maven.plugin.version>2.28.0</com.diffplug.spotless.maven.plugin.version>
         <org.codehaus.mojo.exec.maven.plugin.version>3.1.0</org.codehaus.mojo.exec.maven.plugin.version>
@@ -78,6 +79,7 @@
         <org.flywaydb.version>9.10.2</org.flywaydb.version>
         <com.nimbus.jose.jwt.version>9.9</com.nimbus.jose.jwt.version>
         <com.fasterxml.jackson.version>2.14.0-rc2</com.fasterxml.jackson.version>
+        <com.github.multiformats.java-multibase>v1.1.0</com.github.multiformats.java-multibase>
 
         <!-- test dependency version -->
         <junit.jupiter.version>5.9.1</junit.jupiter.version>
@@ -136,6 +138,11 @@
         <repository>
             <id>danubetech-maven-public</id>
             <url>https://repo.danubetech.com/repository/maven-public/</url>
+        </repository>
+        <!-- SSI for Java Multibase -->
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
         </repository>
     </repositories>
 
@@ -433,6 +440,13 @@
                 <groupId>org.eclipse.tractusx.edc</groupId>
                 <artifactId>edc-dataplane-hashicorp-vault</artifactId>
                 <version>${project.version}</version>
+            </dependency>
+
+            <!-- SSI Dependencies -->
+            <dependency>
+                <groupId>com.github.multiformats</groupId>
+                <artifactId>java-multibase</artifactId>
+                <version>${com.github.multiformats.java-multibase}</version>
             </dependency>
 
             <!-- Common Dependencies -->
@@ -1287,11 +1301,11 @@
                 <artifactId>registration-service-api</artifactId>
                 <version>${org.eclipse.edc.version}</version>
             </dependency>
-<!--            <dependency>-->
-<!--                <groupId>org.eclipse.edc</groupId>-->
-<!--                <artifactId>s3-core</artifactId>-->
-<!--                <version>${org.eclipse.edc.version}</version>-->
-<!--            </dependency>-->
+            <!--            <dependency>-->
+            <!--                <groupId>org.eclipse.edc</groupId>-->
+            <!--                <artifactId>s3-core</artifactId>-->
+            <!--                <version>${org.eclipse.edc.version}</version>-->
+            <!--            </dependency>-->
             <dependency>
                 <groupId>org.eclipse.edc</groupId>
                 <artifactId>s3-operator</artifactId>

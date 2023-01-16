@@ -2,13 +2,13 @@ package org.eclipse.tractusx.ssi.extensions.core.credentials;
 
 public class SerializedVerifiablePresentation {
 
-    private final String value;
+    private final String json;
 
-    public SerializedVerifiablePresentation(String value) {
-        this.value = value;
+    public SerializedVerifiablePresentation(String json) {
+        this.json = json;
     }
 
-    public String getValue() {
-        return value;
+    public String getJson() {
+        return json;
     }
 }

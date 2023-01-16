@@ -20,7 +20,10 @@ public class SerializedJwtPresentationFactoryImpl implements SerializedJwtPresen
 
     @Override
     public SignedJWT createPresentation(List<VerifiableCredential> credentials, String audience) {
-        final VerifiablePresentation verifiablePresentation = new VerifiablePresentation(credentials);
+        final VerifiablePresentation verifiablePresentation = VerifiablePresentation.builder()
+                .verifiableCredentials(credentials)
+                .build();
+
         final SerializedVerifiablePresentation serializedVerifiablePresentation = jsonLdSerializer.serializePresentation(verifiablePresentation);
 
         return signedJwtFactory.create(audience, serializedVerifiablePresentation);

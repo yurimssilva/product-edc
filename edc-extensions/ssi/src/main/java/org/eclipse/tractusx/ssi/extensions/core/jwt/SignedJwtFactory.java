@@ -50,11 +50,10 @@ public class SignedJwtFactory {
                 .issuer(issuer)
                 .subject(subject)
                 .audience(audience)
-                .claim("vp", serializedPresentation.getValue())
+                .claim("vp", serializedPresentation.getJson())
                 .expirationTime(new Date(new Date().getTime() + 60 * 1000))
                 .jwtID(UUID.randomUUID().toString())
                 .build();
-
 
         if (SIGNING_METHOD_ES256.equalsIgnoreCase(settings.getVerifiablePresentationSigningMethod())) {
             final PrivateKey signingKey = signingKeyResolver.getSigningKey(SIGNING_METHOD_ES256);

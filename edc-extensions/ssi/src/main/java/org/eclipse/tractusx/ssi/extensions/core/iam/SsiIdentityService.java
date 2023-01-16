@@ -8,6 +8,7 @@ import org.eclipse.edc.spi.iam.TokenParameters;
 import org.eclipse.edc.spi.iam.TokenRepresentation;
 import org.eclipse.edc.spi.result.Result;
 import org.eclipse.tractusx.ssi.extensions.core.credentials.SerializedJwtPresentationFactory;
+import org.eclipse.tractusx.ssi.extensions.core.credentials.SerializedVerifiablePresentation;
 import org.eclipse.tractusx.ssi.extensions.core.jsonLd.JsonLdSerializer;
 import org.eclipse.tractusx.ssi.extensions.core.jwt.SignedJwtVerifier;
 import org.eclipse.tractusx.ssi.spi.verifiable.credential.VerifiableCredential;
@@ -58,8 +59,9 @@ public class SsiIdentityService implements IdentityService {
 
             // TODO where is audience and expiry etc. checked?
 
-            final String vpClaim = jwt.getJWTClaimsSet().getClaim("vp").toString();
-            VerifiablePresentation verifiablePresentation = jsonLdSerializer.deserializePresentation(vpClaim);
+            final String vpClaimValue = jwt.getJWTClaimsSet().getClaim("vp").toString();
+            final SerializedVerifiablePresentation vpSerialized = new SerializedVerifiablePresentation(vpClaimValue);
+            VerifiablePresentation verifiablePresentation = jsonLdSerializer.deserializePresentation(vpSerialized);
 
             // TODO Validate & Verify Verifiable Credentials
             // TODO Parse Information from Verifiable Credentials and add to ClaimToken (e.g. BusinessPartnerNumber)

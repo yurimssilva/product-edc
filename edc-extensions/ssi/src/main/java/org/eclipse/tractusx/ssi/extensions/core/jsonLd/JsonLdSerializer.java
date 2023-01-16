@@ -8,6 +8,6 @@ public interface JsonLdSerializer {
 
     SerializedVerifiablePresentation serializePresentation(VerifiablePresentation verifiablePresentation);
 
-    VerifiablePresentation deserializePresentation(String serializedPresentation);
+    VerifiablePresentation deserializePresentation(SerializedVerifiablePresentation serializedPresentation);
 
 }
