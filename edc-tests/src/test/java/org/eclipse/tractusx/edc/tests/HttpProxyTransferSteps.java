@@ -5,14 +5,11 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
-import org.eclipse.tractusx.edc.tests.data.Asset;
-import org.eclipse.tractusx.edc.tests.data.ContractNegotiation;
-import org.eclipse.tractusx.edc.tests.data.DataAddress;
-import org.eclipse.tractusx.edc.tests.data.HttpProxySinkDataAddress;
-import org.eclipse.tractusx.edc.tests.data.HttpProxySourceDataAddress;
-import org.eclipse.tractusx.edc.tests.data.Transfer;
+import org.eclipse.tractusx.edc.tests.data.*;
 import org.junit.jupiter.api.Assertions;
 
 @Slf4j
@@ -21,9 +18,14 @@ public class HttpProxyTransferSteps {
   private static final String ID = "id";
   private static final String DESCRIPTION = "description";
   private static final String BASE_URL = "baseUrl";
-  private static final String DEFINITION_ID = "definition id";
   private static final String ASSET_ID = "asset id";
   private static final String RECEIVER_HTTP_ENDPOINT = "receiverHttpEndpoint";
+  private final Map<String, String> oauth2DataAddressFields =
+      Map.of(
+          "oauth2 token url", "oauth2:tokenUrl",
+          "oauth2 client id", "oauth2:clientId",
+          "oauth2 client secret", "oauth2:clientSecret",
+          "oauth2 scope", "oauth2:scope");
 
   @Given("'{connector}' has a http proxy assets")
   public void hasAssets(Connector connector, DataTable table) throws Exception {
@@ -34,7 +36,16 @@ public class HttpProxyTransferSteps {
       final String description = map.get(DESCRIPTION);
       final String baseUrl = map.get(BASE_URL);
 
-      final DataAddress address = new HttpProxySourceDataAddress(baseUrl);
+      var properties = new HashMap<String, String>();
+      oauth2DataAddressFields.forEach(
+          (desc, keyName) -> {
+            var value = map.get(desc);
+            if (value != null) {
+              properties.put(keyName, value);
+            }
+          });
+
+      final DataAddress address = new HttpProxySourceDataAddress(baseUrl, properties);
       final Asset asset = new Asset(id, description, address);
 
       api.createAsset(asset);

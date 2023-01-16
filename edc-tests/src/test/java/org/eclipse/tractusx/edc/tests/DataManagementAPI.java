@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -299,8 +300,12 @@ public class DataManagementAPI {
     final ManagementApiDataAddress apiObject = new ManagementApiDataAddress();
 
     if (dataAddress instanceof HttpProxySourceDataAddress) {
-      final HttpProxySourceDataAddress a = (HttpProxySourceDataAddress) dataAddress;
-      apiObject.setProperties(Map.of("type", "HttpData", "baseUrl", a.getBaseUrl()));
+      final HttpProxySourceDataAddress address = (HttpProxySourceDataAddress) dataAddress;
+      var properties = new HashMap<String, Object>();
+      properties.put("type", "HttpData");
+      properties.put("baseUrl", address.getBaseUrl());
+      properties.putAll(address.getProperties());
+      apiObject.setProperties(properties);
     } else if (dataAddress instanceof HttpProxySinkDataAddress) {
       apiObject.setProperties(Map.of("type", "HttpProxy"));
     } else if (dataAddress instanceof S3DataAddress) {
