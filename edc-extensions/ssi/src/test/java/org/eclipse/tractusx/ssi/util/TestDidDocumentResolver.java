@@ -34,9 +34,12 @@ public class TestDidDocumentResolver implements DidDocumentResolver {
         throw new NotFoundException(did.toString());
     }
 
-
     private void initializeDids() {
-        didMap.put(DID_TEST_OPERATOR, new DidDocument(DID_TEST_OPERATOR));
-    }
+        final DidDocument operatorDocument = DidDocument
+                .builder()
+                .did(DID_TEST_OPERATOR)
+                .build();
 
+        didMap.put(DID_TEST_OPERATOR, operatorDocument);
+    }
 }

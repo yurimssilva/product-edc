@@ -1,18 +1,21 @@
 package org.eclipse.tractusx.ssi.spi.did;
 
+import lombok.Builder;
+import lombok.NonNull;
 import lombok.Value;
 
 import java.util.List;
 
 @Value
+@Builder
 public class DidDocument {
-    Did did;
+    @NonNull Did did;
 
-    String id;
+    @NonNull String id;
 
-    List<String> context;
+    @NonNull List<String> context;
 
-    List<DidVerificationMethod> verificationMethods;
+    @NonNull List<DidVerificationMethod> verificationMethods;
     /**
      *     val id: String,
      *     @SerialName("@context") @JsonProperty("@context")

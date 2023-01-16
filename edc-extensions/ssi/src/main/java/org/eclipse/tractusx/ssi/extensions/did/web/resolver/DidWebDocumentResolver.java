@@ -20,11 +20,13 @@ public class DidWebDocumentResolver implements DidDocumentResolver {
     @Override
     public DidDocument resolve(Did did) {
         if (!did.getMethod().equals(Constants.DID_WEB_METHOD))
-            throw new SsiException("Handler can only handle did:" + Constants.DID_WEB_METHOD);
+            throw new SsiException("Handler can only handle the following methods:" + Constants.DID_WEB_METHOD);
 
         final URI url = DidWebParser.parse(did);
 
-        return new DidDocument(did);
+        return DidDocument.builder()
+                .did(did)
+                .build();
     }
 
 }

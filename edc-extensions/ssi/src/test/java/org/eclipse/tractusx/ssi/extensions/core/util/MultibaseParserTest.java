@@ -4,16 +4,16 @@ import org.eclipse.tractusx.ssi.spi.verifiable.MultibaseString;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.*;
+public class MultibaseParserTest {
 
-public class MultibaseUtilTest {
-
-    private static final String BASE_64 = "oH2hXjs6mEelLJhUBDeJ9Q==";
-    private static final String BASE_58 = "5R5ANNcrsf9HHTRd5Eq6RYW";
+    private static final String MULTIBASE_58_BITCOIN_IDENTIFIER = "z";
+    private static final String MULTIBASE_64_PADDING_IDENTIFIER = "M";
+    private static final String BASE_64 = MULTIBASE_64_PADDING_IDENTIFIER + "TXVsdGliYXNlIGlzIGF3ZXNvbWUhIFxvLw==";  // "Multibase is awesome! \o/"
+    private static final String BASE_58 = MULTIBASE_58_BITCOIN_IDENTIFIER + "YAjKoNbau5KiqmHPmSxYCvn66dA1vLmwbt"; // "Multibase is awesome! \o/"
 
     @Test
     public void testFromBase64() {
-        final MultibaseString mbs = MultibaseUtil.fromBase64(BASE_64);
+        final MultibaseString mbs = MultibaseParser.parse(BASE_64);
 
         Assertions.assertEquals(BASE_58, mbs.getBase58(), "Base58 not equal");
         Assertions.assertEquals(BASE_64, mbs.getBase64(), "Base64 not equal");
@@ -22,7 +22,7 @@ public class MultibaseUtilTest {
     @Test
     public void testFromBase58() {
 
-        final MultibaseString mbs = MultibaseUtil.fromBase58(BASE_58);
+        final MultibaseString mbs = MultibaseParser.parse(BASE_58);
 
         Assertions.assertEquals(BASE_58, mbs.getBase58(), "Base58 not equal");
         Assertions.assertEquals(BASE_64, mbs.getBase64(), "Base64 not equal");
