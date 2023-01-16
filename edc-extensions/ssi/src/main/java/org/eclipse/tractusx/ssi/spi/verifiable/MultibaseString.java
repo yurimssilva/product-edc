@@ -21,6 +21,13 @@ public class MultibaseString {
         this.base64 = base64;
     }
 
+    /**
+     * base58 bitcoin
+     */
     @NonNull String base58;
+
+    /**
+     * RFC 4648 [RFC4648] with padding - MIME encoding
+     */
     @NonNull String base64;
 }

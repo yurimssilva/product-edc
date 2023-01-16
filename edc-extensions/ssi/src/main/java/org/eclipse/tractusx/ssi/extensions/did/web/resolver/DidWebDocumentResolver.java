@@ -28,5 +28,4 @@ public class DidWebDocumentResolver implements DidDocumentResolver {
                 .did(did)
                 .build();
     }
-
 }
