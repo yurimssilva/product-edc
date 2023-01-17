@@ -10,6 +10,7 @@ import org.eclipse.edc.spi.result.Result;
 import org.eclipse.tractusx.ssi.extensions.core.credentials.SerializedJwtPresentationFactory;
 import org.eclipse.tractusx.ssi.extensions.core.credentials.SerializedVerifiablePresentation;
 import org.eclipse.tractusx.ssi.extensions.core.jsonLd.JsonLdSerializer;
+import org.eclipse.tractusx.ssi.extensions.core.jwt.SignedJwtValidator;
 import org.eclipse.tractusx.ssi.extensions.core.jwt.SignedJwtVerifier;
 import org.eclipse.tractusx.ssi.spi.verifiable.credential.VerifiableCredential;
 import org.eclipse.tractusx.ssi.spi.verifiable.presentation.VerifiablePresentation;
@@ -25,11 +26,14 @@ public class SsiIdentityService implements IdentityService {
     private final JsonLdSerializer jsonLdSerializer;
     private final SignedJwtVerifier jwtVerifier;
 
-    public SsiIdentityService(SerializedJwtPresentationFactory serializedJwtPresentationFactory, VerifiableCredentialWallet credentialStore, JsonLdSerializer jsonLdSerializer, SignedJwtVerifier jwtVerifier) {
+    private final SignedJwtValidator jwtValidator;
+
+    public SsiIdentityService(SerializedJwtPresentationFactory serializedJwtPresentationFactory, VerifiableCredentialWallet credentialStore, JsonLdSerializer jsonLdSerializer, SignedJwtVerifier jwtVerifier, SignedJwtValidator jwtValidator) {
         this.presentationFactory = serializedJwtPresentationFactory;
         this.credentialStore = credentialStore;
         this.jsonLdSerializer = jsonLdSerializer;
         this.jwtVerifier = jwtVerifier;
+        this.jwtValidator = jwtValidator;
     }
 
     /**
@@ -56,8 +60,7 @@ public class SsiIdentityService implements IdentityService {
             SignedJWT jwt = SignedJWT.parse(token);
 
             jwtVerifier.verify(jwt);
-
-            // TODO where is audience and expiry etc. checked?
+            jwtValidator.validate(jwt); // TODO is audience and expiry date enough for validation ?
 
             final String vpClaimValue = jwt.getJWTClaimsSet().getClaim("vp").toString();
             final SerializedVerifiablePresentation vpSerialized = new SerializedVerifiablePresentation(vpClaimValue);
