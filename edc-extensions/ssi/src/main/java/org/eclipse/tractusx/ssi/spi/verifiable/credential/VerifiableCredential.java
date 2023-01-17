@@ -7,7 +7,9 @@ import org.eclipse.tractusx.ssi.spi.verifiable.Ed25519Proof;
 
 import java.net.URI;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Value
 @Builder
@@ -24,4 +26,8 @@ public class VerifiableCredential {
     Date expirationDate;
     VerifiableCredentialStatus status;
     Ed25519Proof proof;
+
+    @NonNull
+    @Builder.Default
+    public Map<String, Object> claims = new HashMap<>();
 }
