@@ -60,7 +60,7 @@ public class DanubTechMapper {
     }
 
     @NonNull
-    private static com.danubetech.verifiablecredentials.VerifiableCredential map(VerifiableCredential credential) {
+    public static com.danubetech.verifiablecredentials.VerifiableCredential map(VerifiableCredential credential) {
 
         return com.danubetech.verifiablecredentials.VerifiableCredential.builder()
                 .defaultContexts(true)

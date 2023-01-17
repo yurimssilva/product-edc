@@ -4,21 +4,16 @@ import lombok.Builder;
 import lombok.NonNull;
 import lombok.Value;
 import org.eclipse.tractusx.ssi.extensions.core.base.Base58Bitcoin;
+import org.eclipse.tractusx.ssi.spi.verifiable.MultibaseString;
 
 import java.util.List;
 
 @Value
 @Builder
 public class DidDocument {
-    @NonNull Did did;
-
     @NonNull String id;
 
-    @NonNull List<String> context;
-
     @NonNull List<DidVerificationMethod> verificationMethods;
-
-    @NonNull Base58Bitcoin base58Bitcoin;
 
     /**
      *     val id: String,

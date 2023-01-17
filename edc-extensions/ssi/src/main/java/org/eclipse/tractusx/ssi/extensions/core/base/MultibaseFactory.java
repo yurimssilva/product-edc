@@ -1,12 +1,12 @@
 package org.eclipse.tractusx.ssi.extensions.core.base;
 
-import org.eclipse.tractusx.ssi.extensions.core.base.Base58Bitcoin;
-import org.eclipse.tractusx.ssi.extensions.core.base.Base58Flickr;
-import org.eclipse.tractusx.ssi.extensions.core.base.Base64;
-import org.eclipse.tractusx.ssi.extensions.core.base.Base64WithPadding;
 import org.eclipse.tractusx.ssi.spi.verifiable.MultibaseString;
 
 public class MultibaseFactory {
+
+    public static MultibaseString create(byte[] decoded) {
+        return Base58Bitcoin.create(decoded);
+    }
 
     public static MultibaseString create(String encoded) {
 

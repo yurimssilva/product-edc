@@ -8,5 +8,12 @@ import lombok.Value;
 @Value
 @EqualsAndHashCode
 public class DidMethodIdentifier {
-    @NonNull String value;
+    @NonNull
+    @EqualsAndHashCode.Include
+    String value;
+
+    @Override
+    public String toString() {
+        return value;
+    }
 }

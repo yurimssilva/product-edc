@@ -12,6 +12,13 @@ public class Base58Bitcoin implements MultibaseString {
         return Multibase.encoding(encoded) != Multibase.Base.Base58BTC;
     }
 
+    public static Base58Bitcoin create(byte[] decoded) {
+
+        final String encoded = Multibase.encode(Multibase.Base.Base58BTC, decoded);
+
+        return new Base58Bitcoin(decoded, encoded);
+    }
+
     public static Base58Bitcoin create(String encoded) {
 
         if (canDecode(encoded)) {

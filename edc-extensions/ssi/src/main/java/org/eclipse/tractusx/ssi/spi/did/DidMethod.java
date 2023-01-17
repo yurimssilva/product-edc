@@ -7,5 +7,11 @@ import lombok.Value;
 @Value
 @EqualsAndHashCode
 public class DidMethod {
+    @EqualsAndHashCode.Include
     @NonNull String value;
+
+    @Override
+    public String toString() {
+        return value;
+    }
 }

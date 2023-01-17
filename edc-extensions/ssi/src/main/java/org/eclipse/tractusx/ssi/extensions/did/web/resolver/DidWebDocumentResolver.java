@@ -25,7 +25,7 @@ public class DidWebDocumentResolver implements DidDocumentResolver {
         final URI url = DidWebParser.parse(did);
 
         return DidDocument.builder()
-                .did(did)
+                .id(did.toString())
                 .build();
     }
 }

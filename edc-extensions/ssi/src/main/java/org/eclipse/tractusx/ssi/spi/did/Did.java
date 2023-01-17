@@ -10,7 +10,9 @@ import java.net.URI;
 @EqualsAndHashCode
 public class Did {
 
-     @NonNull DidMethod method;
+    @EqualsAndHashCode.Include
+    @NonNull DidMethod method;
+    @EqualsAndHashCode.Include
     @NonNull DidMethodIdentifier methodIdentifier;
 
     public URI toUri() {
