@@ -12,6 +12,7 @@ import org.eclipse.edc.spi.result.Result;
 import org.eclipse.tractusx.ssi.extensions.core.credentials.SerializedJwtPresentationFactory;
 import org.eclipse.tractusx.ssi.extensions.core.credentials.SerializedVerifiablePresentation;
 import org.eclipse.tractusx.ssi.extensions.core.jsonLd.JsonLdSerializer;
+import org.eclipse.tractusx.ssi.extensions.core.jwt.SignedJwtValidator;
 import org.eclipse.tractusx.ssi.extensions.core.jwt.SignedJwtVerifier;
 import org.eclipse.tractusx.ssi.extensions.core.setting.SsiSettings;
 import org.eclipse.tractusx.ssi.extensions.core.util.DidParser;
@@ -34,16 +35,13 @@ public class SsiIdentityService implements IdentityService {
     private final VerifiableCredentialWallet credentialStore;
     private final JsonLdSerializer jsonLdSerializer;
     private final SignedJwtVerifier jwtVerifier;
-    private final SsiSettings settings;
-    private final DidDocumentResolver didDocumentResolver;
-
-    public SsiIdentityService(SerializedJwtPresentationFactory serializedJwtPresentationFactory, VerifiableCredentialWallet credentialStore, JsonLdSerializer jsonLdSerializer, SignedJwtVerifier jwtVerifier, SsiSettings settings, DidDocumentResolver didDocumentResolver) {
+    private final SignedJwtValidator jwtValidator;
+    public SsiIdentityService(SerializedJwtPresentationFactory serializedJwtPresentationFactory, VerifiableCredentialWallet credentialStore, JsonLdSerializer jsonLdSerializer, SignedJwtVerifier jwtVerifier, SignedJwtValidator jwtValidator) {
         this.presentationFactory = serializedJwtPresentationFactory;
         this.credentialStore = credentialStore;
         this.jsonLdSerializer = jsonLdSerializer;
         this.jwtVerifier = jwtVerifier;
-        this.settings = settings;
-        this.didDocumentResolver = didDocumentResolver;
+        this.jwtValidator = jwtValidator;
     }
 
     /**
@@ -70,37 +68,17 @@ public class SsiIdentityService implements IdentityService {
             SignedJWT jwt = SignedJWT.parse(token);
 
             jwtVerifier.verify(jwt);
-
-            // TODO where is audience and expiry etc. checked?
+            jwtValidator.validate(jwt); // TODO is audience and expiry date enough for validation ?
 
             final String vpClaimValue = jwt.getJWTClaimsSet().getClaim("vp").toString();
             final SerializedVerifiablePresentation vpSerialized = new SerializedVerifiablePresentation(vpClaimValue);
             VerifiablePresentation verifiablePresentation = jsonLdSerializer.deserializePresentation(vpSerialized);
 
 
-            final Did trustedIssuer = settings.getDidDataspaceOperator();
             final Date today = new Date();
             for (final VerifiableCredential credential : verifiablePresentation.getVerifiableCredentials()) {
 
-                if (!credential.getIssuer().equals(trustedIssuer.toUri())) {
-                    // TODO Log untrusted issuer
-                    return Result.failure("foo");
-                }
-
-                // check timezone = (UTC?)
-                if (credential.getExpirationDate().after(today)) {
-                    // TODO Log expired
-                    return Result.failure("foo");
-                }
-
-
-                final URI credentialIssuer = credential.getIssuer();
-                final Did issuer = DidParser.parse(credentialIssuer);
-                final DidDocument didDocument = didDocumentResolver.resolve(issuer);
-
-                final Ed25519Proof proof = credential.getProof();
-
-                var proofValue = proof.getProofValue();
+                // TODO
 
 
             }
