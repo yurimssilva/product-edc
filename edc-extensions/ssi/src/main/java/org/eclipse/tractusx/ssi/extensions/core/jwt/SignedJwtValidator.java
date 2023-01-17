@@ -5,6 +5,7 @@ import lombok.SneakyThrows;
 import org.eclipse.tractusx.ssi.extensions.core.setting.SsiSettings;
 
 import java.util.Date;
+import java.util.List;
 
 public class SignedJwtValidator {
 
@@ -18,16 +19,17 @@ public class SignedJwtValidator {
 
   @SneakyThrows
   public boolean validate(SignedJWT jwt){
-    String audience = jwt.getJWTClaimsSet().getAudience().get(0); //Todo Check all audiences
+    List<String> audiences = jwt.getJWTClaimsSet().getAudience();
     Date expiryDate = jwt.getJWTClaimsSet().getExpirationTime();
-    return isValidAudience(audience) && isNotExpired(expiryDate);
+    return isValidAudience(audiences) && isNotExpired(expiryDate);
   }
 
-  private boolean isValidAudience(String audience){
-    return audience.equals(audience);
+  private boolean isValidAudience(List<String> audiences){
+    boolean result = audiences.stream().anyMatch(x -> x.equals(audience));
+    return result;
   }
 
   private boolean isNotExpired(Date expiryDate){
-    return expiryDate.after(new Date());
+    return expiryDate.after(new Date()); //Todo add Timezone
   }
 }
