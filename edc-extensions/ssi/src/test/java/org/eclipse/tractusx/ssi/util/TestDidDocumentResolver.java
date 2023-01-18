@@ -49,7 +49,7 @@ public class TestDidDocumentResolver implements DidDocumentResolver {
     private DidDocument getOperatorDid() {
         final DidDocument operatorDocument = DidDocument
                 .builder()
-                .id(DID_TEST_OPERATOR.toString())
+                .id(DID_TEST_OPERATOR.toUri())
                 .publicKeys(verificationMethodList.get(DID_TEST_OPERATOR))
                 .build();
 

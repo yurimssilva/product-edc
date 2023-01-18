@@ -31,8 +31,9 @@ public class SsiFileSystemWallet implements VerifiableCredentialWallet {
     }
 
     private VerifiableCredential loadMembershipCredential() {
-        //TODO Throw better exception
-        return readCredentials().stream().filter(c -> c.getTypes().stream().anyMatch(VerifiableCredentialType.MEMBERSHIP_CREDENTIAL::equals)).findFirst().orElseThrow();
+        return readCredentials().stream().filter(c -> c.getTypes().stream().anyMatch(VerifiableCredentialType.MEMBERSHIP_CREDENTIAL::equals))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("FileSystemWallet: Membership Credential not found"));
     }
 
     @SneakyThrows
@@ -40,7 +41,9 @@ public class SsiFileSystemWallet implements VerifiableCredentialWallet {
         List<Path> paths = new LinkedList<>();
 
         if (Files.isDirectory(credentialDirectory)) {
-            Files.list(credentialDirectory).forEach(paths::add);
+            try (var filesStream = Files.list(credentialDirectory)) {
+                filesStream.forEach(paths::add);
+            }
         } else {
             paths.add(credentialDirectory);
         }
