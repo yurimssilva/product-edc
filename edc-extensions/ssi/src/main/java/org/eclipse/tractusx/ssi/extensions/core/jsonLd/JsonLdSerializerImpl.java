@@ -5,28 +5,32 @@ import org.eclipse.tractusx.ssi.spi.verifiable.presentation.VerifiablePresentati
 
 public class JsonLdSerializerImpl implements JsonLdSerializer {
 
-    private final DanubTechMapper mapper;
+  private final DanubTechMapper mapper;
 
-    public JsonLdSerializerImpl(DanubTechMapper mapper) {
-        this.mapper = mapper;
-    }
+  public JsonLdSerializerImpl(DanubTechMapper mapper) {
+    this.mapper = mapper;
+  }
 
-    @Override
-    public SerializedVerifiablePresentation serializePresentation(VerifiablePresentation verifiablePresentation) {
+  @Override
+  public SerializedVerifiablePresentation serializePresentation(
+      VerifiablePresentation verifiablePresentation) {
 
-        final com.danubetech.verifiablecredentials.VerifiablePresentation dtPresentation = mapper.map(verifiablePresentation);
-        final String dtPresentationJson = dtPresentation.toJson();
+    final com.danubetech.verifiablecredentials.VerifiablePresentation dtPresentation =
+        mapper.map(verifiablePresentation);
+    final String dtPresentationJson = dtPresentation.toJson();
 
-        return new SerializedVerifiablePresentation(dtPresentationJson);
-    }
+    return new SerializedVerifiablePresentation(dtPresentationJson);
+  }
 
-    @Override
-    public VerifiablePresentation deserializePresentation(SerializedVerifiablePresentation serializedPresentation) {
+  @Override
+  public VerifiablePresentation deserializePresentation(
+      SerializedVerifiablePresentation serializedPresentation) {
 
-        final String serializedPresentationJson = serializedPresentation.getJson();
-        final com.danubetech.verifiablecredentials.VerifiablePresentation dtPresentation =
-                com.danubetech.verifiablecredentials.VerifiablePresentation.fromJson(serializedPresentationJson);
+    final String serializedPresentationJson = serializedPresentation.getJson();
+    final com.danubetech.verifiablecredentials.VerifiablePresentation dtPresentation =
+        com.danubetech.verifiablecredentials.VerifiablePresentation.fromJson(
+            serializedPresentationJson);
 
-        return mapper.map(dtPresentation);
-    }
+    return mapper.map(dtPresentation);
+  }
 }

@@ -2,8 +2,9 @@ package org.eclipse.tractusx.ssi.spi.wallet;
 
 public interface VerifiableCredentialWalletRegistry {
 
-    VerifiableCredentialWallet get(String walletIdentifier);
-    void register(VerifiableCredentialWallet wallet);
+  VerifiableCredentialWallet get(String walletIdentifier);
 
-    void unregister(VerifiableCredentialWallet wallet);
+  void register(VerifiableCredentialWallet wallet);
+
+  void unregister(VerifiableCredentialWallet wallet);
 }

@@ -5,9 +5,9 @@ import org.eclipse.tractusx.ssi.spi.did.Did;
 
 @Value
 public class SsiSettings {
-    String verifiablePresentationSigningMethod;
-    String walletIdentifier;
-    Did didDataspaceOperator;
-    Did didConnector;
-    String verifiablePresentationSigningKeyAlias;
+  String verifiablePresentationSigningMethod;
+  String walletIdentifier;
+  Did didDataspaceOperator;
+  Did didConnector;
+  String verifiablePresentationSigningKeyAlias;
 }

@@ -1,16 +1,15 @@
 package org.eclipse.tractusx.ssi.spi.did;
 
+import java.net.URI;
+import java.util.List;
 import lombok.Builder;
 import lombok.NonNull;
 import lombok.Value;
 
-import java.net.URI;
-import java.util.List;
-
 @Value
 @Builder
 public class DidDocument {
-    @NonNull URI id;
+  @NonNull URI id;
 
-    @NonNull List<PublicKey> publicKeys;
+  @NonNull List<PublicKey> publicKeys;
 }

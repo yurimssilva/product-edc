@@ -8,21 +8,21 @@ import org.eclipse.tractusx.ssi.spi.verifiable.MultibaseString;
 @Value
 public class Base64 implements MultibaseString {
 
-    public static boolean canDecode(String encoded) {
-        return Multibase.encoding(encoded) != Multibase.Base.Base64;
+  public static boolean canDecode(String encoded) {
+    return Multibase.encoding(encoded) != Multibase.Base.Base64;
+  }
+
+  public static Base64 create(String encoded) {
+
+    if (canDecode(encoded)) {
+      throw new IllegalArgumentException(); // TODO
     }
 
-    public static Base64 create(String encoded) {
+    final byte[] base64 = Multibase.decode(encoded);
 
-        if (canDecode(encoded)) {
-            throw new IllegalArgumentException(); // TODO
-        }
+    return new Base64(base64, encoded);
+  }
 
-        final byte[] base64 = Multibase.decode(encoded);
-
-        return new Base64(base64, encoded);
-    }
-
-    @NonNull byte[] decoded;
-    @NonNull String encoded;
+  @NonNull byte[] decoded;
+  @NonNull String encoded;
 }

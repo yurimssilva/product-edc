@@ -6,8 +6,9 @@ import org.eclipse.tractusx.ssi.spi.verifiable.presentation.VerifiablePresentati
 // TODO This hides danubtech
 public interface JsonLdSerializer {
 
-    SerializedVerifiablePresentation serializePresentation(VerifiablePresentation verifiablePresentation);
+  SerializedVerifiablePresentation serializePresentation(
+      VerifiablePresentation verifiablePresentation);
 
-    VerifiablePresentation deserializePresentation(SerializedVerifiablePresentation serializedPresentation);
-
+  VerifiablePresentation deserializePresentation(
+      SerializedVerifiablePresentation serializedPresentation);
 }

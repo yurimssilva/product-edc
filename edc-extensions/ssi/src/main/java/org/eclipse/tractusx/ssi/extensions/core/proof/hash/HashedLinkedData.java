@@ -5,5 +5,5 @@ import lombok.Value;
 
 @Value
 public class HashedLinkedData {
-    @NonNull byte[] value;
+  @NonNull byte[] value;
 }

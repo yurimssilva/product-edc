@@ -6,6 +6,5 @@ import lombok.Value;
 @Value
 public class TransformedLinkedData {
 
-    @NonNull String value;
-
+  @NonNull String value;
 }

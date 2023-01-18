@@ -6,6 +6,7 @@ import org.eclipse.tractusx.ssi.spi.did.DidMethod;
 
 public interface DidDocumentResolver {
 
-    DidMethod getSupportedMethod();
-    DidDocument resolve(Did did);
+  DidMethod getSupportedMethod();
+
+  DidDocument resolve(Did did);
 }
