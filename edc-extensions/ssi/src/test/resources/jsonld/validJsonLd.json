@@ -1,5 +1,5 @@
 {
-  "@context" : "https://www.w3.org/ns/did/v1",
+  "@context" : [ "https://w3id.org/security/v1", "https://www.w3.org/ns/did/v1"],
   "id" : "did:ex:1234",
   "verificationMethod":
   [
@@ -7,7 +7,7 @@
       "id": "did:example:1234abcd#keys-1",
       "type": "Ed25519VerificationKey2018",
       "controller": "did:example:1234abcd",
-      "publicKeyMultibase": "H3C2AVvLMv6gmMNam3uVAjZpfkcJCwDwnZn6z3wXmqPV"
+      "publicKeyBase58": "H3C2AVvLMv6gmMNam3uVAjZpfkcJCwDwnZn6z3wXmqPV"
     }
   ],
   "service" :
