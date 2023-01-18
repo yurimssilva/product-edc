@@ -46,7 +46,7 @@ public class LinkedDataProofValidation {
     var proof =
         Ed25519Proof.builder()
             .created(new Date())
-            .verificationMethod(verificationMethodId)
+            .verificationMethod(verificationMethodId.toUri())
             .proofValue(MultibaseFactory.create(signature))
             .build();
 

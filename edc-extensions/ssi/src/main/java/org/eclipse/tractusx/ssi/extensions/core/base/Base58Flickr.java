@@ -9,12 +9,12 @@ import org.eclipse.tractusx.ssi.spi.verifiable.MultibaseString;
 public class Base58Flickr implements MultibaseString {
 
   public static boolean canDecode(String encoded) {
-    return Multibase.encoding(encoded) != Multibase.Base.Base58Flickr;
+    return Multibase.encoding(encoded).equals(Multibase.Base.Base58Flickr);
   }
 
   public static Base58Flickr create(String encoded) {
 
-    if (canDecode(encoded)) {
+    if (!canDecode(encoded)) {
       throw new IllegalArgumentException(); // TODO
     }
 
@@ -23,6 +23,8 @@ public class Base58Flickr implements MultibaseString {
     return new Base58Flickr(base58, encoded);
   }
 
-  @NonNull byte[] decoded;
-  @NonNull String encoded;
+  @NonNull
+  byte[] decoded;
+  @NonNull
+  String encoded;
 }

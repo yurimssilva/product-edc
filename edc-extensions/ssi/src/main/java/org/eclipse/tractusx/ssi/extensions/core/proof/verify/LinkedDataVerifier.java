@@ -26,26 +26,24 @@ public class LinkedDataVerifier {
     final Did issuerDid = DidParser.parse(issuer);
     final DidDocument document = didDocumentResolver.resolve(issuerDid);
 
-    final Did verifiacationMethodId = credential.getProof().getVerificationMethod();
-    final Ed25519VerificationKey2020 key =
-        document.getPublicKeys().stream()
-            .filter(v -> v.getId().equals(verifiacationMethodId.toUri()))
-            .map(Ed25519VerificationKey2020.class::cast)
-            .findFirst()
-            .orElseThrow();
+    final URI verificationMethodId = credential.getProof().getVerificationMethod();
+    final Ed25519VerificationKey2020 key = document.getPublicKeys().stream()
+        .filter(v -> v.getId().equals(verificationMethodId))
+        .map(Ed25519VerificationKey2020.class::cast)
+        .findFirst()
+        .orElseThrow();
 
     final MultibaseString publicKey = key.getPublicKeyMultibase();
     final MultibaseString signature = credential.getProof().getProofValue();
 
-    final boolean signatureValid =
-        Ed25519.verify(
-            signature.getDecoded(),
-            0,
-            publicKey.getDecoded(),
-            0,
-            hashedLinkedData.getValue(),
-            0,
-            hashedLinkedData.getValue().length);
+    final boolean signatureValid = Ed25519.verify(
+        signature.getDecoded(),
+        0,
+        publicKey.getDecoded(),
+        0,
+        hashedLinkedData.getValue(),
+        0,
+        hashedLinkedData.getValue().length);
 
     return signatureValid;
   }

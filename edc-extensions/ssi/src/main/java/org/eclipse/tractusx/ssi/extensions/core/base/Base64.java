@@ -9,12 +9,12 @@ import org.eclipse.tractusx.ssi.spi.verifiable.MultibaseString;
 public class Base64 implements MultibaseString {
 
   public static boolean canDecode(String encoded) {
-    return Multibase.encoding(encoded) != Multibase.Base.Base64;
+    return Multibase.encoding(encoded).equals(Multibase.Base.Base64);
   }
 
   public static Base64 create(String encoded) {
 
-    if (canDecode(encoded)) {
+    if (!canDecode(encoded)) {
       throw new IllegalArgumentException(); // TODO
     }
 
@@ -23,6 +23,8 @@ public class Base64 implements MultibaseString {
     return new Base64(base64, encoded);
   }
 
-  @NonNull byte[] decoded;
-  @NonNull String encoded;
+  @NonNull
+  byte[] decoded;
+  @NonNull
+  String encoded;
 }
