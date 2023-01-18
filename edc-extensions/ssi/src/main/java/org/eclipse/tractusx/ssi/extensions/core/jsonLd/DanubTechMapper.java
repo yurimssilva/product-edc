@@ -1,9 +1,13 @@
 package org.eclipse.tractusx.ssi.extensions.core.jsonLd;
 
+import com.danubetech.verifiablecredentials.CredentialSubject;
 import com.danubetech.verifiablecredentials.credentialstatus.CredentialStatus;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import foundation.identity.jsonld.JsonLDObject;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import lombok.SneakyThrows;
 import lombok.experimental.PackagePrivate;
 import org.eclipse.tractusx.ssi.spi.verifiable.credential.VerifiableCredential;
 import org.eclipse.tractusx.ssi.spi.verifiable.credential.VerifiableCredentialStatus;
@@ -60,7 +64,9 @@ public class DanubTechMapper {
     }
 
     @NonNull
+    @SneakyThrows
     public static com.danubetech.verifiablecredentials.VerifiableCredential map(VerifiableCredential credential) {
+        CredentialSubject subject = CredentialSubject.builder().properties(credential.getClaims()).build();
 
         return com.danubetech.verifiablecredentials.VerifiableCredential.builder()
                 .defaultContexts(true)
@@ -69,6 +75,7 @@ public class DanubTechMapper {
                 .id(credential.getId())
                 .types(credential.getTypes())
                 .issuer( credential.getIssuer())
+                .credentialSubject(subject)
                 .build();
                 //.credentialStatus(credential.getStatus())
     }
