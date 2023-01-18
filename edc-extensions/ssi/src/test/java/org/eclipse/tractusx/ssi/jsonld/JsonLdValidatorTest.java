@@ -13,40 +13,51 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class JsonLdValidatorTest {
+    private JsonLdValidator validator;
 
-  private JsonLdValidator validator;
+    @BeforeEach
+    public void setUp(){
+      validator = new JsonLdValidatorImpl();
+    }
 
-  @BeforeEach
-  public void setUp() {
-    validator = new JsonLdValidatorImpl();
-  }
+    @Test
+    public void validateTestFail(){
+      JsonLDObject toTest = loadInvalidjsonLDObject();
+      boolean result = false;
+      String expectedException = "Undefined JSON-LD term: publicKeyMultibase";
 
-  @Test
-  public void validateTestFail() {
-    JsonLDObject toTest = loadInvalidjsonLDObject();
-    boolean result = false;
-    String expectedException = "Undefined JSON-LD term: publicKeyMultibase";
+      Exception exception = Assertions.assertThrows(RuntimeException.class, () -> {
+        validator.validate(toTest);
+      });
 
-    Exception exception =
-        Assertions.assertThrows(
-            RuntimeException.class,
-            () -> {
-              validator.validate(toTest);
-            });
+      Assertions.assertTrue(exception.getMessage().contains(expectedException));
+    }
 
-    Assertions.assertTrue(exception.getMessage().contains(expectedException));
-  }
+    @Test
+    public void validateTestSuccess(){
+      JsonLDObject toTest = loadValidjsonLDObject();
+      boolean result = false;
 
-  @SneakyThrows
-  private JsonLDObject loadInvalidjsonLDObject() {
-    String didJsonLd =
-        Files.readString(
-            Paths.get(
-                getClass().getClassLoader().getResource("./jsonld/invalidJsonLd.json").toURI()));
-    DocumentLoader loader = new ConfigurableDocumentLoader();
-    ((ConfigurableDocumentLoader) loader).setEnableHttps(true);
-    JsonLDObject object = JsonLDObject.fromJson(didJsonLd);
-    object.setDocumentLoader(loader);
-    return object;
-  }
+      Assertions.assertTrue(validator.validate(toTest));
+    }
+
+    @SneakyThrows
+    private JsonLDObject loadInvalidjsonLDObject(){
+      String didJsonLd = Files.readString(Paths.get(getClass().getClassLoader().getResource("./jsonld/invalidJsonLd.json").toURI()));
+      DocumentLoader loader = new ConfigurableDocumentLoader();
+      ((ConfigurableDocumentLoader) loader).setEnableHttps(true);
+      JsonLDObject object = JsonLDObject.fromJson(didJsonLd);
+      object.setDocumentLoader(loader);
+      return object;
+    }
+
+    @SneakyThrows
+    private JsonLDObject loadValidjsonLDObject(){
+      String didJsonLd = Files.readString(Paths.get(getClass().getClassLoader().getResource("./jsonld/validJsonLd.json").toURI()));
+      DocumentLoader loader = new ConfigurableDocumentLoader();
+      ((ConfigurableDocumentLoader) loader).setEnableHttps(true);
+      JsonLDObject object = JsonLDObject.fromJson(didJsonLd);
+      object.setDocumentLoader(loader);
+      return object;
+    }
 }
