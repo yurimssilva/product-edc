@@ -5,5 +5,5 @@ import org.eclipse.tractusx.ssi.spi.verifiable.credential.VerifiableCredential;
 
 public interface VerifiableCredentialWallet {
     String getIdentifier();
-    VerifiableCredential GetMembershipCredential();
+    VerifiableCredential getMembershipCredential();
 }

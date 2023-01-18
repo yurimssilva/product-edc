@@ -28,11 +28,13 @@ import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
 import org.eclipse.edc.web.spi.WebService;
 import org.eclipse.tractusx.ssi.extensions.core.jwt.SignedJwtFactory;
+import org.eclipse.tractusx.ssi.extensions.core.resolver.did.DidDocumentResolverRegistryImpl;
 import org.eclipse.tractusx.ssi.extensions.core.resolver.key.SigningMethod;
 import org.eclipse.tractusx.ssi.extensions.did.web.controler.DidWebDocumentController;
 import org.eclipse.tractusx.ssi.extensions.core.setting.SsiSettings;
 import org.eclipse.tractusx.ssi.extensions.core.setting.SsiSettingsFactory;
 import org.eclipse.tractusx.ssi.extensions.core.setting.SsiSettingsFactoryImpl;
+import org.eclipse.tractusx.ssi.spi.did.resolver.DidDocumentResolverRegistry;
 import org.eclipse.tractusx.ssi.spi.wallet.VerifiableCredentialWalletRegistry;
 import org.eclipse.tractusx.ssi.spi.wallet.VerifiableCredentialWalletService;
 
@@ -70,5 +72,9 @@ public class SsiCoreExtension implements ServiceExtension {
 
         final SsiSettingsFactory settingsFactory = new SsiSettingsFactoryImpl(monitor, vault, context);
         final SsiSettings settings = settingsFactory.createSettings();
+
+        final DidDocumentResolverRegistry documentResolverRegistry = new DidDocumentResolverRegistryImpl();
+
+        context.registerService(DidDocumentResolverRegistry.class, documentResolverRegistry);
     }
 }

@@ -74,7 +74,7 @@ public class DanubTechMapper {
     }
 
     @NonNull
-    private static VerifiableCredential map(com.danubetech.verifiablecredentials.VerifiableCredential dtCredential) {
+    public static VerifiableCredential map(com.danubetech.verifiablecredentials.VerifiableCredential dtCredential) {
         return null;
     }
 

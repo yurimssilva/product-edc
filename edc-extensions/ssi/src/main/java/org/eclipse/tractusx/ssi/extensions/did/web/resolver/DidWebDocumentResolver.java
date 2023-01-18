@@ -1,16 +1,32 @@
 package org.eclipse.tractusx.ssi.extensions.did.web.resolver;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import org.eclipse.tractusx.ssi.extensions.core.base.MultibaseFactory;
 import org.eclipse.tractusx.ssi.extensions.core.exception.SsiException;
 import org.eclipse.tractusx.ssi.extensions.did.web.util.Constants;
 import org.eclipse.tractusx.ssi.extensions.did.web.util.DidWebParser;
 import org.eclipse.tractusx.ssi.spi.did.Did;
 import org.eclipse.tractusx.ssi.spi.did.DidDocument;
 import org.eclipse.tractusx.ssi.spi.did.DidMethod;
+import org.eclipse.tractusx.ssi.spi.did.Ed25519VerificationKey2020;
+import org.eclipse.tractusx.ssi.spi.did.PublicKey;
 import org.eclipse.tractusx.ssi.spi.did.resolver.DidDocumentResolver;
 
-import java.net.URI;
+import java.io.IOException;
+import java.net.URL;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class DidWebDocumentResolver implements DidDocumentResolver {
+
+    private final OkHttpClient client;
+
+    public DidWebDocumentResolver(OkHttpClient client) {
+        this.client = client;
+    }
 
     @Override
     public DidMethod getSupportedMethod() {
@@ -22,10 +38,50 @@ public class DidWebDocumentResolver implements DidDocumentResolver {
         if (!did.getMethod().equals(Constants.DID_WEB_METHOD))
             throw new SsiException("Handler can only handle the following methods:" + Constants.DID_WEB_METHOD);
 
-        final URI url = DidWebParser.parse(did);
+        final URL url = DidWebParser.parse(did);
 
-        return DidDocument.builder()
-                .id(did.toString())
+
+        final Request request = new Request.Builder()
+                .get()
+                .url(url)
+                .build();
+
+        try (final Response response = client.newCall(request).execute()) {
+
+            if (!response.isSuccessful()) {
+                throw new RuntimeException(); // TODO
+            }
+            if (response.body() == null) {
+                throw new RuntimeException(); // TODO
+            }
+
+            final byte[] body = response.body().bytes();
+
+            final org.eclipse.tractusx.ssi.extensions.did.web.resolver.DidDocument resolvedDocument =
+                    new ObjectMapper().readValue(body, org.eclipse.tractusx.ssi.extensions.did.web.resolver.DidDocument.class);
+
+            final List<PublicKey> keys = resolvedDocument.getPublicKeys().stream()
+                    .filter(k -> k.getType().equals(Ed25519VerificationKey2020.TYPE))
+                    .map(org.eclipse.tractusx.ssi.extensions.did.web.resolver.Ed25519VerificationKey2020.class::cast)
+                    .map(this::mapKey)
+                    .collect(Collectors.toList());
+
+            return DidDocument.builder()
+                    .id(resolvedDocument.getId())
+                    .publicKeys(keys)
+                    .build();
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    private Ed25519VerificationKey2020 mapKey(org.eclipse.tractusx.ssi.extensions.did.web.resolver.Ed25519VerificationKey2020 key) {
+        return Ed25519VerificationKey2020.builder()
+                .id(key.getId())
+                .controller(key.getController())
+                .publicKeyMultibase(MultibaseFactory.create(key.getPublicKeyMultibase()))
                 .build();
     }
 }

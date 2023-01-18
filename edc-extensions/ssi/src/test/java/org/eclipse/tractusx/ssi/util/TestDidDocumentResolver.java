@@ -16,7 +16,7 @@ public class TestDidDocumentResolver implements DidDocumentResolver {
     private static final DidMethod METHOD = new DidMethod("test");
     public static final Did DID_TEST_OPERATOR = new Did(METHOD, new DidMethodIdentifier("operator"));
 
-    public Map<Did, List<DidVerificationMethod>> verificationMethodList = new HashMap<>();
+    public Map<Did, List<PublicKey>> verificationMethodList = new HashMap<>();
 
     @Override
     public DidMethod getSupportedMethod() {
@@ -50,7 +50,7 @@ public class TestDidDocumentResolver implements DidDocumentResolver {
         final DidDocument operatorDocument = DidDocument
                 .builder()
                 .id(DID_TEST_OPERATOR.toString())
-                .verificationMethods(verificationMethodList.get(DID_TEST_OPERATOR))
+                .publicKeys(verificationMethodList.get(DID_TEST_OPERATOR))
                 .build();
 
         return operatorDocument;

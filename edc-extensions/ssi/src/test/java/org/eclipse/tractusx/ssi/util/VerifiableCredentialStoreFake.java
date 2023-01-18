@@ -28,7 +28,7 @@ public class VerifiableCredentialStoreFake implements VerifiableCredentialWallet
     }
 
     @Override
-    public VerifiableCredential GetMembershipCredential() {
+    public VerifiableCredential getMembershipCredential() {
         return membershipCredential;
     }
 

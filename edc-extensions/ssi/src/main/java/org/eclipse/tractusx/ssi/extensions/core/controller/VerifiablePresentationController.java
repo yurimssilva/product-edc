@@ -40,7 +40,7 @@ public class VerifiablePresentationController {
 
         switch (requestedCredentialType) {
             case VerifiableCredentialType.MEMBERSHIP_CREDENTIAL:
-                final VerifiableCredential membershipCredential = credentialStore.GetMembershipCredential();
+                final VerifiableCredential membershipCredential = credentialStore.getMembershipCredential();
                 final SignedJWT membershipPresentation = presentationFactory.createPresentation(List.of(membershipCredential), audience);
                 return membershipPresentation.getParsedString();
             default:

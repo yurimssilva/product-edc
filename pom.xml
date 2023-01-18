@@ -509,6 +509,11 @@
             <!-- EDC Extensions -->
             <dependency>
                 <groupId>org.eclipse.edc</groupId>
+                <artifactId>http-spi</artifactId>
+                <version>${org.eclipse.edc.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.edc</groupId>
                 <artifactId>sql-pool-apache-commons</artifactId>
                 <version>${org.eclipse.edc.version}</version>
             </dependency>

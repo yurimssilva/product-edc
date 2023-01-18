@@ -19,22 +19,21 @@ import org.eclipse.tractusx.ssi.spi.verifiable.presentation.VerifiablePresentati
 import org.eclipse.tractusx.ssi.spi.wallet.VerifiableCredentialWallet;
 
 import java.text.ParseException;
-import java.util.Date;
 import java.util.List;
 
 public class SsiIdentityService implements IdentityService {
 
     private final SerializedJwtPresentationFactory presentationFactory;
-    private final VerifiableCredentialWallet credentialStore;
+    private final VerifiableCredentialWallet credentialWallet;
     private final JsonLdSerializer jsonLdSerializer;
     private final SignedJwtVerifier jwtVerifier;
     private final SignedJwtValidator jwtValidator;
 
     private final LinkedDataProofValidation linkedDataProofValidation;
 
-    public SsiIdentityService(SerializedJwtPresentationFactory serializedJwtPresentationFactory, VerifiableCredentialWallet credentialStore, JsonLdSerializer jsonLdSerializer, SignedJwtVerifier jwtVerifier, SignedJwtValidator jwtValidator, LinkedDataProofValidation linkedDataProofValidation) {
+    public SsiIdentityService(SerializedJwtPresentationFactory serializedJwtPresentationFactory, VerifiableCredentialWallet credentialWallet, JsonLdSerializer jsonLdSerializer, SignedJwtVerifier jwtVerifier, SignedJwtValidator jwtValidator, LinkedDataProofValidation linkedDataProofValidation) {
         this.presentationFactory = serializedJwtPresentationFactory;
-        this.credentialStore = credentialStore;
+        this.credentialWallet = credentialWallet;
         this.jsonLdSerializer = jsonLdSerializer;
         this.jwtVerifier = jwtVerifier;
         this.jwtValidator = jwtValidator;
@@ -50,7 +49,7 @@ public class SsiIdentityService implements IdentityService {
     @Override
     public Result<TokenRepresentation> obtainClientCredentials(TokenParameters tokenParameters) {
         final String audience = tokenParameters.getAudience(); // IDS URL of another connector
-        final VerifiableCredential membershipCredential = credentialStore.GetMembershipCredential();
+        final VerifiableCredential membershipCredential = credentialWallet.getMembershipCredential();
         final SignedJWT membershipPresentation = presentationFactory.createPresentation(List.of(membershipCredential), audience);
         final TokenRepresentation tokenRepresentation = TokenRepresentation.Builder.newInstance().token(membershipPresentation.getParsedString()).build();
 

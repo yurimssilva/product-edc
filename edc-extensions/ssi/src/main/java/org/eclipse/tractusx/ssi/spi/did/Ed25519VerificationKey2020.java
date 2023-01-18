@@ -9,10 +9,12 @@ import java.net.URI;
 
 @Value
 @Builder
-public class Ed25519VerificationKey2020 implements DidVerificationMethod {
+public class Ed25519VerificationKey2020 implements PublicKey {
+    public static final String TYPE = "Ed25519VerificationKey2020";
+
     @NonNull URI id;
     @NonNull URI controller;
-    @NonNull String didVerificationMethodType = "Ed25519VerificationKey2020";
-
+    @Builder.Default
+    @NonNull String didVerificationMethodType = TYPE;
     @NonNull MultibaseString publicKeyMultibase;
 }
