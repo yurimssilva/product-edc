@@ -1,11 +1,5 @@
 package org.eclipse.tractusx.ssi.proof;
 
-import static org.eclipse.tractusx.ssi.util.TestDidDocumentResolver.DID_TEST_OPERATOR;
-
-import java.net.URI;
-import java.security.SecureRandom;
-import java.util.Date;
-import java.util.List;
 import org.bouncycastle.math.ec.rfc8032.Ed25519;
 import org.eclipse.tractusx.ssi.extensions.core.proof.LinkedDataProofValidation;
 import org.eclipse.tractusx.ssi.extensions.core.proof.hash.LinkedDataHasher;
@@ -22,6 +16,13 @@ import org.eclipse.tractusx.ssi.util.TestDidDocumentResolver;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.net.URI;
+import java.security.SecureRandom;
+import java.util.Date;
+import java.util.List;
+
+import static org.eclipse.tractusx.ssi.util.TestDidDocumentResolver.DID_TEST_OPERATOR;
 
 public class LinkedDataProofValidationComponentTest {
 
@@ -73,7 +74,7 @@ public class LinkedDataProofValidationComponentTest {
     return VerifiableCredential.builder()
         .id(URI.create("did:test:id"))
         .types(List.of(VerifiableCredentialType.VERIFIABLE_CREDENTIAL))
-        .holder(URI.create("did:test:holder")) // holder not mapped currently
+        //.holder(URI.create("did:test:holder")) // holder not mapped currently
         .issuer(DID_TEST_OPERATOR.toUri())
         .expirationDate(new Date(2025, 1, 1))
         .issuanceDate(new Date(2020, 1, 1))

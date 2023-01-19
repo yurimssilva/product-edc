@@ -1,8 +1,5 @@
 package org.eclipse.tractusx.ssi.proof;
 
-import java.net.URI;
-import java.util.Date;
-import java.util.List;
 import org.eclipse.tractusx.ssi.extensions.core.proof.transform.LinkedDataTransformer;
 import org.eclipse.tractusx.ssi.spi.did.Did;
 import org.eclipse.tractusx.ssi.spi.did.DidMethod;
@@ -11,6 +8,10 @@ import org.eclipse.tractusx.ssi.spi.verifiable.credential.VerifiableCredential;
 import org.eclipse.tractusx.ssi.spi.verifiable.credential.VerifiableCredentialType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.net.URI;
+import java.util.Date;
+import java.util.List;
 
 public class LinkedDataTransformerTest {
 
@@ -22,7 +23,7 @@ public class LinkedDataTransformerTest {
         VerifiableCredential.builder()
             .id(URI.create("did:test:id"))
             .types(List.of(VerifiableCredentialType.VERIFIABLE_CREDENTIAL))
-            .holder(URI.create("did:test:holder")) // holder not mapped currently
+            //.holder(URI.create("did:test:holder")) // holder not mapped currently
             .issuer(URI.create("did:test:isser"))
             .expirationDate(new Date(2025, 1, 1))
             .issuanceDate(new Date(2020, 1, 1))
