@@ -74,17 +74,14 @@ public class SsiFileSystemWalletTest {
   @Test
   public void test() {
     var credential = wallet.getMembershipCredential();
-
     System.out.println(credential);
   }
 
   @SneakyThrows
   private byte[] loadKey(String name) {
-
     try (final InputStream stream = getClass().getClassLoader().getResourceAsStream(name)) {
       PemReader reader = new PemReader(new InputStreamReader(stream));
       return reader.readPemObject().getContent();
     }
-
   }
 }
