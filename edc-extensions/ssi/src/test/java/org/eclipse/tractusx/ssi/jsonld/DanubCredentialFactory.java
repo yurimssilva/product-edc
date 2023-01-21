@@ -4,6 +4,7 @@ import com.danubetech.verifiablecredentials.CredentialSubject;
 import lombok.SneakyThrows;
 
 import java.net.URI;
+import java.util.Date;
 import java.util.List;
 
 public class DanubCredentialFactory {
@@ -37,6 +38,7 @@ public class DanubCredentialFactory {
                 .id(new URI("http://example.edu/credentials/1872"))
                 .types(List.of("VerifiableCredential", "TestCredential"))
                 .issuer(new URI("https://example.edu/issuers/565049"))
+                .issuanceDate(new Date())
                 .credentialSubject(getSubject())
                 .ldProof(null) // set to null, as presentation will be used within JWT
                 .build();

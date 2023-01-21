@@ -1,15 +1,16 @@
 package org.eclipse.tractusx.ssi.spi.verifiable.credential;
 
-import java.net.URI;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import lombok.Builder;
 import lombok.NonNull;
 import lombok.ToString;
 import lombok.Value;
 import org.eclipse.tractusx.ssi.spi.verifiable.Ed25519Proof;
+
+import java.net.URI;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Value
 @Builder
@@ -23,7 +24,8 @@ public class VerifiableCredential {
   URI issuer;
   // @NonNull URI holder; TODO postponed until clafirication with danubtech
   // library, what to do without holder?
-
+  @NonNull
+  URI holder;
   /**
    * This specification defines the <a
    * href="https://www.w3.org/TR/vc-data-model/#issuance-date">issuanceDate</a>

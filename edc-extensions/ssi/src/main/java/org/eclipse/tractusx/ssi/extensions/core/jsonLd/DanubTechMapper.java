@@ -3,9 +3,6 @@ package org.eclipse.tractusx.ssi.extensions.core.jsonLd;
 import com.danubetech.verifiablecredentials.CredentialSubject;
 import com.danubetech.verifiablecredentials.credentialstatus.CredentialStatus;
 import info.weboftrust.ldsignatures.LdProof;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -16,6 +13,11 @@ import org.eclipse.tractusx.ssi.spi.verifiable.Ed25519Proof;
 import org.eclipse.tractusx.ssi.spi.verifiable.credential.VerifiableCredential;
 import org.eclipse.tractusx.ssi.spi.verifiable.credential.VerifiableCredentialStatus;
 import org.eclipse.tractusx.ssi.spi.verifiable.presentation.VerifiablePresentation;
+
+import javax.net.ssl.SSLException;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @PackagePrivate
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -48,6 +50,7 @@ public class DanubTechMapper {
   }
 
   @NonNull
+  @SneakyThrows
   public static VerifiablePresentation map(
       com.danubetech.verifiablecredentials.VerifiablePresentation dtPresentation) {
 
@@ -84,15 +87,21 @@ public class DanubTechMapper {
   }
 
   @NonNull
+  @SneakyThrows
   public static VerifiableCredential map(
-      com.danubetech.verifiablecredentials.VerifiableCredential dtCredential) {
-    return VerifiableCredential.builder()
-        .id(dtCredential.getId())
-        .types(dtCredential.getTypes())
-        .issuer(dtCredential.getIssuer())
-        .issuanceDate(dtCredential.getIssuanceDate())
-        .proof(map(dtCredential.getLdProof()))
-        .build();
+      com.danubetech.verifiablecredentials.VerifiableCredential dtCredential) throws SSLException {
+    try{
+      VerifiableCredential vc = VerifiableCredential.builder()
+              .id(dtCredential.getId())
+              .types(dtCredential.getTypes())
+              .issuer(dtCredential.getIssuer())
+              .issuanceDate(dtCredential.getIssuanceDate())
+              .proof(map(dtCredential.getLdProof()))
+              .build();
+      return vc;
+    } catch (Exception e){
+      throw new SSLException(e.getCause());
+    }
   }
 
   private static CredentialStatus map(VerifiableCredentialStatus credentialStatus) {

@@ -23,7 +23,7 @@ public class LinkedDataTransformerTest {
         VerifiableCredential.builder()
             .id(URI.create("did:test:id"))
             .types(List.of(VerifiableCredentialType.VERIFIABLE_CREDENTIAL))
-            //.holder(URI.create("did:test:holder")) // holder not mapped currently
+            .holder(URI.create("did:test:holder")) // holder not mapped currently
             .issuer(URI.create("did:test:isser"))
             .expirationDate(new Date(2025, 1, 1))
             .issuanceDate(new Date(2020, 1, 1))
