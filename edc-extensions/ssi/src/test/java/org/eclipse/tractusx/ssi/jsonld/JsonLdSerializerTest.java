@@ -13,8 +13,6 @@ public class JsonLdSerializerTest {
 
     DanubCredentialFactory credentialFactory;
     DanubTechMapper mapper;
-    com.danubetech.verifiablecredentials.VerifiablePresentation toTest;
-    com.danubetech.verifiablecredentials.VerifiablePresentation helperVP;
     SerializedVerifiablePresentation svp;
     JsonLdSerializer jsonLdSerializer;
     @BeforeEach
@@ -25,13 +23,40 @@ public class JsonLdSerializerTest {
     @Test
     public void serializePresentationTestSuccess(){
         //given
-        toTest = credentialFactory.getTestDanubVP();
+        com.danubetech.verifiablecredentials.VerifiablePresentation toTest = credentialFactory.getTestDanubVP();
         svp = new SerializedVerifiablePresentation(toTest.toJson());
         VerifiablePresentation expected = jsonLdSerializer.deserializePresentation(svp);
         //when
         Object result = jsonLdSerializer.serializePresentation(expected);
         //then
         Assertions.assertTrue(result.equals(expected));
+    }
+
+    @Test
+    public void serializePresentationFailTest(){
+        String expectedMessage = "java.lang.NullPointerException";
+        NullPointerException exception = Assertions.assertThrows(NullPointerException.class,
+                () -> jsonLdSerializer.serializePresentation(null));
+        Assertions.assertTrue(exception.toString().equals(expectedMessage));
+    }
+
+    @Test
+    public void deserializePresentationTestSuccess(){
+        //given
+        VerifiablePresentation toTest = mapper.map(credentialFactory.getTestDanubVP());
+        SerializedVerifiablePresentation expected = jsonLdSerializer.serializePresentation(toTest);
+        //when
+        Object result = jsonLdSerializer.deserializePresentation(expected);
+        //then
+        Assertions.assertTrue(result.equals(expected));
+    }
+
+    @Test
+    public void deserializePresentationFailTest(){
+        String expectedMessage = "java.lang.NullPointerException";
+        NullPointerException exception = Assertions.assertThrows(NullPointerException.class,
+                () -> jsonLdSerializer.deserializePresentation(null));
+        Assertions.assertTrue(exception.toString().equals(expectedMessage));
     }
 
 }
