@@ -9,13 +9,12 @@ import lombok.NonNull;
 import lombok.SneakyThrows;
 import lombok.experimental.PackagePrivate;
 import org.eclipse.tractusx.ssi.extensions.core.base.MultibaseFactory;
-import org.eclipse.tractusx.ssi.extensions.core.exception.SsiSettingException;
+import org.eclipse.tractusx.ssi.extensions.core.exception.SsiException;
 import org.eclipse.tractusx.ssi.spi.verifiable.Ed25519Proof;
 import org.eclipse.tractusx.ssi.spi.verifiable.credential.VerifiableCredential;
 import org.eclipse.tractusx.ssi.spi.verifiable.credential.VerifiableCredentialStatus;
 import org.eclipse.tractusx.ssi.spi.verifiable.presentation.VerifiablePresentation;
 
-import javax.net.ssl.SSLException;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -90,7 +89,7 @@ public class DanubTechMapper {
   @NonNull
   @SneakyThrows
   public static VerifiableCredential map(
-      com.danubetech.verifiablecredentials.VerifiableCredential dtCredential) throws SSLException {
+      com.danubetech.verifiablecredentials.VerifiableCredential dtCredential) throws SsiException {
     try{
       VerifiableCredential vc = VerifiableCredential.builder()
               .id(dtCredential.getId())
@@ -101,7 +100,7 @@ public class DanubTechMapper {
               .build();
       return vc;
     } catch (Exception e){
-      throw new SsiSettingException(e.getMessage());
+      throw new SsiException(e.getMessage());
     }
   }
 
