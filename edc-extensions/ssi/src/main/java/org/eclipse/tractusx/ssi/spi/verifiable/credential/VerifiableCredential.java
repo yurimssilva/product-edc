@@ -24,8 +24,6 @@ public class VerifiableCredential {
   URI issuer;
   // @NonNull URI holder; TODO postponed until clafirication with danubtech
   // library, what to do without holder?
-  @NonNull
-  URI holder;
   /**
    * This specification defines the <a
    * href="https://www.w3.org/TR/vc-data-model/#issuance-date">issuanceDate</a>

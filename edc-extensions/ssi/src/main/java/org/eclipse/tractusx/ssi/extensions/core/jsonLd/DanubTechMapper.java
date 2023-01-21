@@ -9,6 +9,7 @@ import lombok.NonNull;
 import lombok.SneakyThrows;
 import lombok.experimental.PackagePrivate;
 import org.eclipse.tractusx.ssi.extensions.core.base.MultibaseFactory;
+import org.eclipse.tractusx.ssi.extensions.core.exception.SsiSettingException;
 import org.eclipse.tractusx.ssi.spi.verifiable.Ed25519Proof;
 import org.eclipse.tractusx.ssi.spi.verifiable.credential.VerifiableCredential;
 import org.eclipse.tractusx.ssi.spi.verifiable.credential.VerifiableCredentialStatus;
@@ -100,7 +101,7 @@ public class DanubTechMapper {
               .build();
       return vc;
     } catch (Exception e){
-      throw new SSLException(e.getCause());
+      throw new SsiSettingException(e.getMessage());
     }
   }
 
