@@ -3,14 +3,15 @@ package org.eclipse.tractusx.ssi.jsonld;
 import com.apicatalog.jsonld.loader.DocumentLoader;
 import foundation.identity.jsonld.ConfigurableDocumentLoader;
 import foundation.identity.jsonld.JsonLDObject;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import lombok.SneakyThrows;
 import org.eclipse.tractusx.ssi.extensions.core.jsonLd.JsonLdValidator;
 import org.eclipse.tractusx.ssi.extensions.core.jsonLd.JsonLdValidatorImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class JsonLdValidatorTest {
     private JsonLdValidator validator;
@@ -23,21 +24,16 @@ public class JsonLdValidatorTest {
     @Test
     public void validateTestFail(){
       JsonLDObject toTest = loadInvalidjsonLDObject();
-      boolean result = false;
       String expectedException = "Undefined JSON-LD term: publicKeyMultibase";
-
       Exception exception = Assertions.assertThrows(RuntimeException.class, () -> {
         validator.validate(toTest);
       });
-
       Assertions.assertTrue(exception.getMessage().contains(expectedException));
     }
 
     @Test
     public void validateTestSuccess(){
       JsonLDObject toTest = loadValidjsonLDObject();
-      boolean result = false;
-
       Assertions.assertTrue(validator.validate(toTest));
     }
 

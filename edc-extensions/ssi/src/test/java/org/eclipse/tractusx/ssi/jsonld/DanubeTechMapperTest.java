@@ -127,28 +127,4 @@ public class DanubeTechMapperTest {
         // then
         Assertions.assertTrue(exception.toString().contains(expectedMessage));
     }
-
-    /**
-     * Status and EDMapperTest
-     */
-    @Test
-    public void mapVerifiableCredentialStatusToDtCredStatusSuccess(){
-
-    }
-
-    @Test
-    public void mapVerifiableCredentialStatusToDtCredStatusFail(){
-
-    }
-
-    @Test
-    public void mapLdProofToEd25519ProofTestSuccess(){
-
-    }
-
-    @Test
-    public void mapLdProofToEd25519ProofTestFail(){
-
-    }
-
 }
