@@ -15,6 +15,7 @@ import org.eclipse.tractusx.ssi.spi.verifiable.credential.VerifiableCredential;
 import org.eclipse.tractusx.ssi.spi.verifiable.credential.VerifiableCredentialStatus;
 import org.eclipse.tractusx.ssi.spi.verifiable.presentation.VerifiablePresentation;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -34,6 +35,13 @@ public class DanubTechMapper {
 
     // TODO Throw Exception if more or less than one
 
+    if(!presentation.getTypes().get(0).equals("VerifiablePresentation")){
+      throw new SsiException("Type: VerifiablePresentation missing");
+    }
+    // VerifiablePresentation Type is automatically added in Builder
+    List<String> types = presentation.getTypes();
+    types.remove(0);
+
     com.danubetech.verifiablecredentials.VerifiablePresentation.Builder<? extends com.danubetech.verifiablecredentials.VerifiablePresentation.Builder<?>> builder = com.danubetech.verifiablecredentials.VerifiablePresentation
         .builder();
 
@@ -42,7 +50,7 @@ public class DanubTechMapper {
         .forceContextsArray(true)
         .forceTypesArray(true)
         .id(presentation.getId())
-        .types(presentation.getTypes())
+        .types(types)
         .holder(presentation.getHolder())
         .verifiableCredential(dtCredentials.get(0))
         .ldProof(null) // set to null, as presentation will be used within JWT
@@ -72,6 +80,14 @@ public class DanubTechMapper {
   @SneakyThrows
   public static com.danubetech.verifiablecredentials.VerifiableCredential map(
       VerifiableCredential credential) {
+
+    if(!credential.getTypes().get(0).equals("VerifiableCredential")){
+      throw new SsiException("Type: VerifiableCredential missing");
+    }
+    // Verifiable Credential Type is automatically added in Builder
+    List<String> types = new ArrayList<>(credential.getTypes());
+    types.remove(0);
+
     CredentialSubject subject = CredentialSubject.builder().properties(credential.getClaims()).build();
 
     return com.danubetech.verifiablecredentials.VerifiableCredential.builder()
@@ -79,7 +95,7 @@ public class DanubTechMapper {
         .forceContextsArray(true)
         .forceTypesArray(true)
         .id(credential.getId())
-        .types(credential.getTypes())
+        .types(types)
         .issuer(credential.getIssuer())
         .credentialSubject(subject)
         .build();

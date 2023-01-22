@@ -110,10 +110,10 @@ public class DanubeTechMapperTest {
         // when
         com.danubetech.verifiablecredentials.VerifiableCredential result = mapper.map(toTest);
         //then
-        Assertions.assertEquals(result.getId(), toTest.getId());
-        Assertions.assertEquals(result.getTypes(), toTest.getTypes());
-        Assertions.assertEquals(result.getLdProof(), toTest.getProof());
-        Assertions.assertEquals(result.getExpirationDate(), toTest.getExpirationDate());
+        Assertions.assertEquals(toTest.getId(), result.getId());
+        Assertions.assertEquals(toTest.getTypes(), result.getTypes());
+        Assertions.assertEquals(toTest.getProof(), result.getLdProof());
+        Assertions.assertEquals(toTest.getExpirationDate(), result.getExpirationDate());
     }
 
     @Test
@@ -133,7 +133,7 @@ public class DanubeTechMapperTest {
      */
     @Test
     public void mapVerifiableCredentialStatusToDtCredStatusSuccess(){
-        
+
     }
 
     @Test

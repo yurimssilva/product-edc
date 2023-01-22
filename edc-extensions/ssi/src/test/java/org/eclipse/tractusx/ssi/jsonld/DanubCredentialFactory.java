@@ -20,7 +20,7 @@ public class DanubCredentialFactory {
                 .forceContextsArray(true)
                 .forceTypesArray(true)
                 .id(new URI("http://example.edu/presentation/1872"))
-                .types(List.of("VerifiablePresentation", "TestPresentation"))
+                .types(List.of("TestPresentation"))
                 .holder(new URI("https://example.edu/holder/565049"))
                 .verifiableCredential(getTestDanubVC())
                 .ldProof(null) // set to null, as presentation will be used within JWT
@@ -37,7 +37,7 @@ public class DanubCredentialFactory {
                 .forceContextsArray(true)
                 .forceTypesArray(true)
                 .id(new URI("http://example.edu/credentials/1872"))
-                .types(List.of("VerifiableCredential", "TestCredential"))
+                .types(List.of("TestCredential"))
                 .issuer(new URI("https://example.edu/issuers/565049"))
                 .issuanceDate(new Date())
                 .credentialSubject(getSubject())
