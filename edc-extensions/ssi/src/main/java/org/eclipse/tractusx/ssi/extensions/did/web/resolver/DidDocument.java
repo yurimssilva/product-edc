@@ -1,9 +1,10 @@
 package org.eclipse.tractusx.ssi.extensions.did.web.resolver;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Value;
+
 import java.net.URI;
 import java.util.List;
-import lombok.Value;
 
 @Value
 class DidDocument {
@@ -22,7 +23,7 @@ interface PublicKey {
 }
 
 @Value
-class Ed25519VerificationKey2020 implements org.eclipse.tractusx.ssi.spi.did.PublicKey {
+class Ed25519VerificationKey2020 implements PublicKey {
 
   @JsonProperty URI id;
 

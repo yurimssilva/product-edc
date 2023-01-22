@@ -4,12 +4,15 @@ import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.crypto.ECDSAVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
-import java.security.interfaces.ECPublicKey;
-import java.text.ParseException;
 import org.eclipse.tractusx.ssi.extensions.core.util.DidParser;
 import org.eclipse.tractusx.ssi.spi.did.Did;
 import org.eclipse.tractusx.ssi.spi.did.DidDocument;
+import org.eclipse.tractusx.ssi.spi.did.PublicKey;
 import org.eclipse.tractusx.ssi.spi.did.resolver.DidDocumentResolver;
+
+import java.security.interfaces.ECPublicKey;
+import java.text.ParseException;
+import java.util.List;
 
 /**
  * Convenience/helper class to generate and verify Signed JSON Web Tokens (JWTs) for communicating
@@ -43,11 +46,17 @@ public class SignedJwtVerifier {
     final DidDocument issuerDidDocument = didDocumentResolver.resolve(issuerDid);
 
     // TODO Get Public Key from DID Document
-    ECPublicKey publicKey = null;
+    List<PublicKey> publicKeys = issuerDidDocument.getPublicKeys();
 
     // verify JWT signature
     try {
-      return jwt.verify(new ECDSAVerifier(publicKey));
+      for(org.eclipse.tractusx.ssi.spi.did.PublicKey pk : publicKeys){
+        boolean verified = jwt.verify(new ECDSAVerifier((ECPublicKey) pk.getKey()));
+        if(verified){
+          return true;
+        }
+      }
+      return false;
     } catch (JOSEException e) {
       throw new JOSEException(e.getMessage());
     }

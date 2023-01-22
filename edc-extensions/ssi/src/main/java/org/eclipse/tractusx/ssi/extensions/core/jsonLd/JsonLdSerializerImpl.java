@@ -5,18 +5,12 @@ import org.eclipse.tractusx.ssi.spi.verifiable.presentation.VerifiablePresentati
 
 public class JsonLdSerializerImpl implements JsonLdSerializer {
 
-  private final DanubTechMapper mapper;
-
-  public JsonLdSerializerImpl(DanubTechMapper mapper) {
-    this.mapper = mapper;
-  }
-
   @Override
   public SerializedVerifiablePresentation serializePresentation(
       VerifiablePresentation verifiablePresentation) {
 
     final com.danubetech.verifiablecredentials.VerifiablePresentation dtPresentation =
-        mapper.map(verifiablePresentation);
+            DanubTechMapper.map(verifiablePresentation);
     final String dtPresentationJson = dtPresentation.toJson();
 
     return new SerializedVerifiablePresentation(dtPresentationJson);
@@ -31,6 +25,6 @@ public class JsonLdSerializerImpl implements JsonLdSerializer {
         com.danubetech.verifiablecredentials.VerifiablePresentation.fromJson(
             serializedPresentationJson);
 
-    return mapper.map(dtPresentation);
+    return DanubTechMapper.map(dtPresentation);
   }
 }
