@@ -21,9 +21,14 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
-import java.security.*;
+import java.net.URI;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.SecureRandom;
+import java.security.Security;
 import java.security.interfaces.ECPrivateKey;
 import java.security.interfaces.ECPublicKey;
 import java.security.spec.ECGenParameterSpec;
@@ -33,7 +38,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
@@ -46,6 +51,8 @@ public class SignedJwtVerifierTest {
     DidDocumentResolver didDocumentResolver;
     @Mock
     DidDocument didDocument;
+    @Mock
+    Did didMock;
 
     @BeforeEach
     public void init(){
@@ -63,25 +70,28 @@ public class SignedJwtVerifierTest {
     @SneakyThrows
     public void verifyJwtSuccess(){
         // given
-        Did didMock = Mockito.mock(Did.class);
-        KeyPair keyPair = getKeyPair();
-        when(DidParser.parse(anyString())).thenReturn(didMock);
-        when(didDocumentResolver.resolve(didMock)).thenReturn(didDocument);
-        List<PublicKey> pks = new ArrayList<>();
-        org.eclipse.tractusx.ssi.spi.did.PublicKey pk = Ed25519VerificationKey2020.builder().publicKeyMultibase(null).build();
-        pks.add(pk);
-        when(didDocument.getPublicKeys()).thenReturn(pks);
-        SignedJWT toTest = SignedJwtFactory.createTestJwt(
-                "someIssuer",
-                "",
-                "someAudience",
-                getTestPresentation(),
-                (ECPrivateKey) keyPair.getPrivate()
-        );
-        // when
-        Boolean verify = signedJwtVerifier.verify(toTest);
-        // then
-        assertTrue(verify);
+        try (MockedStatic<DidParser> didParserMockedStatic = Mockito.mockStatic(DidParser.class)) {
+            didMock = Mockito.mock(Did.class);
+            KeyPair keyPair = getKeyPair();
+            didParserMockedStatic.when(() -> DidParser.parse(any(URI.class)))
+                    .thenReturn(didMock);
+            when(didDocumentResolver.resolve(didMock)).thenReturn(didDocument);
+            List<PublicKey> pks = new ArrayList<>();
+            org.eclipse.tractusx.ssi.spi.did.PublicKey pk = Ed25519VerificationKey2020.builder().publicKeyMultibase(null).build();
+            pks.add(pk);
+            when(didDocument.getPublicKeys()).thenReturn(pks);
+            SignedJWT toTest = SignedJwtFactory.createTestJwt(
+                    "someIssuer",
+                    "",
+                    "someAudience",
+                    getTestPresentation(),
+                    (ECPrivateKey) keyPair.getPrivate()
+            );
+            // when
+            Boolean verify = signedJwtVerifier.verify(toTest);
+            // then
+            assertTrue(verify);
+        }
     }
 
     @SneakyThrows
