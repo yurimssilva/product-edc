@@ -1,5 +1,9 @@
 # Non-Cataloged Contract Offer
 
+## Chapter 0: Meta-levels of demanded data
+
+![Meta-levels](./diagrams/Demand.svg)
+
 ## Used Terminology
 
 As there is no terminology (yet) for all scenarios that might occur in the context of Contract Offers, this document
