@@ -5,14 +5,10 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
-import org.eclipse.tractusx.edc.tests.data.Asset;
-import org.eclipse.tractusx.edc.tests.data.ContractNegotiation;
-import org.eclipse.tractusx.edc.tests.data.DataAddress;
-import org.eclipse.tractusx.edc.tests.data.HttpProxySinkDataAddress;
-import org.eclipse.tractusx.edc.tests.data.HttpProxySourceDataAddress;
-import org.eclipse.tractusx.edc.tests.data.Transfer;
+import org.eclipse.tractusx.edc.tests.data.*;
 import org.junit.jupiter.api.Assertions;
 
 @Slf4j
@@ -21,7 +17,6 @@ public class HttpProxyTransferSteps {
   private static final String ID = "id";
   private static final String DESCRIPTION = "description";
   private static final String BASE_URL = "baseUrl";
-  private static final String DEFINITION_ID = "definition id";
   private static final String ASSET_ID = "asset id";
   private static final String RECEIVER_HTTP_ENDPOINT = "receiverHttpEndpoint";
 
@@ -34,7 +29,18 @@ public class HttpProxyTransferSteps {
       final String description = map.get(DESCRIPTION);
       final String baseUrl = map.get(BASE_URL);
 
-      final DataAddress address = new HttpProxySourceDataAddress(baseUrl);
+      var oauth2Provision =
+          Arrays.stream(Oauth2DataAddressFields.values())
+                  .map(it -> it.text)
+                  .anyMatch(map::containsKey)
+              ? new HttpProxySourceDataAddress.Oauth2Provision(
+                  map.get(Oauth2DataAddressFields.TOKEN_URL.text),
+                  map.get(Oauth2DataAddressFields.CLIENT_ID.text),
+                  map.get(Oauth2DataAddressFields.CLIENT_SECRET.text),
+                  map.get(Oauth2DataAddressFields.SCOPE.text))
+              : null;
+
+      final DataAddress address = new HttpProxySourceDataAddress(baseUrl, oauth2Provision);
       final Asset asset = new Asset(id, description, address);
 
       api.createAsset(asset);
@@ -67,5 +73,18 @@ public class HttpProxyTransferSteps {
     final BackendServiceBackendAPI api = consumer.getBackendServiceBackendAPI();
     final List<String> transferredData = api.list("/");
     Assertions.assertNotEquals(0, transferredData.size());
+  }
+
+  private enum Oauth2DataAddressFields {
+    TOKEN_URL("oauth2 token url"),
+    CLIENT_ID("oauth2 client id"),
+    CLIENT_SECRET("oauth2 client secret"),
+    SCOPE("oauth2 scope");
+
+    private final String text;
+
+    Oauth2DataAddressFields(String text) {
+      this.text = text;
+    }
   }
 }
