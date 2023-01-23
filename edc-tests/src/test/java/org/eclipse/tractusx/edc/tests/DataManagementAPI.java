@@ -300,11 +300,17 @@ public class DataManagementAPI {
     final ManagementApiDataAddress apiObject = new ManagementApiDataAddress();
 
     if (dataAddress instanceof HttpProxySourceDataAddress) {
-      final HttpProxySourceDataAddress address = (HttpProxySourceDataAddress) dataAddress;
+      final var address = (HttpProxySourceDataAddress) dataAddress;
       var properties = new HashMap<String, Object>();
       properties.put("type", "HttpData");
       properties.put("baseUrl", address.getBaseUrl());
-      properties.putAll(address.getProperties());
+      var oauth2Provision = address.getOauth2Provision();
+      if (oauth2Provision != null) {
+        properties.put("oauth2:tokenUrl", oauth2Provision.getTokenUrl());
+        properties.put("oauth2:clientId", oauth2Provision.getClientId());
+        properties.put("oauth2:clientSecret", oauth2Provision.getClientSecret());
+        properties.put("oauth2:scope", oauth2Provision.getScope());
+      }
       apiObject.setProperties(properties);
     } else if (dataAddress instanceof HttpProxySinkDataAddress) {
       apiObject.setProperties(Map.of("type", "HttpProxy"));

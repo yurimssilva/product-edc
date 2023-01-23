@@ -59,4 +59,3 @@ Feature: HttpProxy Data Transfer
       | asset id |
       | asset-1  |
     Then the backend application of 'Sokrates' has received data
->>>>>>> c2d9c2f7 (Add test case)
