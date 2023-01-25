@@ -365,11 +365,6 @@
             </dependency>
             <dependency>
                 <groupId>org.eclipse.tractusx.edc.extensions</groupId>
-                <artifactId>custom-jsonld</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.eclipse.tractusx.edc.extensions</groupId>
                 <artifactId>transferprocess-sftp-client</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -1002,7 +997,7 @@
             </dependency>
             <dependency>
                 <groupId>org.eclipse.edc</groupId>
-                <artifactId>transfer-pull-http-receiver</artifactId>
+                <artifactId>transfer-pull-http-dynamic-receiver</artifactId>
                 <version>${org.eclipse.edc.version}</version>
             </dependency>
             <dependency>

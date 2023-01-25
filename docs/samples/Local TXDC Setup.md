@@ -2,7 +2,7 @@
 
 This document describes how to set up two TXDConnector instances locally. The Supporting Infrastructure Deployment, used
 by this
-example, must never be used publicy. The deployment of the two TXDConnector instances, done by this example, is not
+example, must never be used publicly. The deployment of the two TXDConnector instances, done by this example, is not
 suitable for
 productive deployment scenarios.
 
