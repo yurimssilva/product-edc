@@ -1,10 +1,14 @@
 package org.eclipse.tractusx.ssi.core.jwt;
 
 import com.nimbusds.jose.JOSEException;
+import com.nimbusds.jose.util.Base64;
 import com.nimbusds.jwt.SignedJWT;
+import io.ipfs.multibase.Base58;
+import io.ipfs.multibase.Multibase;
 import lombok.SneakyThrows;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.eclipse.tractusx.ssi.core.jsonld.DanubCredentialFactory;
+import org.eclipse.tractusx.ssi.extensions.core.base.Base58Bitcoin;
 import org.eclipse.tractusx.ssi.extensions.core.credentials.SerializedVerifiablePresentation;
 import org.eclipse.tractusx.ssi.extensions.core.jsonLd.DanubTechMapper;
 import org.eclipse.tractusx.ssi.extensions.core.jsonLd.JsonLdSerializer;
@@ -16,7 +20,9 @@ import org.eclipse.tractusx.ssi.spi.did.DidDocument;
 import org.eclipse.tractusx.ssi.spi.did.Ed25519VerificationKey2020;
 import org.eclipse.tractusx.ssi.spi.did.PublicKey;
 import org.eclipse.tractusx.ssi.spi.did.resolver.DidDocumentResolver;
+import org.eclipse.tractusx.ssi.spi.verifiable.MultibaseString;
 import org.eclipse.tractusx.ssi.spi.verifiable.presentation.VerifiablePresentation;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -39,8 +45,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 
 public class SignedJwtVerifierTest {
@@ -58,7 +63,7 @@ public class SignedJwtVerifierTest {
     public void init(){
         didDocumentResolver = Mockito.mock(DidDocumentResolver.class);
         didDocument = Mockito.mock(DidDocument.class);
-        signedJwtVerifier = new SignedJwtVerifier(null);
+        signedJwtVerifier = new SignedJwtVerifier(didDocumentResolver);
         jsonLdSerializer = new JsonLdSerializerImpl();
     }
 
@@ -71,15 +76,16 @@ public class SignedJwtVerifierTest {
     public void verifyJwtSuccess(){
         // given
         try (MockedStatic<DidParser> didParserMockedStatic = Mockito.mockStatic(DidParser.class)) {
-            didMock = Mockito.mock(Did.class);
             KeyPair keyPair = getKeyPair();
-            didParserMockedStatic.when(() -> DidParser.parse(any(URI.class)))
+            List<PublicKey> publicKeys = getPublicKeyList(keyPair.getPublic());
+
+            didMock = Mockito.mock(Did.class);
+            didParserMockedStatic.when(() -> DidParser.parse(any(String.class)))
                     .thenReturn(didMock);
-            when(didDocumentResolver.resolve(didMock)).thenReturn(didDocument);
-            List<PublicKey> pks = new ArrayList<>();
-            org.eclipse.tractusx.ssi.spi.did.PublicKey pk = Ed25519VerificationKey2020.builder().publicKeyMultibase(null).build();
-            pks.add(pk);
-            when(didDocument.getPublicKeys()).thenReturn(pks);
+
+            doReturn(didDocument).when(didDocumentResolver).resolve(any(Did.class));
+            doReturn(publicKeys).when(didDocument).getPublicKeys();
+
             SignedJWT toTest = SignedJwtFactory.createTestJwt(
                     "someIssuer",
                     "",
@@ -87,9 +93,9 @@ public class SignedJwtVerifierTest {
                     getTestPresentation(),
                     (ECPrivateKey) keyPair.getPrivate()
             );
-            // when
+        // when
             Boolean verify = signedJwtVerifier.verify(toTest);
-            // then
+        // then
             assertTrue(verify);
         }
     }
@@ -107,7 +113,6 @@ public class SignedJwtVerifierTest {
                 () -> signedJwtVerifier.verify(signedJWTMock));
         // then
         Assertions.assertTrue(exception.toString().contains(expectedMessage));
-
     }
 
     @Test
@@ -141,6 +146,24 @@ public class SignedJwtVerifierTest {
         ECPublicKey publicKey = (ECPublicKey) pair.getPublic();
 
         return pair;
+    }
+
+    @SneakyThrows
+    private List<PublicKey> getPublicKeyList(java.security.@NotNull PublicKey publicKey){
+        List<PublicKey> pks = new ArrayList<>();
+        byte[] encodedPublicKey = null;
+        if ("X.509".equals(publicKey.getFormat())) {
+            encodedPublicKey = publicKey.getEncoded();
+        }
+        MultibaseString mbs = Base58Bitcoin.create(encodedPublicKey);
+        org.eclipse.tractusx.ssi.spi.did.PublicKey pk = Ed25519VerificationKey2020
+                .builder()
+                .publicKeyMultibase(mbs)
+                .id(new URI("someweburl.com"))
+                .controller(new URI("somecontrolleruri.com"))
+                .build();
+        pks.add(pk);
+        return pks;
     }
 
     private SerializedVerifiablePresentation getTestPresentation(){
