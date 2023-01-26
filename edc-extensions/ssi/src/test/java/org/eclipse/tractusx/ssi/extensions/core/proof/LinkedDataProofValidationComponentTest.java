@@ -1,7 +1,6 @@
-package org.eclipse.tractusx.ssi.core.proof;
+package org.eclipse.tractusx.ssi.extensions.core.proof;
 
 import org.bouncycastle.math.ec.rfc8032.Ed25519;
-import org.eclipse.tractusx.ssi.extensions.core.proof.LinkedDataProofValidation;
 import org.eclipse.tractusx.ssi.extensions.core.proof.hash.LinkedDataHasher;
 import org.eclipse.tractusx.ssi.extensions.core.proof.transform.LinkedDataTransformer;
 import org.eclipse.tractusx.ssi.extensions.core.proof.verify.LinkedDataSigner;
@@ -12,7 +11,7 @@ import org.eclipse.tractusx.ssi.spi.did.DidMethodIdentifier;
 import org.eclipse.tractusx.ssi.spi.verifiable.Ed25519Proof;
 import org.eclipse.tractusx.ssi.spi.verifiable.credential.VerifiableCredential;
 import org.eclipse.tractusx.ssi.spi.verifiable.credential.VerifiableCredentialType;
-import org.eclipse.tractusx.ssi.core.util.TestDidDocumentResolver;
+import org.eclipse.tractusx.ssi.extensions.core.util.TestDidDocumentResolver;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,7 +21,7 @@ import java.security.SecureRandom;
 import java.util.Date;
 import java.util.List;
 
-import static org.eclipse.tractusx.ssi.core.util.TestDidDocumentResolver.DID_TEST_OPERATOR;
+import static org.eclipse.tractusx.ssi.extensions.core.util.TestDidDocumentResolver.DID_TEST_OPERATOR;
 
 public class LinkedDataProofValidationComponentTest {
 

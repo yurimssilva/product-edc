@@ -1,21 +1,17 @@
-package org.eclipse.tractusx.ssi.core.jwt;
+package org.eclipse.tractusx.ssi.extensions.core.jwt;
 
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.crypto.ECDSAVerifier;
-import com.nimbusds.jose.util.Base64;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
-import io.ipfs.multibase.Base58;
-import io.ipfs.multibase.Multibase;
 import lombok.SneakyThrows;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.eclipse.tractusx.ssi.core.jsonld.DanubCredentialFactory;
+import org.eclipse.tractusx.ssi.extensions.core.jsonld.DanubCredentialFactory;
 import org.eclipse.tractusx.ssi.extensions.core.base.Base58Bitcoin;
 import org.eclipse.tractusx.ssi.extensions.core.credentials.SerializedVerifiablePresentation;
 import org.eclipse.tractusx.ssi.extensions.core.jsonLd.DanubTechMapper;
 import org.eclipse.tractusx.ssi.extensions.core.jsonLd.JsonLdSerializer;
 import org.eclipse.tractusx.ssi.extensions.core.jsonLd.JsonLdSerializerImpl;
-import org.eclipse.tractusx.ssi.extensions.core.jwt.SignedJwtVerifier;
 import org.eclipse.tractusx.ssi.extensions.core.util.DidParser;
 import org.eclipse.tractusx.ssi.spi.did.Did;
 import org.eclipse.tractusx.ssi.spi.did.DidDocument;

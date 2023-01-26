@@ -1,4 +1,4 @@
-package org.eclipse.tractusx.ssi.wallet.filesystem;
+package org.eclipse.tractusx.ssi.extensions.wallet.filesystem;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -18,7 +18,7 @@ import org.eclipse.tractusx.ssi.spi.did.Did;
 import org.eclipse.tractusx.ssi.spi.did.DidMethod;
 import org.eclipse.tractusx.ssi.spi.did.DidMethodIdentifier;
 import org.eclipse.tractusx.ssi.spi.verifiable.Ed25519Proof;
-import org.eclipse.tractusx.ssi.core.util.TestDidDocumentResolver;
+import org.eclipse.tractusx.ssi.extensions.core.util.TestDidDocumentResolver;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

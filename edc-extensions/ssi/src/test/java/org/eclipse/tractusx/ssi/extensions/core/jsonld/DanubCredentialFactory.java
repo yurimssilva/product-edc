@@ -1,4 +1,4 @@
-package org.eclipse.tractusx.ssi.core.jsonld;
+package org.eclipse.tractusx.ssi.extensions.core.jsonld;
 
 import com.danubetech.verifiablecredentials.CredentialSubject;
 import com.danubetech.verifiablecredentials.VerifiablePresentation;

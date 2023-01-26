@@ -1,4 +1,4 @@
-package org.eclipse.tractusx.ssi.core.jsonld;
+package org.eclipse.tractusx.ssi.extensions.core.jsonld;
 
 import org.eclipse.tractusx.ssi.extensions.core.exception.SsiException;
 import org.eclipse.tractusx.ssi.extensions.core.jsonLd.DanubTechMapper;

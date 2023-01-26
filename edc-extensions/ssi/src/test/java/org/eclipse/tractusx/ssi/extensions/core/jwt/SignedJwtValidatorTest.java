@@ -1,4 +1,4 @@
-package org.eclipse.tractusx.ssi.core.jwt;
+package org.eclipse.tractusx.ssi.extensions.core.jwt;
 
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;

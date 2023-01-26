@@ -1,4 +1,4 @@
-package org.eclipse.tractusx.ssi.core.util;
+package org.eclipse.tractusx.ssi.extensions.core.util;
 
 import jakarta.ws.rs.NotFoundException;
 import java.net.URI;

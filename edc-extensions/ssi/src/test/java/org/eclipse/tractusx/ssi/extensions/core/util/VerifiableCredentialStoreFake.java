@@ -1,4 +1,4 @@
-package org.eclipse.tractusx.ssi.core.util;
+package org.eclipse.tractusx.ssi.extensions.core.util;
 
 import org.eclipse.tractusx.ssi.extensions.core.setting.SsiSettings;
 import org.eclipse.tractusx.ssi.spi.verifiable.credential.VerifiableCredential;

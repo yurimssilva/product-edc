@@ -1,4 +1,4 @@
-package org.eclipse.tractusx.ssi.core.proof;
+package org.eclipse.tractusx.ssi.extensions.core.proof;
 
 import org.eclipse.tractusx.ssi.extensions.core.proof.transform.LinkedDataTransformer;
 import org.eclipse.tractusx.ssi.spi.did.Did;
