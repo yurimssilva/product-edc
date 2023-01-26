@@ -40,12 +40,17 @@ public class SignedJwtVerifier {
     } catch (ParseException e) {
       throw new JOSEException(e.getMessage());
     }
-
-    final String issuer = jwtClaimsSet.getIssuer();
-    final Did issuerDid = DidParser.parse(issuer);
+    final String issuer;
+    final Did issuerDid;
+    try{
+      issuer = jwtClaimsSet.getIssuer();
+      issuerDid = DidParser.parse(issuer);
+    }catch (NullPointerException e){
+      throw new JOSEException(e.getMessage());
+    }
+    // TODO add exception handling on invalid DID + Test for it
     final DidDocument issuerDidDocument = didDocumentResolver.resolve(issuerDid);
 
-    // TODO Get Public Key from DID Document
     List<PublicKey> publicKeys = issuerDidDocument.getPublicKeys();
 
     // verify JWT signature

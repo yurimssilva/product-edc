@@ -1,7 +1,9 @@
 package org.eclipse.tractusx.ssi.core.jwt;
 
 import com.nimbusds.jose.JOSEException;
+import com.nimbusds.jose.crypto.ECDSAVerifier;
 import com.nimbusds.jose.util.Base64;
+import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 import io.ipfs.multibase.Base58;
 import io.ipfs.multibase.Multibase;
@@ -68,10 +70,6 @@ public class SignedJwtVerifierTest {
     }
 
     @Test
-    public void verifyTestInvalidDidDocument(){
-    }
-
-    @Test
     @SneakyThrows
     public void verifyJwtSuccess(){
         // given
@@ -116,18 +114,29 @@ public class SignedJwtVerifierTest {
     }
 
     @Test
-    public void verifTestPublicKeyResolverFailure(){
-
-    }
-
-    @Test
+    @SneakyThrows
     public void verifTestJoseException(){
-
-    }
-
-    @Test
-    public void verifTestInvalidJwt(){
-
+        // given
+        String exceptionMessage = "com.nimbusds.jose.JOSEException";
+        KeyPair keyPair = getKeyPair();
+        List<PublicKey> publicKeys = getPublicKeyList(keyPair.getPublic());
+        SignedJWT toTest = Mockito.mock(SignedJWT.class);
+        JWTClaimsSet claimsSetMock = Mockito.mock(JWTClaimsSet.class);
+        didMock = Mockito.mock(Did.class);
+        doReturn(didDocument).when(didDocumentResolver).resolve(any(Did.class));
+        doReturn(publicKeys).when(didDocument).getPublicKeys();
+        doThrow(JOSEException.class).when(toTest).verify(any(ECDSAVerifier.class));
+        doReturn(claimsSetMock).when(toTest).getJWTClaimsSet();
+        doReturn("").when(claimsSetMock).getIssuer();
+        try (MockedStatic<DidParser> didParserMockedStatic = Mockito.mockStatic(DidParser.class)) {
+            didParserMockedStatic.when(() -> DidParser.parse(any(String.class)))
+                    .thenReturn(didMock);
+            // when
+            JOSEException exception = Assertions.assertThrows(JOSEException.class,
+                    () -> signedJwtVerifier.verify(toTest));
+            // then
+            Assertions.assertTrue(exception.toString().contains(exceptionMessage));
+        }
     }
 
     @SneakyThrows
