@@ -6,4 +6,6 @@ public interface VerifiableCredentialWallet {
   String getIdentifier();
 
   VerifiableCredential getMembershipCredential();
+
+  VerifiableCredential getCredential(String credentialType);
 }

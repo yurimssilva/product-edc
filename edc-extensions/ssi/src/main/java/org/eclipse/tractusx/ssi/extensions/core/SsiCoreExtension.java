@@ -39,15 +39,21 @@ public class SsiCoreExtension implements ServiceExtension {
   public static final String EXTENSION_NAME = "SSI Core Extension";
 
   public static final String SETTINGS_WALLET = "edc.ssi.wallet";
-  public static final String SETTING_DID_DEFAULT = "did:null:connector";
   public static final String SETTING_DID_CONNECTOR = "edc.ssi.did.connector";
   public static final String SETTING_DID_OPERATOR = "edc.ssi.did.operator";
   public static final String SETTING_VERIFIABLE_PRESENTATION_SIGNING_METHOD =
       "edc.ssi.verifiable.presentation.signing.method";
+  public static final String SETTING_VERIFIABLE_PRESENTATION_SIGNING_KEY_ALIAS =
+          "edc.ssi.verifiable.presentation.signing.key.alias";
+  public static final String SETTING_WALLET_STORAGE_MEMBERSHIP_CREDENTIAL_ALIAS =
+          "edc.ssi.wallet.storage.membership.credential.alias";
+  public static final String SETTING_WALLET_STORAGE_CREDENTIAL_ALIAS_LIST =
+          "edc.ssi.wallet.storage.credential.alias.list";
+
   public static final String SETTING_VERIFIABLE_PRESENTATION_SIGNING_METHOD_DEFAULT =
       SigningMethod.SIGNING_METHOD_ES256;
-  public static final String SETTING_VERIFIABLE_PRESENTATION_SIGNING_KEY_ALIAS =
-      "edc.ssi.verifiable.presentation.signing.key.alias";
+  public static final String SETTING_DID_DEFAULT = "did:null:connector";
+
 
   @Inject private Vault vault;
 

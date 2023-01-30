@@ -44,5 +44,6 @@ public class VerifiableCredential {
 
   @NonNull
   @Builder.Default
+  @JsonProperty("credentialSubject")
   public Map<String, Object> claims = new HashMap<>();
 }

@@ -10,6 +10,9 @@ import org.eclipse.tractusx.ssi.extensions.core.jwt.SignedJwtFactory;
 import org.eclipse.tractusx.ssi.spi.did.DidParser;
 import org.eclipse.tractusx.ssi.spi.did.Did;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class SsiSettingsFactoryImpl implements SsiSettingsFactory {
 
   private static final String EXCEPTION_NO_VALID_DID =
@@ -63,9 +66,9 @@ public class SsiSettingsFactoryImpl implements SsiSettingsFactory {
           String.format(WARNING_NO_DID_CONFIGURED, SsiCoreExtension.SETTING_DID_DEFAULT));
     }
 
-    final Did didOperator;
+    final Did  didDataspaceOperator;
     try {
-      didOperator = DidParser.parse(didOperatorString);
+       didDataspaceOperator = DidParser.parse(didOperatorString);
     } catch (DidParseException e) {
       throw new SsiSettingException(
           String.format(
@@ -102,11 +105,37 @@ public class SsiSettingsFactoryImpl implements SsiSettingsFactory {
               String.join(", ", SignedJwtFactory.SUPPORTED_SIGNING_METHODS)));
     }
 
+    String membershipVerifiableCredentialAlias =
+            context.getSetting(
+                    SsiCoreExtension.SETTING_WALLET_STORAGE_MEMBERSHIP_CREDENTIAL_ALIAS, null);
+    if (membershipVerifiableCredentialAlias == null) {
+      throw new SsiSettingException(
+              String.format(
+                      EXCEPTION_MANDATORY_SETTINGS_MISSING,
+                      SsiCoreExtension.SETTING_WALLET_STORAGE_MEMBERSHIP_CREDENTIAL_ALIAS));
+    }
+
+    String storedCredentialAliasesString =
+            context.getSetting(
+                    SsiCoreExtension.SETTING_WALLET_STORAGE_MEMBERSHIP_CREDENTIAL_ALIAS, null);
+    List<String> storedCredentialAliases = Arrays.asList(
+            storedCredentialAliasesString.trim().split(","));
+    if (storedCredentialAliases == null) {
+      throw new SsiSettingException(
+              String.format(
+                      EXCEPTION_MANDATORY_SETTINGS_MISSING,
+                      SsiCoreExtension.SETTING_WALLET_STORAGE_MEMBERSHIP_CREDENTIAL_ALIAS));
+    }
+
+
+
     return new SsiSettings(
-        verifiablePresentationSigningMethod,
-        walletIdentifier,
-        didOperator,
-        didConnector,
-        verifiablePresentationSigningKeyAlias);
+            verifiablePresentationSigningMethod,
+            walletIdentifier,
+            didDataspaceOperator,
+            didConnector,
+            verifiablePresentationSigningKeyAlias,
+            membershipVerifiableCredentialAlias,
+            storedCredentialAliases);
   }
 }

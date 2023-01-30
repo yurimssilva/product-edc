@@ -30,6 +30,11 @@ public class SsiFileSystemWallet implements VerifiableCredentialWallet {
     return Identifier;
   }
 
+  @Override
+  public VerifiableCredential getCredential(String credentialType) {
+    return null;
+  }
+
   private VerifiableCredential loadMembershipCredential() {
     return readCredentials().stream()
         .filter(
