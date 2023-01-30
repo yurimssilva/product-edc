@@ -1,4 +1,4 @@
-package org.eclipse.tractusx.ssi.extensions.did.web.controler;
+package org.eclipse.tractusx.ssi.extensions.did.web.controller;
 
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;

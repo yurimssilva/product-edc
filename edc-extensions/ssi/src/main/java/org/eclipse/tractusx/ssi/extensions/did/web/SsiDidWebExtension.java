@@ -6,7 +6,7 @@ import org.eclipse.edc.spi.monitor.Monitor;
 import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
 import org.eclipse.edc.web.spi.WebService;
-import org.eclipse.tractusx.ssi.extensions.did.web.controler.DidWebDocumentController;
+import org.eclipse.tractusx.ssi.extensions.did.web.controller.DidWebDocumentController;
 import org.eclipse.tractusx.ssi.extensions.did.web.resolver.DidWebDocumentResolver;
 import org.eclipse.tractusx.ssi.extensions.did.web.settings.DidWebSettings;
 import org.eclipse.tractusx.ssi.spi.did.resolver.DidDocumentResolver;
