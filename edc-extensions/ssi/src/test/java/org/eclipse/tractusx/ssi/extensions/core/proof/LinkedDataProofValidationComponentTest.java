@@ -11,7 +11,7 @@ import org.eclipse.tractusx.ssi.spi.did.DidMethodIdentifier;
 import org.eclipse.tractusx.ssi.spi.verifiable.Ed25519Proof;
 import org.eclipse.tractusx.ssi.spi.verifiable.credential.VerifiableCredential;
 import org.eclipse.tractusx.ssi.spi.verifiable.credential.VerifiableCredentialType;
-import org.eclipse.tractusx.ssi.extensions.core.util.TestDidDocumentResolver;
+import org.eclipse.tractusx.ssi.extensions.core.testUtils.TestDidDocumentResolver;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,7 +21,7 @@ import java.security.SecureRandom;
 import java.util.Date;
 import java.util.List;
 
-import static org.eclipse.tractusx.ssi.extensions.core.util.TestDidDocumentResolver.DID_TEST_OPERATOR;
+import static org.eclipse.tractusx.ssi.extensions.core.testUtils.TestDidDocumentResolver.DID_TEST_OPERATOR;
 
 public class LinkedDataProofValidationComponentTest {
 

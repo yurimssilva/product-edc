@@ -18,7 +18,7 @@ import org.eclipse.tractusx.ssi.spi.did.Did;
 import org.eclipse.tractusx.ssi.spi.did.DidMethod;
 import org.eclipse.tractusx.ssi.spi.did.DidMethodIdentifier;
 import org.eclipse.tractusx.ssi.spi.verifiable.Ed25519Proof;
-import org.eclipse.tractusx.ssi.extensions.core.util.TestDidDocumentResolver;
+import org.eclipse.tractusx.ssi.extensions.core.testUtils.TestDidDocumentResolver;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

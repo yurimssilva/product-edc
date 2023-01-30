@@ -1,4 +1,4 @@
-package org.eclipse.tractusx.ssi.extensions.core.util;
+package org.eclipse.tractusx.ssi.spi.did;
 
 import java.net.URI;
 import java.util.Arrays;

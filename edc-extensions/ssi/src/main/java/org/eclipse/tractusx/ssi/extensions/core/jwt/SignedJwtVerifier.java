@@ -4,7 +4,7 @@ import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.crypto.ECDSAVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
-import org.eclipse.tractusx.ssi.extensions.core.util.DidParser;
+import org.eclipse.tractusx.ssi.spi.did.DidParser;
 import org.eclipse.tractusx.ssi.spi.did.Did;
 import org.eclipse.tractusx.ssi.spi.did.DidDocument;
 import org.eclipse.tractusx.ssi.spi.did.PublicKey;
