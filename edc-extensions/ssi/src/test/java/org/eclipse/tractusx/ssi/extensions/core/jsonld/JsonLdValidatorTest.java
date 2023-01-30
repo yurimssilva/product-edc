@@ -39,7 +39,7 @@ public class JsonLdValidatorTest {
 
     @SneakyThrows
     private JsonLDObject loadInvalidjsonLDObject(){
-      String didJsonLd = Files.readString(Paths.get(getClass().getClassLoader().getResource("./jsonld/invalidJsonLd.json").toURI()));
+      String didJsonLd = Files.readString(Paths.get(getClass().getClassLoader().getResource("core/jsonld/invalidJsonLd.json").toURI()));
       DocumentLoader loader = new ConfigurableDocumentLoader();
       ((ConfigurableDocumentLoader) loader).setEnableHttps(true);
       JsonLDObject object = JsonLDObject.fromJson(didJsonLd);
@@ -49,7 +49,7 @@ public class JsonLdValidatorTest {
 
     @SneakyThrows
     private JsonLDObject loadValidjsonLDObject(){
-      String didJsonLd = Files.readString(Paths.get(getClass().getClassLoader().getResource("./jsonld/validJsonLd.json").toURI()));
+      String didJsonLd = Files.readString(Paths.get(getClass().getClassLoader().getResource("core/jsonld/validJsonLd.json").toURI()));
       DocumentLoader loader = new ConfigurableDocumentLoader();
       ((ConfigurableDocumentLoader) loader).setEnableHttps(true);
       JsonLDObject object = JsonLDObject.fromJson(didJsonLd);

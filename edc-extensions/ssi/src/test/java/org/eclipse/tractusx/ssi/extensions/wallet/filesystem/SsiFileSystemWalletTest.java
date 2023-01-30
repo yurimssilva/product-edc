@@ -40,7 +40,7 @@ public class SsiFileSystemWalletTest {
         new LinkedDataVerifier(didDocumentResolver),
         new LinkedDataSigner());
 
-    final URL resource = getClass().getClassLoader().getResource("wallet/membership-credential.json");
+    final URL resource = getClass().getClassLoader().getResource("core/wallet/membership-credential.json");
     if (resource == null) {
       throw new RuntimeException("Resource not found: webdid.json");
     }
