@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.SneakyThrows;
 import lombok.experimental.PackagePrivate;
-import org.eclipse.tractusx.ssi.extensions.core.base.MultibaseFactory;
 import org.eclipse.tractusx.ssi.extensions.core.exception.SsiException;
 import org.eclipse.tractusx.ssi.spi.verifiable.Ed25519Proof;
 import org.eclipse.tractusx.ssi.spi.verifiable.credential.VerifiableCredential;
@@ -141,7 +140,7 @@ public class DanubTechMapper {
         .created(dtProof.getCreated())
         .type(dtProof.getType())
         .proofPurpose(dtProof.getProofPurpose())
-        .proofValue(MultibaseFactory.create(dtProof.getProofValue()))
+        .proofValue(dtProof.getProofValue())
         .verificationMethod(dtProof.getVerificationMethod())
         .build();
   }

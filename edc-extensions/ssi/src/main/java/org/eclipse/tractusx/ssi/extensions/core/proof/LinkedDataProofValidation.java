@@ -1,6 +1,5 @@
 package org.eclipse.tractusx.ssi.extensions.core.proof;
 
-import java.util.Date;
 import org.eclipse.tractusx.ssi.extensions.core.base.MultibaseFactory;
 import org.eclipse.tractusx.ssi.extensions.core.proof.hash.LinkedDataHasher;
 import org.eclipse.tractusx.ssi.extensions.core.proof.transform.LinkedDataTransformer;
@@ -9,6 +8,8 @@ import org.eclipse.tractusx.ssi.extensions.core.proof.verify.LinkedDataVerifier;
 import org.eclipse.tractusx.ssi.spi.did.Did;
 import org.eclipse.tractusx.ssi.spi.verifiable.Ed25519Proof;
 import org.eclipse.tractusx.ssi.spi.verifiable.credential.VerifiableCredential;
+
+import java.util.Date;
 
 public class LinkedDataProofValidation {
 
@@ -47,7 +48,7 @@ public class LinkedDataProofValidation {
         Ed25519Proof.builder()
             .created(new Date())
             .verificationMethod(verificationMethodId.toUri())
-            .proofValue(MultibaseFactory.create(signature))
+            .proofValueMultiBase(MultibaseFactory.create(signature))
             .build();
 
     return proof;

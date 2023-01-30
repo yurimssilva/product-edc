@@ -1,9 +1,12 @@
 package org.eclipse.tractusx.ssi.spi.verifiable.credential;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.NonNull;
 import lombok.ToString;
 import lombok.Value;
+import lombok.extern.jackson.Jacksonized;
 import org.eclipse.tractusx.ssi.spi.verifiable.Ed25519Proof;
 
 import java.net.URI;
@@ -15,10 +18,12 @@ import java.util.Map;
 @Value
 @Builder
 @ToString
+@Jacksonized
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class VerifiableCredential {
   @NonNull
   URI id;
-  @NonNull
+  @JsonProperty("type")
   List<String> types; // TODO must be at least one
   @NonNull
   URI issuer;
@@ -34,7 +39,7 @@ public class VerifiableCredential {
   Date issuanceDate;
 
   Date expirationDate;
-  VerifiableCredentialStatus status;
+  VerifiableCredentialStatus credentialStatus;
   Ed25519Proof proof;
 
   @NonNull

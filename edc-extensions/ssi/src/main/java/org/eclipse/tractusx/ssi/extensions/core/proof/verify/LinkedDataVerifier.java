@@ -1,6 +1,5 @@
 package org.eclipse.tractusx.ssi.extensions.core.proof.verify;
 
-import java.net.URI;
 import lombok.NonNull;
 import org.bouncycastle.math.ec.rfc8032.Ed25519;
 import org.eclipse.tractusx.ssi.extensions.core.proof.hash.HashedLinkedData;
@@ -11,6 +10,8 @@ import org.eclipse.tractusx.ssi.spi.did.Ed25519VerificationKey2020;
 import org.eclipse.tractusx.ssi.spi.did.resolver.DidDocumentResolver;
 import org.eclipse.tractusx.ssi.spi.verifiable.MultibaseString;
 import org.eclipse.tractusx.ssi.spi.verifiable.credential.VerifiableCredential;
+
+import java.net.URI;
 
 public class LinkedDataVerifier {
 
@@ -34,7 +35,7 @@ public class LinkedDataVerifier {
         .orElseThrow();
 
     final MultibaseString publicKey = key.getPublicKeyMultibase();
-    final MultibaseString signature = credential.getProof().getProofValue();
+    final MultibaseString signature = credential.getProof().getProofValueMultiBase();
 
     final boolean signatureValid = Ed25519.verify(
         signature.getDecoded(),

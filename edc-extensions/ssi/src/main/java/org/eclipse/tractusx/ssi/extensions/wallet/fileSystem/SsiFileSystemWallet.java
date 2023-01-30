@@ -1,12 +1,5 @@
 package org.eclipse.tractusx.ssi.extensions.wallet.fileSystem;
 
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -14,6 +7,14 @@ import org.eclipse.tractusx.ssi.extensions.core.jsonLd.DanubTechMapper;
 import org.eclipse.tractusx.ssi.spi.verifiable.credential.VerifiableCredential;
 import org.eclipse.tractusx.ssi.spi.verifiable.credential.VerifiableCredentialType;
 import org.eclipse.tractusx.ssi.spi.wallet.VerifiableCredentialWallet;
+
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 public class SsiFileSystemWallet implements VerifiableCredentialWallet {
@@ -60,7 +61,7 @@ public class SsiFileSystemWallet implements VerifiableCredentialWallet {
     try (InputStream is = Files.newInputStream(path)) {
       try (InputStreamReader reader = new InputStreamReader(is)) {
         var dtCredential =
-            com.danubetech.verifiablecredentials.VerifiableCredential.fromJson(reader);
+            com.danubetech.verifiablecredentials.VerifiableCredential.fromJson(reader); // TODO Replace with own Mapper (Jacksonised)
         return DanubTechMapper.map(dtCredential);
       }
     }

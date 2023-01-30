@@ -78,7 +78,7 @@ public class LinkedDataProofValidationComponentTest {
         .expirationDate(new Date(2025, 1, 1))
         .issuanceDate(new Date(2020, 1, 1))
         .proof(proof)
-        .status(null)
+        .credentialStatus(null)
         .build();
   }
 }

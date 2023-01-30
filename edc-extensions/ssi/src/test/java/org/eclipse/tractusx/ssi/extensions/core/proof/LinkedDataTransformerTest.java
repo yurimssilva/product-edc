@@ -27,7 +27,7 @@ public class LinkedDataTransformerTest {
             .expirationDate(new Date(2025, 1, 1))
             .issuanceDate(new Date(2020, 1, 1))
             .proof(null)
-            .status(null)
+            .credentialStatus(null)
             .build();
 
     var result = linkedDataTransformer.transform(credential);
