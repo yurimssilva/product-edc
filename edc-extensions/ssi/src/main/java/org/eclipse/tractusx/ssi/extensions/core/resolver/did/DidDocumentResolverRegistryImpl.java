@@ -13,7 +13,7 @@ public class DidDocumentResolverRegistryImpl implements DidDocumentResolverRegis
 
   @Override
   public DidDocumentResolver get(DidMethod didMethod) {
-    if (resolvers.containsKey(didMethod))
+    if (!resolvers.containsKey(didMethod))
       throw new SsiException(String.format("Resolver for method '%s' not found", didMethod));
 
     return resolvers.get(didMethod);
