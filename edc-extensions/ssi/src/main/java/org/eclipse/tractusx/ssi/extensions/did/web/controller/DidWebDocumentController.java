@@ -5,6 +5,7 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import org.eclipse.edc.spi.monitor.Monitor;
+import org.eclipse.edc.spi.security.Vault;
 import org.eclipse.tractusx.ssi.extensions.did.web.settings.DidWebSettings;
 
 @Produces({MediaType.APPLICATION_JSON})
@@ -13,15 +14,27 @@ public class DidWebDocumentController {
 
   private final DidWebSettings settings;
   private final Monitor monitor;
+  private final Vault vault;
 
-  public DidWebDocumentController(DidWebSettings settings, Monitor monitor) {
+  private String didDocument;
+
+  public DidWebDocumentController(DidWebSettings settings, Monitor monitor, Vault vault) {
     this.settings = settings;
     this.monitor = monitor;
+    this.vault = vault;
   }
 
   @GET
   public String request() {
-    String didDoc = getClass().getResource("webdid/did-document.json").getFile();
-    return didDoc; // TODO
+    return getDidDoc();
+  }
+
+  private String getDidDoc(){
+    if(this.didDocument != null){
+      return this.didDocument;
+    }
+    String didDocumentAlias = settings.getDidDocumentAlias();
+    this.didDocument = vault.resolveSecret(didDocumentAlias);
+    return this.didDocument;
   }
 }

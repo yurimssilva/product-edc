@@ -1,3 +1,10 @@
 package org.eclipse.tractusx.ssi.extensions.did.web.settings;
 
-public class DidWebSettings {}
+import lombok.Value;
+
+@Value
+public class DidWebSettings {
+
+  String didDocumentAlias;
+
+}
