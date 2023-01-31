@@ -174,7 +174,7 @@ jobs:
             type=sha
       -
         name: Build Docker Image
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           context: .
           file: edc-controlplane/${{ matrix.name }}/src/main/docker/Dockerfile
@@ -239,7 +239,7 @@ jobs:
             type=sha
       -
         name: Build Docker Image
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           context: .
           file: edc-dataplane/${{ matrix.name }}/src/main/docker/Dockerfile
