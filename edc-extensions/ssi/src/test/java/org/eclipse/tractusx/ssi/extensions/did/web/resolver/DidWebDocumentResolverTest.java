@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.io.InputStream;
-import java.nio.charset.Charset;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
@@ -25,7 +24,7 @@ public class DidWebDocumentResolverTest {
   @BeforeEach
   public void setUp(){
     clientMock = Mockito.mock(OkHttpClient.class);
-    resolver = new DidWebDocumentResolver(new OkHttpClient());
+    resolver = new DidWebDocumentResolver(clientMock);
   }
 
 
@@ -35,12 +34,14 @@ public class DidWebDocumentResolverTest {
     // given
     Did toTest = new Did(new DidMethod("web"), new DidMethodIdentifier("someurl.com"));
     String testDidDocument = getTestDidDocument();
-    /**ResponseBody body = ResponseBody.create(testDidDocument, MediaType.get("application/json"));
-    Request req = new Request.Builder().get().url("https://www.someurl.com").build();
-    Response response = new Response.Builder().body(body).code(200).request(req).build();
-
-    doReturn(response).when(clientMock).newCall(any(Request.class)).execute();*/
-
+    Response responseMock = Mockito.mock(Response.class);
+    Call callMock = Mockito.mock(Call.class);
+    ResponseBody responseBodyMock = Mockito.mock(ResponseBody.class);
+    doReturn(callMock).when(clientMock).newCall(any(Request.class));
+    doReturn(responseMock).when(callMock).execute();
+    doReturn(true).when(responseMock).isSuccessful();
+    doReturn(responseBodyMock).when(responseMock).body();
+    doReturn(testDidDocument.getBytes()).when(responseBodyMock).bytes();
     DidDocument expectedResult = null;
     // when
     DidDocument result = resolver.resolve(toTest);

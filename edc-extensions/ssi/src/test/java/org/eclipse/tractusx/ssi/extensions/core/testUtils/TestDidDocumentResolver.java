@@ -31,7 +31,7 @@ public class TestDidDocumentResolver implements DidDocumentResolver {
         Ed25519VerificationKey2020.builder()
             .id(keyId.toUri())
             .controller(URI.create("did:test:example"))
-            .publicKeyMultibase(MultibaseFactory.create(publicKey))
+            .publicKeyMultibase(publicKey.toString())
             .build();
 
     verificationMethodList.get(did).add(verificationKey);
