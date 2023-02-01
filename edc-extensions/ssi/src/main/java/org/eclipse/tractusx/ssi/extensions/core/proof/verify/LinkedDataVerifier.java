@@ -34,7 +34,7 @@ public class LinkedDataVerifier {
         .findFirst()
         .orElseThrow();
 
-    final MultibaseString publicKey = key.getPublicKeyMultibase();
+    final MultibaseString publicKey = key.getMultibaseString();
     final MultibaseString signature = credential.getProof().getProofValueMultiBase();
 
     final boolean signatureValid = Ed25519.verify(

@@ -6,7 +6,7 @@ import lombok.NonNull;
 import lombok.ToString;
 import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
-import org.eclipse.tractusx.ssi.extensions.core.base.MultibaseFactory;
+import org.eclipse.tractusx.ssi.extensions.core.base.Base58Bitcoin;
 
 import java.net.URI;
 import java.util.Date;
@@ -36,6 +36,7 @@ public class Ed25519Proof {
   String proofValue;
   MultibaseString proofValueMultiBase;
   public MultibaseString getProofValueMultiBase(){
-    return MultibaseFactory.create(proofValue);
+    return Base58Bitcoin.create(proofValue);
+    //return MultibaseFactory.create(proofValue); // TODO must be cleaner
   }
 }

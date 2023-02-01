@@ -7,6 +7,7 @@ import org.eclipse.tractusx.ssi.extensions.core.proof.verify.LinkedDataSigner;
 import org.eclipse.tractusx.ssi.extensions.core.proof.verify.LinkedDataVerifier;
 import org.eclipse.tractusx.ssi.spi.did.Did;
 import org.eclipse.tractusx.ssi.spi.verifiable.Ed25519Proof;
+import org.eclipse.tractusx.ssi.spi.verifiable.MultibaseString;
 import org.eclipse.tractusx.ssi.spi.verifiable.credential.VerifiableCredential;
 
 import java.util.Date;
@@ -43,12 +44,14 @@ public class LinkedDataProofValidation {
     var transformedData = transformer.transform(verifiableCredential);
     var hashedData = hasher.hash(transformedData);
     var signature = signer.sign(hashedData, signingKey);
+    MultibaseString multibaseString = MultibaseFactory.create(signature);
 
     var proof =
         Ed25519Proof.builder()
             .created(new Date())
             .verificationMethod(verificationMethodId.toUri())
-            .proofValueMultiBase(MultibaseFactory.create(signature))
+            .proofValue(multibaseString.getEncoded())
+            .proofValueMultiBase(multibaseString)
             .build();
 
     return proof;

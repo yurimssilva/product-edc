@@ -1,14 +1,15 @@
 package org.eclipse.tractusx.ssi.extensions.core.testUtils;
 
 import jakarta.ws.rs.NotFoundException;
+import org.eclipse.tractusx.ssi.extensions.core.base.Base58Bitcoin;
+import org.eclipse.tractusx.ssi.spi.did.*;
+import org.eclipse.tractusx.ssi.spi.did.resolver.DidDocumentResolver;
+
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.eclipse.tractusx.ssi.extensions.core.base.MultibaseFactory;
-import org.eclipse.tractusx.ssi.spi.did.*;
-import org.eclipse.tractusx.ssi.spi.did.resolver.DidDocumentResolver;
 
 public class TestDidDocumentResolver implements DidDocumentResolver {
 
@@ -31,7 +32,7 @@ public class TestDidDocumentResolver implements DidDocumentResolver {
         Ed25519VerificationKey2020.builder()
             .id(keyId.toUri())
             .controller(URI.create("did:test:example"))
-            .publicKeyMultibase(publicKey.toString())
+            .publicKeyMultibase(Base58Bitcoin.create(publicKey).getEncoded())
             .build();
 
     verificationMethodList.get(did).add(verificationKey);
