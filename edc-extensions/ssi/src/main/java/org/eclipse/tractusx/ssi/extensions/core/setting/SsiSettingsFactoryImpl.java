@@ -127,8 +127,6 @@ public class SsiSettingsFactoryImpl implements SsiSettingsFactory {
                       SsiCoreExtension.SETTING_WALLET_STORAGE_MEMBERSHIP_CREDENTIAL_ALIAS));
     }
 
-
-
     return new SsiSettings(
             verifiablePresentationSigningMethod,
             walletIdentifier,
