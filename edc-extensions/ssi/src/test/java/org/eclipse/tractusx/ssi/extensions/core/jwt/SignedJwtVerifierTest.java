@@ -160,10 +160,10 @@ public class SignedJwtVerifierTest {
         if ("X.509".equals(publicKey.getFormat())) {
             encodedPublicKey = publicKey.getEncoded();
         }
-        //MultibaseString mbs = Base58Bitcoin.create(encodedPublicKey);
+        String mbs = Base58Bitcoin.create(encodedPublicKey).getEncoded();
         org.eclipse.tractusx.ssi.spi.did.PublicKey pk = Ed25519VerificationKey2020
                 .builder()
-                .publicKeyMultibase(encodedPublicKey.toString())
+                .publicKeyMultibase(mbs)
                 .id(new URI("someweburl.com"))
                 .controller(new URI("somecontrolleruri.com"))
                 .build();
