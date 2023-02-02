@@ -2,10 +2,8 @@ package org.eclipse.tractusx.ssi.spi.verifiable.credential;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Builder;
-import lombok.NonNull;
-import lombok.ToString;
-import lombok.Value;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.*;
 import lombok.extern.jackson.Jacksonized;
 import org.eclipse.tractusx.ssi.spi.verifiable.Ed25519Proof;
 
@@ -46,4 +44,10 @@ public class VerifiableCredential {
   @Builder.Default
   @JsonProperty("credentialSubject")
   public Map<String, Object> claims = new HashMap<>();
+
+  @SneakyThrows
+  public String toJson(){
+    ObjectMapper om = new ObjectMapper();
+    return om.writeValueAsString(this);
+  }
 }

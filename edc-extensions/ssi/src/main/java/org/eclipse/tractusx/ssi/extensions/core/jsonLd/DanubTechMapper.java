@@ -80,7 +80,7 @@ public class DanubTechMapper {
   public static com.danubetech.verifiablecredentials.VerifiableCredential map(
       VerifiableCredential credential) {
 
-    if(!credential.getTypes().get(0).equals("VerifiableCredential")){
+    if(!credential.getTypes().stream().anyMatch(x -> x.equals("VerifiableCredential"))){
       throw new SsiException("Type: VerifiableCredential missing");
     }
     // Verifiable Credential Type is automatically added in Builder

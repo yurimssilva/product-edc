@@ -37,7 +37,7 @@ public class SsiVaultStorageWalletTest {
     // when
     VerifiableCredential result = ssiVaultStorageWallet.getMembershipCredential();
     // then
-    Assertions.assertTrue(result.toString().equals(testVc));
+    Assertions.assertEquals(testVc, result.toJson());
   }
 
   @SneakyThrows
