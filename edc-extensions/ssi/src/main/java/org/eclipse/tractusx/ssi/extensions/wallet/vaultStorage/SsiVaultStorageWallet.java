@@ -27,6 +27,7 @@ public class SsiVaultStorageWallet implements VerifiableCredentialWallet {
   @Override
   public VerifiableCredential getMembershipCredential() {
     String membershipVc = vault.resolveSecret(settings.getMembershipVerifiableCredentialAlias());
+    //Todo
     ObjectMapper om = new ObjectMapper();
     VerifiableCredential vc = null;
     try {

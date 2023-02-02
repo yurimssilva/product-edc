@@ -19,16 +19,17 @@ public class VerifiableCredentialDeserializationTest {
         ObjectMapper om = new ObjectMapper();
         // when
         AtomicReference<VerifiableCredential> ar = null;
-        VerifiableCredential vc = om.readValue(testVc, VerifiableCredential.class);
+        VerifiableCredential result = om.readValue(testVc, VerifiableCredential.class);
         // then
-        Assertions.assertFalse(vc.getId().equals(new String()));
-        Assertions.assertFalse(vc.getTypes().isEmpty());
-        Assertions.assertFalse(vc.getIssuer().equals(new URI("")));
-        Assertions.assertTrue(vc.getExpirationDate() != null);
-        Assertions.assertTrue(vc.getCredentialStatus().getId() != null);
-        Assertions.assertTrue(vc.getCredentialStatus().getType() != null);
-        Assertions.assertTrue(vc.getProof().getProofValueMultiBase() != null);
-        Assertions.assertNotNull(vc.claims);
+        Assertions.assertFalse(result.getId().equals(new String()));
+        Assertions.assertFalse(result.getTypes().isEmpty());
+        Assertions.assertFalse(result.getIssuer().equals(new URI("")));
+        Assertions.assertTrue(result.getExpirationDate() != null);
+        Assertions.assertTrue(result.getCredentialStatus().getId() != null);
+        Assertions.assertTrue(result.getCredentialStatus().getType() != null);
+        Assertions.assertTrue(result.getProof().getProofValueMultiBase() != null);
+        Assertions.assertNotNull(result.claims);
+        Assertions.assertEquals(testVc, result.toJson());
     }
 
     @Test

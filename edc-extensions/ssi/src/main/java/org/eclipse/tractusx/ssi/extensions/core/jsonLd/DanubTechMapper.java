@@ -108,6 +108,7 @@ public class DanubTechMapper {
     try{
       VerifiableCredential vc = VerifiableCredential.builder()
               .id(dtCredential.getId())
+              .contexts(dtCredential.getContexts())
               .types(dtCredential.getTypes())
               .issuer(dtCredential.getIssuer())
               .issuanceDate(dtCredential.getIssuanceDate())
