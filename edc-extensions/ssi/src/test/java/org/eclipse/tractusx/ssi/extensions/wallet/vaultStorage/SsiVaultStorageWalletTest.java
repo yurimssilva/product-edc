@@ -1,5 +1,6 @@
 package org.eclipse.tractusx.ssi.extensions.wallet.vaultStorage;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import org.eclipse.edc.spi.security.Vault;
 import org.eclipse.tractusx.ssi.extensions.core.setting.SsiSettings;
@@ -27,17 +28,20 @@ public class SsiVaultStorageWalletTest {
     ssiVaultStorageWallet = new SsiVaultStorageWallet(vault, ssiSettings);
   }
 
+  @SneakyThrows
   @Test
   public void getMembershipCredentialSuccess(){
     // given
     String testVc = getTestMembershipVC();
     String alias = "someAliasForMembershipVC";
+    ObjectMapper om = new ObjectMapper();
+    VerifiableCredential vc = om.readValue(testVc, VerifiableCredential.class);
     doReturn(alias).when(ssiSettings).getMembershipVerifiableCredentialAlias();
     doReturn(testVc).when(vault).resolveSecret(alias);
     // when
     VerifiableCredential result = ssiVaultStorageWallet.getMembershipCredential();
     // then
-    Assertions.assertEquals(testVc, result.toJson());
+    Assertions.assertEquals(vc, result);
   }
 
   @SneakyThrows

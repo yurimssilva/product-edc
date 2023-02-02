@@ -22,13 +22,14 @@ public class JsonLdSerializerTest {
     @Test
     public void serializePresentationTestSuccess(){
         //given
-        com.danubetech.verifiablecredentials.VerifiablePresentation toTest = credentialFactory.getTestDanubVP();
-        svp = new SerializedVerifiablePresentation(toTest.toJson());
-        VerifiablePresentation expected = jsonLdSerializer.deserializePresentation(svp);
+        com.danubetech.verifiablecredentials.VerifiablePresentation vpDt = credentialFactory.getTestDanubVP();
+        svp = new SerializedVerifiablePresentation(vpDt.toJson());
         //when
-        Object result = jsonLdSerializer.serializePresentation(expected);
+        VerifiablePresentation toTest = jsonLdSerializer.deserializePresentation(svp);
+        SerializedVerifiablePresentation serializePresentation = jsonLdSerializer.serializePresentation(toTest);
+        VerifiablePresentation result = jsonLdSerializer.deserializePresentation(serializePresentation);
         //then
-        Assertions.assertTrue(result.equals(expected));
+        Assertions.assertEquals(toTest, result);
     }
 
     @Test
@@ -43,11 +44,11 @@ public class JsonLdSerializerTest {
     public void deserializePresentationTestSuccess(){
         //given
         VerifiablePresentation toTest = DanubTechMapper.map(credentialFactory.getTestDanubVP());
-        SerializedVerifiablePresentation expected = jsonLdSerializer.serializePresentation(toTest);
         //when
-        Object result = jsonLdSerializer.deserializePresentation(expected);
+        SerializedVerifiablePresentation serializePresentation = jsonLdSerializer.serializePresentation(toTest);
+        VerifiablePresentation result = jsonLdSerializer.deserializePresentation(serializePresentation);
         //then
-        Assertions.assertTrue(result.equals(expected));
+        Assertions.assertEquals(toTest, result);
     }
 
     @Test

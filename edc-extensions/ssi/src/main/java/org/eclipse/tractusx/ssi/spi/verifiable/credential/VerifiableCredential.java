@@ -18,42 +18,43 @@ import java.util.Map;
 @Builder
 @ToString
 @Jacksonized
-@JsonPropertyOrder
+@JsonPropertyOrder({"id", "contexts", "type", "issuer", "issuanceDate", "expirationDate", "credentialSubject", "credentialStatus", "proof"})
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class VerifiableCredential {
 
   @JsonProperty("@context")
   @NonNull
   List<URI> contexts;
+
   @NonNull
   URI id;
+
   @JsonProperty("type")
-  List<String> types; // TODO must be at least one
+  List<String> types;
+
   @NonNull
   URI issuer;
-  // @NonNull URI holder; TODO postponed until clafirication with danubtech
-  // library, what to do without holder?
-  /**
-   * This specification defines the <a
-   * href="https://www.w3.org/TR/vc-data-model/#issuance-date">issuanceDate</a>
-   * property for
-   * expressing the date and time when a credential becomes valid.
-   */
+
   @NonNull
   Date issuanceDate;
+
   Date expirationDate;
+
   @NonNull
   @Builder.Default
   @JsonProperty("credentialSubject")
   public Map<String, Object> claims = new HashMap<>();
+
   VerifiableCredentialStatus credentialStatus;
+
+  String holderIdentifier;
+
   Ed25519Proof proof;
-
-
 
   @SneakyThrows
   public String toJson(){
     ObjectMapper om = new ObjectMapper();
     return om.writeValueAsString(this);
   }
+
 }

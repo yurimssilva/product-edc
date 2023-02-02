@@ -38,7 +38,7 @@ public class DanubTechMapper {
       throw new SsiException("Type: VerifiablePresentation missing");
     }
     // VerifiablePresentation Type is automatically added in Builder
-    List<String> types = presentation.getTypes();
+    List<String> types = new ArrayList<>(presentation.getTypes());
     types.remove(0);
 
     com.danubetech.verifiablecredentials.VerifiablePresentation.Builder<? extends com.danubetech.verifiablecredentials.VerifiablePresentation.Builder<?>> builder = com.danubetech.verifiablecredentials.VerifiablePresentation
@@ -90,14 +90,15 @@ public class DanubTechMapper {
     CredentialSubject subject = CredentialSubject.builder().properties(credential.getClaims()).build();
 
     return com.danubetech.verifiablecredentials.VerifiableCredential.builder()
-        .defaultContexts(true)
-        .forceContextsArray(true)
-        .forceTypesArray(true)
-        .id(credential.getId())
-        .types(types)
-        .issuer(credential.getIssuer())
-        .credentialSubject(subject)
-        .build();
+            .defaultContexts(true)
+            .forceContextsArray(true)
+            .forceTypesArray(true)
+            .id(credential.getId())
+            .types(types)
+            .issuer(credential.getIssuer())
+            .issuanceDate(credential.getIssuanceDate())
+            .credentialSubject(subject)
+            .build();
     // .credentialStatus(credential.getStatus())
   }
 

@@ -42,11 +42,12 @@ public class DidWebDocumentResolverTest {
     doReturn(true).when(responseMock).isSuccessful();
     doReturn(responseBodyMock).when(responseMock).body();
     doReturn(testDidDocument.getBytes()).when(responseBodyMock).bytes();
-    DidDocument expectedResult = null;
     // when
     DidDocument result = resolver.resolve(toTest);
     // then
-    Assertions.assertTrue(result.equals(expectedResult));
+    Assertions.assertTrue(result.getId() != null);
+    Assertions.assertTrue(result.getPublicKeys() != null);
+    Assertions.assertTrue(result.getPublicKeys().size() == 1);
   }
 
   @SneakyThrows
