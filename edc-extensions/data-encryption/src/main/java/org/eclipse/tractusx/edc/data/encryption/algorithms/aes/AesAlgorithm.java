@@ -22,6 +22,7 @@ package org.eclipse.tractusx.edc.data.encryption.algorithms.aes;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
@@ -29,6 +30,7 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import lombok.NonNull;
+import lombok.SneakyThrows;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.eclipse.tractusx.edc.data.encryption.algorithms.CryptoAlgorithm;
 import org.eclipse.tractusx.edc.data.encryption.data.CryptoDataFactory;
@@ -36,6 +38,7 @@ import org.eclipse.tractusx.edc.data.encryption.data.DecryptedData;
 import org.eclipse.tractusx.edc.data.encryption.data.EncryptedData;
 import org.eclipse.tractusx.edc.data.encryption.key.AesKey;
 import org.eclipse.tractusx.edc.data.encryption.util.ArrayUtil;
+import org.jetbrains.annotations.NotNull;
 
 public class AesAlgorithm implements CryptoAlgorithm<AesKey> {
 
@@ -43,12 +46,16 @@ public class AesAlgorithm implements CryptoAlgorithm<AesKey> {
   private static final String AES = "AES";
   private static final Object MONITOR = new Object();
 
+  private final SecureRandom secureRandom;
+
   @NonNull private final CryptoDataFactory cryptoDataFactory;
   private AesInitializationVectorIterator initializationVectorIterator;
 
-  public AesAlgorithm(CryptoDataFactory cryptoDataFactory) {
+  @SneakyThrows
+  public AesAlgorithm(@NotNull CryptoDataFactory cryptoDataFactory) {
     this.cryptoDataFactory = cryptoDataFactory;
-    this.initializationVectorIterator = new AesInitializationVectorIterator();
+    this.secureRandom = SecureRandom.getInstanceStrong();
+    this.initializationVectorIterator = new AesInitializationVectorIterator(this.secureRandom);
   }
 
   @Override
@@ -59,7 +66,7 @@ public class AesAlgorithm implements CryptoAlgorithm<AesKey> {
     final byte[] initializationVector;
     synchronized (MONITOR) {
       if (!initializationVectorIterator.hasNext()) {
-        initializationVectorIterator = new AesInitializationVectorIterator();
+        initializationVectorIterator = new AesInitializationVectorIterator(this.secureRandom);
       }
 
       initializationVector = initializationVectorIterator.next();
