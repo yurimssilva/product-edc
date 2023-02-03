@@ -27,6 +27,9 @@ public class ConnectorSteps {
 
   @Given("'{connector}' has an empty database")
   public void cleanDatabase(Connector connector) throws SQLException {
-    connector.getDatabaseCleaner().run();
+    // in-memory tests don't need database cleanup... at least they shouldn't!
+    if (connector.getEnvironment().getDatabaseUrl().startsWith("jdbc")) {
+      connector.getDatabaseCleaner().run();
+    }
   }
 }

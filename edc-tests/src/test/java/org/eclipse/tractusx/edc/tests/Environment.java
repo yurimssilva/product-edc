@@ -20,6 +20,7 @@
 
 package org.eclipse.tractusx.edc.tests;
 
+import static java.lang.String.format;
 import static org.eclipse.tractusx.edc.tests.Constants.AWS_ACCESS_KEY_ID;
 import static org.eclipse.tractusx.edc.tests.Constants.AWS_SECRET_ACCESS_KEY;
 import static org.eclipse.tractusx.edc.tests.Constants.BACKEND_SERVICE_BACKEND_API_URL;
@@ -38,6 +39,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.ToString;
+import org.eclipse.tractusx.edc.tests.features.RunCucumberLocalTest;
 
 @Builder(access = AccessLevel.PRIVATE)
 @Getter
@@ -55,7 +57,15 @@ public class Environment {
   @NonNull private final String awsAccessKey;
   @NonNull private final String awsSecretAccessKey;
 
-  public static Environment byName(String name) {
+  public static Environment getEnvironmentFor(String name) {
+    if ("local".equalsIgnoreCase(System.getenv("ENVIRONMENT"))) {
+      return Environment.local(name);
+    } else {
+      return Environment.byName(name);
+    }
+  }
+
+  private static Environment byName(String name) {
     name = name.toUpperCase(Locale.ROOT);
 
     return Environment.builder()
@@ -71,6 +81,37 @@ public class Environment {
         .awsEndpointOverride(System.getenv(EDC_AWS_ENDPOINT_OVERRIDE))
         .awsAccessKey(System.getenv(String.join("_", name, AWS_ACCESS_KEY_ID)))
         .awsSecretAccessKey(System.getenv(String.join("_", name, AWS_SECRET_ACCESS_KEY)))
+        .build();
+  }
+
+  private static Environment local(String name) {
+    var lowerName = name.toLowerCase(Locale.ROOT);
+
+    var portPrefix = lowerName.equals("plato") ? 10 : 20;
+
+    // TODO: move this somewhere else
+    var postgresUrl =
+        RunCucumberLocalTest.execute(
+            format("minikube service %s --url --namespace=tractusx", lowerName + "-postgresql"));
+
+    var minioUrl =
+        RunCucumberLocalTest.execute(
+            format("minikube service %s --url --namespace=tractusx", "minio"));
+
+    var postgresHostname = postgresUrl.substring(postgresUrl.indexOf(":") + 1);
+
+    return Environment.builder()
+        .databaseUrl(format("jdbc:postgresql:%s/edc", postgresHostname))
+        .databaseUser("user")
+        .databasePassword("password")
+        .dataManagementUrl(format("http://localhost:%d993/management", portPrefix))
+        .dataManagementAuthKey("password")
+        .idsUrl(format("http://localhost:%d992/protocol", portPrefix))
+        .dataPlaneUrl(format("http://localhost:%d992/public", portPrefix + 1))
+        .backendServiceBackendApiUrl("http://localhost:8081")
+        .awsEndpointOverride(minioUrl)
+        .awsAccessKey(format("%sqwerty123", lowerName))
+        .awsSecretAccessKey(format("%sqwerty123", lowerName))
         .build();
   }
 }

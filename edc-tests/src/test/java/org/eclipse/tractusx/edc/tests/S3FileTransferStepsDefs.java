@@ -173,7 +173,7 @@ public class S3FileTransferStepsDefs {
 
   @AfterAll
   public static void bucketsCleanup() {
-    S3Client s3 = new S3Client(Environment.byName("Sokrates"));
+    S3Client s3 = new S3Client(Environment.getEnvironmentFor("Sokrates"));
     s3.deleteAllBuckets();
   }
 }

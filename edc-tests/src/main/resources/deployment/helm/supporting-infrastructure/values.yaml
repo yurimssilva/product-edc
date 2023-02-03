@@ -28,6 +28,10 @@ backend:
 ########
 idsdaps:
   fullnameOverride: "ids-daps"
+  service:
+    type: NodePort
+    daps:
+      port: 4567
   connectors:
     - id: E7:07:2D:74:56:66:31:F0:7B:10:EA:B6:03:06:4C:23:7F:ED:A6:65:keyid:E7:07:2D:74:56:66:31:F0:7B:10:EA:B6:03:06:4C:23:7F:ED:A6:65
       name: sokrates
@@ -98,6 +102,10 @@ plato-postgresql:
   primary:
     persistence:
       enabled: false
+    service:
+      type: NodePort
+      postgres:
+        port: 5432
   readReplicas:
     persistence:
       enabled: false
@@ -110,6 +118,10 @@ sokrates-postgresql:
   primary:
     persistence:
       enabled: false
+    service:
+      type: NodePort
+      postgres:
+        port: 5432
   readReplicas:
     persistence:
       enabled: false
@@ -169,6 +181,10 @@ vault:
   injector:
     enabled: false
   server:
+    service:
+      type: NodePort
+      vault:
+        port: 8200
     dev:
       enabled: true
       devRootToken: "root"

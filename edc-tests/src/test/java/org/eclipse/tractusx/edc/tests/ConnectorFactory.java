@@ -32,12 +32,10 @@ public class ConnectorFactory {
 
   public static Connector byName(@NonNull final String name) {
     return CONNECTOR_CACHE.computeIfAbsent(
-        name.toUpperCase(Locale.ROOT), k -> createConnector(name));
-  }
-
-  private static Connector createConnector(@NonNull final String name) {
-    final Environment environment = Environment.byName(name);
-
-    return new Connector(name, environment);
+        name.toUpperCase(Locale.ROOT),
+        k -> {
+          var environment = Environment.getEnvironmentFor(name);
+          return new Connector(name, environment);
+        });
   }
 }
