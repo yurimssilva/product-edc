@@ -23,6 +23,7 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import lombok.NonNull;
+import lombok.SneakyThrows;
 import net.catenax.edc.data.encryption.algorithms.CryptoAlgorithm;
 import net.catenax.edc.data.encryption.data.CryptoDataFactory;
 import net.catenax.edc.data.encryption.data.DecryptedData;
@@ -37,12 +38,16 @@ public class AesAlgorithm implements CryptoAlgorithm<AesKey> {
   private static final String AES = "AES";
   private static final Object MONITOR = new Object();
 
+  private final SecureRandom secureRandom;
+
   @NonNull private final CryptoDataFactory cryptoDataFactory;
   private AesInitializationVectorIterator initializationVectorIterator;
 
-  public AesAlgorithm(CryptoDataFactory cryptoDataFactory) {
+  @SneakyThrows
+  public AesAlgorithm(@NotNull CryptoDataFactory cryptoDataFactory) {
     this.cryptoDataFactory = cryptoDataFactory;
-    this.initializationVectorIterator = new AesInitializationVectorIterator();
+    this.secureRandom = SecureRandom.getInstanceStrong();
+    this.initializationVectorIterator = new AesInitializationVectorIterator(this.secureRandom);
   }
 
   @Override
@@ -53,7 +58,7 @@ public class AesAlgorithm implements CryptoAlgorithm<AesKey> {
     final byte[] initializationVector;
     synchronized (MONITOR) {
       if (!initializationVectorIterator.hasNext()) {
-        initializationVectorIterator = new AesInitializationVectorIterator();
+        initializationVectorIterator = new AesInitializationVectorIterator(this.secureRandom);
       }
 
       initializationVector = initializationVectorIterator.next();
