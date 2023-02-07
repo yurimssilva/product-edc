@@ -99,4 +99,8 @@ public class AesAlgorithm implements CryptoAlgorithm<AesKey> {
     byte[] decryptedData = cipher.doFinal(encrypted);
     return cryptoDataFactory.decryptedFromBytes(decryptedData);
   }
+
+  public String getAlgorithm() {
+    return this.secureRandom.getAlgorithm();
+  }
 }

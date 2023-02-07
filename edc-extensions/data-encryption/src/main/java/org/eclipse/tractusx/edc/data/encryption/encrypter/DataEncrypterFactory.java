@@ -24,7 +24,6 @@ import lombok.RequiredArgsConstructor;
 import org.eclipse.dataspaceconnector.spi.monitor.Monitor;
 import org.eclipse.dataspaceconnector.spi.security.Vault;
 import org.eclipse.dataspaceconnector.transfer.dataplane.spi.security.DataEncrypter;
-import org.eclipse.tractusx.edc.data.encryption.algorithms.CryptoAlgorithm;
 import org.eclipse.tractusx.edc.data.encryption.algorithms.aes.AesAlgorithm;
 import org.eclipse.tractusx.edc.data.encryption.data.CryptoDataFactory;
 import org.eclipse.tractusx.edc.data.encryption.data.CryptoDataFactoryImpl;
@@ -33,6 +32,8 @@ import org.eclipse.tractusx.edc.data.encryption.key.CryptoKeyFactory;
 import org.eclipse.tractusx.edc.data.encryption.provider.AesKeyProvider;
 import org.eclipse.tractusx.edc.data.encryption.provider.CachingKeyProvider;
 import org.eclipse.tractusx.edc.data.encryption.provider.KeyProvider;
+
+import static java.lang.String.format;
 
 @RequiredArgsConstructor
 public class DataEncrypterFactory {
@@ -67,7 +68,9 @@ public class DataEncrypterFactory {
     }
 
     final CryptoDataFactory cryptoDataFactory = new CryptoDataFactoryImpl();
-    final CryptoAlgorithm<AesKey> algorithm = new AesAlgorithm(cryptoDataFactory);
+    final AesAlgorithm algorithm = new AesAlgorithm(cryptoDataFactory);
+
+    monitor.debug(format("AES algorithm was initialised with SecureRandom algorithm '%s'", algorithm.getAlgorithm()));
 
     return new AesDataEncrypterImpl(algorithm, monitor, keyProvider, algorithm, cryptoDataFactory);
   }
