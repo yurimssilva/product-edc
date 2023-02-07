@@ -20,6 +20,8 @@
 
 package org.eclipse.tractusx.edc.data.encryption.encrypter;
 
+import static java.lang.String.format;
+
 import lombok.RequiredArgsConstructor;
 import org.eclipse.dataspaceconnector.spi.monitor.Monitor;
 import org.eclipse.dataspaceconnector.spi.security.Vault;
@@ -32,8 +34,6 @@ import org.eclipse.tractusx.edc.data.encryption.key.CryptoKeyFactory;
 import org.eclipse.tractusx.edc.data.encryption.provider.AesKeyProvider;
 import org.eclipse.tractusx.edc.data.encryption.provider.CachingKeyProvider;
 import org.eclipse.tractusx.edc.data.encryption.provider.KeyProvider;
-
-import static java.lang.String.format;
 
 @RequiredArgsConstructor
 public class DataEncrypterFactory {
@@ -70,7 +70,10 @@ public class DataEncrypterFactory {
     final CryptoDataFactory cryptoDataFactory = new CryptoDataFactoryImpl();
     final AesAlgorithm algorithm = new AesAlgorithm(cryptoDataFactory);
 
-    monitor.debug(format("AES algorithm was initialised with SecureRandom algorithm '%s'", algorithm.getAlgorithm()));
+    monitor.debug(
+        format(
+            "AES algorithm was initialised with SecureRandom algorithm '%s'",
+            algorithm.getAlgorithm()));
 
     return new AesDataEncrypterImpl(algorithm, monitor, keyProvider, algorithm, cryptoDataFactory);
   }
