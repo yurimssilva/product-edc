@@ -54,7 +54,7 @@ public class AesAlgorithm implements CryptoAlgorithm<AesKey> {
   @SneakyThrows
   public AesAlgorithm(@NotNull CryptoDataFactory cryptoDataFactory) {
     this.cryptoDataFactory = cryptoDataFactory;
-    this.secureRandom = SecureRandom.getInstanceStrong();
+    this.secureRandom = new SecureRandom();
     this.initializationVectorIterator = new AesInitializationVectorIterator(this.secureRandom);
   }
 
