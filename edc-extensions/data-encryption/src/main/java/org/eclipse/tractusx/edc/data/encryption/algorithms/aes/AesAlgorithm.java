@@ -55,10 +55,10 @@ public class AesAlgorithm implements CryptoAlgorithm<AesKey> {
   public AesAlgorithm(@NotNull CryptoDataFactory cryptoDataFactory) {
     this.cryptoDataFactory = cryptoDataFactory;
 
-    // We use new SecureRandom() and not SecureRandom.getInstanceStrong(), as the second algorithm would use a blocking
-    // algorithm, which leads to an increased encryption time of up to 3 minutes. Since we have already used
-    // /dev/urandom, which only provides pseudo-randomness and is also non-blocking, switching to a non-blocking
-    // algorithm should not matter here either.
+    // We use new SecureRandom() and not SecureRandom.getInstanceStrong(), as the second algorithm
+    // would use a blocking algorithm, which leads to an increased encryption time of up to 3
+    // minutes. Since we have already used /dev/urandom, which only provides pseudo-randomness and
+    // is also non-blocking, switching to a non-blocking algorithm should not matter here either.
     this.secureRandom = SecureRandom.getInstanceStrong();
     this.initializationVectorIterator = new AesInitializationVectorIterator(this.secureRandom);
   }
