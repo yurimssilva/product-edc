@@ -35,7 +35,7 @@ class AesInitializationVectorIteratorTest {
   @SneakyThrows
   void testDistinctVectors() {
     final int vectorCount = 100;
-    final SecureRandom secureRandom = SecureRandom.getInstanceStrong();
+    final SecureRandom secureRandom = new SecureRandom();
     AesInitializationVectorIterator iterator = new AesInitializationVectorIterator(secureRandom);
 
     List<byte[]> vectors = new ArrayList<>();
