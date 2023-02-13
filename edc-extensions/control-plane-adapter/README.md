@@ -67,7 +67,7 @@ Additional requirements, that affects the architecture of the extension:
    
    ```
    url:          http://consumer-dataplane:9192/publicsubmodel?provider-connector-url=...                {endpoint}
-   header:       Authorization:eyJhbGciOiJSUzI1NiJ9.eyJkYWQiOi...                                        {authKey:authCode}
+   header:       Authorization: eyJhbGciOiJSUzI1NiJ9.eyJkYWQiOi...                                        {authKey: authCode}
    ```
 
 <b>Internal design of the extension:</b>

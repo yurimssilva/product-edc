@@ -13,8 +13,8 @@
     <img src="https://raw.githubusercontent.com/eclipse-edc/Connector/main/resources/media/logo.png" alt="Logo" width="80" height="80">
   </a>
 
-  <h3 align="center">Product Eclipse Dataspace Connector</h3>
-  <h4 align="center">Catena-X</h4>
+  <h3 align="center">Tractus-X Eclipse Dataspace Connector</h3>
+  <h4 align="center">TXDC</h4>
 
   <p align="center">
     Container images and deployments of the Eclipse Dataspace Components open source project.
@@ -53,20 +53,26 @@
 
 ## About The Project
 
-The project provides pre-built control- and data-plane [docker](https://www.docker.com/) images and [helm](https://helm.sh/) charts of the [Eclipse DataSpaceConnector Project](https://github.com/eclipse-edc/Connector).
+The project provides pre-built control- and data-plane [docker](https://www.docker.com/) images and [helm](https://helm.sh/) charts of the [Eclipse DataSpace Components Project](https://github.com/eclipse-edc/Connector).
+
+**Difference TXDC and EDC** - On the first glance the two repositories might look very similar, but actually this repository does very little. 
+
+- In the **EDC** repository the actual application is developed. So _everything_ concerning the applications itself (questions/issues/discussions regarding the EDC domain or extensions) should be placed there. 
+- In the **TXDC** repository the Docker Images and Helm Charts are developed. So _everything_ concerning the image and deployment should be placed there.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Inventory
 
-The eclipse data space connector is split up into Control-Plane and Data-Plane, whereas the Control-Plane functions as administration layer
-and has responsibility of resource management, contract negotiation and administer data transfer. 
+The eclipse data space connector is split up into Control-Plane and Data-Plane, whereas the Control-Plane functions as administration layer and has responsibility of resource management, contract negotiation and administer data transfer. 
 The Data-Plane does the heavy lifting of transferring and receiving data streams.
 
 Depending on your environment there are different derivatives of the control-plane prepared:
 
 * [edc-controlplane-memory](edc-controlplane/edc-controlplane-memory) with dependency onto
     * [Azure Key Vault](https://azure.microsoft.com/en-us/services/key-vault/#product-overview)
+* [edc-controlplane-pomemory-hashicorp-vault](edc-controlplane/edc-controlplane-memory) with dependency onto
+    * [Hashicorp Vault](https://www.vaultproject.io/)
 * [edc-controlplane-postgresql](edc-controlplane/edc-controlplane-postgresql) with dependency onto
     * [Azure Key Vault](https://azure.microsoft.com/en-us/services/key-vault/#product-overview)
     * [PostgreSQL 8.2 or newer](https://www.postgresql.org/)
