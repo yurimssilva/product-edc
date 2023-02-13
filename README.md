@@ -71,7 +71,7 @@ Depending on your environment there are different derivatives of the control-pla
 
 * [edc-controlplane-memory](edc-controlplane/edc-controlplane-memory) with dependency onto
     * [Azure Key Vault](https://azure.microsoft.com/en-us/services/key-vault/#product-overview)
-* [edc-controlplane-pomemory-hashicorp-vault](edc-controlplane/edc-controlplane-memory) with dependency onto
+* [edc-controlplane-memory-hashicorp-vault](edc-controlplane/edc-controlplane-memory) with dependency onto
     * [Hashicorp Vault](https://www.vaultproject.io/)
 * [edc-controlplane-postgresql](edc-controlplane/edc-controlplane-postgresql) with dependency onto
     * [Azure Key Vault](https://azure.microsoft.com/en-us/services/key-vault/#product-overview)
