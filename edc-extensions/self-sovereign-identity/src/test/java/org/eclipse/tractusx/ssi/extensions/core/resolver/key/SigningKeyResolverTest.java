@@ -2,7 +2,7 @@ package org.eclipse.tractusx.ssi.extensions.core.resolver.key;
 
 import jakarta.xml.bind.DatatypeConverter;
 import org.eclipse.edc.spi.security.Vault;
-import org.eclipse.tractusx.ssi.extensions.core.exception.SigningKeyException;
+import org.eclipse.tractusx.ssi.extensions.core.exception.SigningKeyResolvingException;
 import org.eclipse.tractusx.ssi.extensions.core.setting.SsiSettings;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -74,7 +74,7 @@ public class SigningKeyResolverTest {
     doReturn(keyAlias).when(settingsMock).getVerifiablePresentationSigningKeyAlias();
     doReturn(null).when(vaultMock).resolveSecret(keyAlias);
     // when
-    SigningKeyException res = Assertions.assertThrows(SigningKeyException.class,
+    SigningKeyResolvingException res = Assertions.assertThrows(SigningKeyResolvingException.class,
             () -> signingKeyResolver.getSigningKey(signingMethod));
     // then
     Assertions.assertTrue(res.toString().contains(expectedMessage));
@@ -87,7 +87,7 @@ public class SigningKeyResolverTest {
     String signingMethod = "ES257";
     String expectedMessage = "not supported";
     // when
-    SigningKeyException res = Assertions.assertThrows(SigningKeyException.class,
+    SigningKeyResolvingException res = Assertions.assertThrows(SigningKeyResolvingException.class,
             () -> signingKeyResolver.getSigningKey(signingMethod));
     // then
     Assertions.assertTrue(res.toString().contains(expectedMessage));
@@ -103,7 +103,7 @@ public class SigningKeyResolverTest {
     doReturn(keyAlias).when(settingsMock).getVerifiablePresentationSigningKeyAlias();
     doReturn(testSigningKey).when(vaultMock).resolveSecret(keyAlias);
     // when
-    SigningKeyException res = Assertions.assertThrows(SigningKeyException.class,
+    SigningKeyResolvingException res = Assertions.assertThrows(SigningKeyResolvingException.class,
             () -> signingKeyResolver.getSigningKey(signingMethod));
     // then
     Assertions.assertTrue(res.toString().contains(expectedMessage));
