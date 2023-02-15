@@ -118,14 +118,14 @@ public class SsiSettingsFactoryImpl implements SsiSettingsFactory {
     String storedCredentialAliasesString =
             context.getSetting(
                     SsiCoreExtension.SETTING_WALLET_STORAGE_MEMBERSHIP_CREDENTIAL_ALIAS, null);
-    List<String> storedCredentialAliases = Arrays.asList(
-            storedCredentialAliasesString.trim().split(","));
-    if (storedCredentialAliases == null) {
+    if (storedCredentialAliasesString == null) {
       throw new SsiSettingException(
               String.format(
                       EXCEPTION_MANDATORY_SETTINGS_MISSING,
                       SsiCoreExtension.SETTING_WALLET_STORAGE_MEMBERSHIP_CREDENTIAL_ALIAS));
     }
+    List<String> storedCredentialAliases = Arrays.asList(
+            storedCredentialAliasesString.trim().split(","));
 
     return new SsiSettings(
             verifiablePresentationSigningMethod,

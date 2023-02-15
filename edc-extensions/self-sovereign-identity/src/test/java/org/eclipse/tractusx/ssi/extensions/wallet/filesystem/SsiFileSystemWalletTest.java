@@ -3,6 +3,7 @@ package org.eclipse.tractusx.ssi.extensions.wallet.filesystem;
 import lombok.SneakyThrows;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.util.io.pem.PemReader;
+import org.eclipse.edc.spi.monitor.Monitor;
 import org.eclipse.tractusx.ssi.extensions.core.proof.LinkedDataProofValidation;
 import org.eclipse.tractusx.ssi.extensions.core.proof.hash.LinkedDataHasher;
 import org.eclipse.tractusx.ssi.extensions.core.proof.transform.LinkedDataTransformer;
@@ -16,6 +17,7 @@ import org.eclipse.tractusx.ssi.spi.did.DidMethodIdentifier;
 import org.eclipse.tractusx.ssi.spi.verifiable.Ed25519Proof;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -32,20 +34,19 @@ import java.security.spec.ECGenParameterSpec;
 public class SsiFileSystemWalletTest {
 
   private SsiFileSystemWallet wallet;
-  private TestDidDocumentResolver didDocumentResolver;
 
   private LinkedDataProofValidation linkedDataProofValidation;
+
+  // mocks
+  private Monitor monitor;
 
   //@BeforeEach
   //@SneakyThrows
   public void setup() {
 
-    didDocumentResolver = new TestDidDocumentResolver();
-    linkedDataProofValidation = new LinkedDataProofValidation(
-        new LinkedDataHasher(),
-        new LinkedDataTransformer(),
-        new LinkedDataVerifier(didDocumentResolver),
-        new LinkedDataSigner());
+    monitor = Mockito.mock(Monitor.class);
+
+    linkedDataProofValidation = LinkedDataProofValidation.create(TestDidDocumentResolver.withRegistry(), monitor);
 
     final URL resource = getClass().getClassLoader().getResource("core/wallet/membership-credential.json");
     if (resource == null) {

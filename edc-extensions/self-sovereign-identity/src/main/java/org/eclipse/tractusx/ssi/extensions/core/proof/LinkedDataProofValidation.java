@@ -1,11 +1,13 @@
 package org.eclipse.tractusx.ssi.extensions.core.proof;
 
+import org.eclipse.edc.spi.monitor.Monitor;
 import org.eclipse.tractusx.ssi.extensions.core.base.MultibaseFactory;
 import org.eclipse.tractusx.ssi.extensions.core.proof.hash.LinkedDataHasher;
 import org.eclipse.tractusx.ssi.extensions.core.proof.transform.LinkedDataTransformer;
 import org.eclipse.tractusx.ssi.extensions.core.proof.verify.LinkedDataSigner;
 import org.eclipse.tractusx.ssi.extensions.core.proof.verify.LinkedDataVerifier;
 import org.eclipse.tractusx.ssi.spi.did.Did;
+import org.eclipse.tractusx.ssi.spi.did.resolver.DidDocumentResolverRegistry;
 import org.eclipse.tractusx.ssi.spi.verifiable.Ed25519Proof;
 import org.eclipse.tractusx.ssi.spi.verifiable.MultibaseString;
 import org.eclipse.tractusx.ssi.spi.verifiable.credential.VerifiableCredential;
@@ -14,46 +16,61 @@ import java.util.Date;
 
 public class LinkedDataProofValidation {
 
-  private final LinkedDataHasher hasher;
-  private final LinkedDataTransformer transformer;
-  private final LinkedDataVerifier verifier;
-  private final LinkedDataSigner signer;
+    public static LinkedDataProofValidation create(DidDocumentResolverRegistry didDocumentResolverRegistry, Monitor monitor) {
+        return new LinkedDataProofValidation(
+                new LinkedDataHasher(),
+                new LinkedDataTransformer(),
+                new LinkedDataVerifier(didDocumentResolverRegistry, monitor),
+                new LinkedDataSigner(),
+                monitor);
+    }
 
-  public LinkedDataProofValidation(
-      LinkedDataHasher hasher,
-      LinkedDataTransformer transformer,
-      LinkedDataVerifier verifier,
-      LinkedDataSigner signer) {
-    this.hasher = hasher;
-    this.transformer = transformer;
-    this.verifier = verifier;
-    this.signer = signer;
-  }
+    private final LinkedDataHasher hasher;
+    private final LinkedDataTransformer transformer;
+    private final LinkedDataVerifier verifier;
+    private final LinkedDataSigner signer;
+    private final Monitor monitor;
 
-  public boolean checkProof(VerifiableCredential verifiableCredential) {
-    // TODO Asser proof is linked data proof
-    var transformedData = transformer.transform(verifiableCredential);
-    var hashedData = hasher.hash(transformedData);
-    var isProofed = verifier.verify(hashedData, verifiableCredential);
+    public LinkedDataProofValidation(
+            LinkedDataHasher hasher,
+            LinkedDataTransformer transformer,
+            LinkedDataVerifier verifier,
+            LinkedDataSigner signer,
+            Monitor monitor) {
+        this.hasher = hasher;
+        this.transformer = transformer;
+        this.verifier = verifier;
+        this.signer = signer;
+        this.monitor = monitor;
+    }
 
-    return isProofed;
-  }
+    public boolean checkProof(VerifiableCredential verifiableCredential) {
+        // TODO Asser proof is linked data proof
+        var transformedData = transformer.transform(verifiableCredential);
+        var hashedData = hasher.hash(transformedData);
+        var isProofed = verifier.verify(hashedData, verifiableCredential);
 
-  public Ed25519Proof createProof(
-      VerifiableCredential verifiableCredential, Did verificationMethodId, byte[] signingKey) {
-    var transformedData = transformer.transform(verifiableCredential);
-    var hashedData = hasher.hash(transformedData);
-    var signature = signer.sign(hashedData, signingKey);
-    MultibaseString multibaseString = MultibaseFactory.create(signature);
+        if (isProofed) {
+            monitor.debug(String.format("Successfully verified signature of verifiable credential proof (id=%s, issuer=%s)", verifiableCredential.getId(), verifiableCredential.getIssuer()));
+        } else {
+            monitor.warning(String.format("Signature verification failed for verifiable credential proof (id=%s, issuer=%s)", verifiableCredential.getId(), verifiableCredential.getIssuer()));
+        }
 
-    var proof =
-        Ed25519Proof.builder()
-            .created(new Date())
-            .verificationMethod(verificationMethodId.toUri())
-            .proofValue(multibaseString.getEncoded())
-            .proofValueMultiBase(multibaseString)
-            .build();
+        return isProofed;
+    }
 
-    return proof;
-  }
+    public Ed25519Proof createProof(
+            VerifiableCredential verifiableCredential, Did verificationMethodId, byte[] signingKey) {
+        var transformedData = transformer.transform(verifiableCredential);
+        var hashedData = hasher.hash(transformedData);
+        var signature = signer.sign(hashedData, signingKey);
+        MultibaseString multibaseString = MultibaseFactory.create(signature);
+
+        return Ed25519Proof.builder()
+                .created(new Date())
+                .verificationMethod(verificationMethodId.toUri())
+                .proofValue(multibaseString.getEncoded())
+                .proofValueMultiBase(multibaseString)
+                .build();
+    }
 }
