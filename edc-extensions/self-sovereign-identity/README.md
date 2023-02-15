@@ -1,30 +1,8 @@
-# Self Sovereign Identity
+# Self-Sovereign Identity Extension
 
-!! In Progess !!
+Experimental development of a self-sovereign connector.
 
-
-## Create DID Document
-
-### Generate Keys
-
-Generate Private key
-```shell
-ssh-keygen -t ed25519 -f ./ssi.key
-```
-
-
-Generate a valid ES256 Private and PublicKey
-
-```shell
-openssl ecparam -name prime256v1 -genkey -noout -out ssi-private-key.pem
-openssl ec -in ssi-private-key.pem -pubout -out ssi-public-key.pem
-# Upgrade to newest version needed https://github.com/auth0/java-jwt/issues/270
-openssl pkcs8 -topk8 -inform pem -in ssi-private-key.pem -outform pem -nocrypt -out file.pem
-```
-
-
-## SSI-Settings Variables
-
+# Settings
 
 | Name                                               | Description                                        |
 |----------------------------------------------------|----------------------------------------------------|
@@ -35,3 +13,21 @@ openssl pkcs8 -topk8 -inform pem -in ssi-private-key.pem -outform pem -nocrypt -
 | edc.ssi.did.connector                              | SETTING_DID_CONNECTOR                              |
 | edc.ssi.wallet.storage.membership.credential.alias | SETTING_WALLET_STORAGE_MEMBERSHIP_CREDENTIAL_ALIAS |
 | edc.ssi.wallet.storage.credential.alias.list       | SETTING_WALLET_STORAGE_CREDENTIAL_ALIAS_LIST       |
+
+# Extension Points
+
+## DID Methods
+
+## Wallet
+
+## Supported Default DID Methods
+
+### DID Web
+
+https://w3c-ccg.github.io/did-method-web/
+
+## Supported Default Wallets
+
+### File System Wallet
+
+### Vault Wallet

@@ -9,7 +9,7 @@
         <version>0.2.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>ssi</artifactId>
+    <artifactId>self-sovereign-identity</artifactId>
 
     <properties>
         <originalSourceDirectory>${project.basedir}/src/main/java</originalSourceDirectory>

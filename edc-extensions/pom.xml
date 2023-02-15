@@ -47,7 +47,7 @@
         <module>transferprocess-sftp-common</module>
         <module>transferprocess-sftp-client</module>
         <module>transferprocess-sftp-provisioner</module>
-        <module>ssi</module>
+        <module>self-sovereign-identity</module>
     </modules>
 
 </project>

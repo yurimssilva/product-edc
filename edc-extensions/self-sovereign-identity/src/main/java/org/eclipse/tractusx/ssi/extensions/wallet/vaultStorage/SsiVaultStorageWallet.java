@@ -13,12 +13,10 @@ public class SsiVaultStorageWallet implements VerifiableCredentialWallet {
 
   private final Vault vault;
   private final SsiSettings settings;
-
   public SsiVaultStorageWallet(Vault vault, SsiSettings settings) {
     this.vault = vault;
     this.settings = settings;
   }
-
   @Override
   public String getIdentifier() {
     return Identifier;
