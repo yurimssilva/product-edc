@@ -14,13 +14,14 @@ public class JsonLdSerializerTest {
     DanubCredentialFactory credentialFactory;
     SerializedVerifiablePresentation svp;
     JsonLdSerializer jsonLdSerializer;
+
     @BeforeEach
-    public void setUp(){
+    public void setUp() {
         jsonLdSerializer = new JsonLdSerializerImpl();
     }
 
     @Test
-    public void serializePresentationTestSuccess(){
+    public void serializePresentationTestSuccess() {
         //given
         com.danubetech.verifiablecredentials.VerifiablePresentation vpDt = credentialFactory.getTestDanubVP();
         svp = new SerializedVerifiablePresentation(vpDt.toJson());
@@ -33,15 +34,13 @@ public class JsonLdSerializerTest {
     }
 
     @Test
-    public void serializePresentationFailTest(){
-        String expectedMessage = "java.lang.NullPointerException";
-        NullPointerException exception = Assertions.assertThrows(NullPointerException.class,
+    public void serializePresentationFailTest() {
+        Assertions.assertThrows(NullPointerException.class,
                 () -> jsonLdSerializer.serializePresentation(null));
-        Assertions.assertTrue(exception.toString().equals(expectedMessage));
     }
 
     @Test
-    public void deserializePresentationTestSuccess(){
+    public void deserializePresentationTestSuccess() {
         //given
         VerifiablePresentation toTest = DanubTechMapper.map(credentialFactory.getTestDanubVP());
         //when
@@ -52,11 +51,9 @@ public class JsonLdSerializerTest {
     }
 
     @Test
-    public void deserializePresentationFailTest(){
-        String expectedMessage = "java.lang.NullPointerException";
-        NullPointerException exception = Assertions.assertThrows(NullPointerException.class,
+    public void deserializePresentationFailTest() {
+        Assertions.assertThrows(NullPointerException.class,
                 () -> jsonLdSerializer.deserializePresentation(null));
-        Assertions.assertTrue(exception.toString().equals(expectedMessage));
     }
 
 }

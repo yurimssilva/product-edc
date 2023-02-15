@@ -128,7 +128,7 @@ public class SsiIdentityService implements IdentityService {
               .orElse(null);
       if (membershipCredential != null) {
         final String businessPartnerNumber =
-            (String) membershipCredential.claims.get("holderIdentifier");
+            (String) membershipCredential.credentialSubject.get("holderIdentifier");
         if (businessPartnerNumber != null) {
           claimTokenBuilder.claim("bpn", businessPartnerNumber);
         }

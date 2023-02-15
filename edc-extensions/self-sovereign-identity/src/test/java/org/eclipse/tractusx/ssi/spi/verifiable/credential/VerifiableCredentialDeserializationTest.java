@@ -1,9 +1,7 @@
 package org.eclipse.tractusx.ssi.spi.verifiable.credential;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.exc.ValueInstantiationException;
-import com.fasterxml.jackson.databind.util.StdDateFormat;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -30,7 +28,7 @@ public class VerifiableCredentialDeserializationTest {
         Assertions.assertTrue(result.getCredentialStatus().getId() != null);
         Assertions.assertTrue(result.getCredentialStatus().getType() != null);
         Assertions.assertTrue(result.getProof().getProofValueMultiBase() != null);
-        Assertions.assertNotNull(result.claims);
+        Assertions.assertNotNull(result.credentialSubject);
     }
 
     @Test

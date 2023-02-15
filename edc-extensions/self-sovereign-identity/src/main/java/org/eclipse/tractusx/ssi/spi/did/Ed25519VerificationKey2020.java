@@ -1,11 +1,6 @@
 package org.eclipse.tractusx.ssi.spi.did;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.Builder;
-import lombok.NonNull;
-import lombok.SneakyThrows;
-import lombok.Value;
-import lombok.extern.jackson.Jacksonized;
+import lombok.*;
 import org.eclipse.tractusx.ssi.extensions.core.base.MultibaseFactory;
 import org.eclipse.tractusx.ssi.spi.verifiable.MultibaseString;
 
@@ -15,11 +10,13 @@ import java.security.spec.X509EncodedKeySpec;
 
 @Value
 @Builder
-@Jacksonized
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class Ed25519VerificationKey2020 implements PublicKey {
   public static final String TYPE = "Ed25519VerificationKey2020";
+
+  // The id of the verification method SHOULD be the JWK thumbprint calculated from the publicKeyMultibase property
   @NonNull URI id;
+
+  // The controller of the verification method SHOULD be a URI.
   @NonNull URI controller;
   @Builder.Default @NonNull String didVerificationMethodType = TYPE;
   @NonNull String publicKeyMultibase;

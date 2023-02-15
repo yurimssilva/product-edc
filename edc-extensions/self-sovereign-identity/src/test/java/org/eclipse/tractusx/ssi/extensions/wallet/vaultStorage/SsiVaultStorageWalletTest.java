@@ -1,55 +1,57 @@
 package org.eclipse.tractusx.ssi.extensions.wallet.vaultStorage;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import org.eclipse.edc.spi.security.Vault;
+import org.eclipse.tractusx.ssi.extensions.core.jsonLd.DanubTechMapper;
 import org.eclipse.tractusx.ssi.extensions.core.setting.SsiSettings;
 import org.eclipse.tractusx.ssi.spi.verifiable.credential.VerifiableCredential;
+import org.eclipse.tractusx.ssi.spi.verifiable.credential.VerifiableCredentialType;
+import org.eclipse.tractusx.ssi.test.utils.TestCredentialFactory;
+import org.eclipse.tractusx.ssi.test.utils.TestIdentity;
+import org.eclipse.tractusx.ssi.test.utils.TestIdentityFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import java.io.InputStream;
-
-import static org.mockito.Mockito.doReturn;
-
 public class SsiVaultStorageWalletTest {
 
-  private SsiSettings ssiSettings;
-  private Vault vault;
+    private SsiVaultStorageWallet ssiVaultStorageWallet;
 
-  private SsiVaultStorageWallet ssiVaultStorageWallet;
+    private SsiSettings ssiSettings;
+    private Vault vault;
 
-  @BeforeEach
-  public void setUp(){
-    ssiSettings = Mockito.mock(SsiSettings.class);
-    vault = Mockito.mock(Vault.class);
-    ssiVaultStorageWallet = new SsiVaultStorageWallet(vault, ssiSettings);
-  }
+    @BeforeEach
+    public void setUp() {
+        ssiSettings = Mockito.mock(SsiSettings.class);
+        vault = Mockito.mock(Vault.class);
+        ssiVaultStorageWallet = new SsiVaultStorageWallet(vault, ssiSettings);
+    }
 
-  @SneakyThrows
-  @Test
-  public void getMembershipCredentialSuccess(){
-    // given
-    String testVc = getTestMembershipVC();
-    String alias = "someAliasForMembershipVC";
-    ObjectMapper om = new ObjectMapper();
-    VerifiableCredential vc = om.readValue(testVc, VerifiableCredential.class);
-    doReturn(alias).when(ssiSettings).getMembershipVerifiableCredentialAlias();
-    doReturn(testVc).when(vault).resolveSecret(alias);
-    // when
-    VerifiableCredential result = ssiVaultStorageWallet.getMembershipCredential();
-    // then
-    Assertions.assertEquals(vc, result);
-  }
+    @SneakyThrows
+    @Test
+    public void getMembershipCredentialSuccess() {
 
-  @SneakyThrows
-  private String getTestMembershipVC(){
-    final InputStream inputStream =
-            SsiVaultStorageWalletTest.class.getClassLoader().getResourceAsStream("core/wallet/membership-credential.json");
-    String vc = new String(inputStream.readAllBytes());
-    return vc;
-  }
+        // given
+        final TestIdentity issuer = TestIdentityFactory.newIdentity();
+
+        final VerifiableCredential verifiableCredential = TestCredentialFactory.generateCredential(issuer, VerifiableCredentialType.MEMBERSHIP_CREDENTIAL);
+        final String serializedVerifiableCredential = DanubTechMapper.map(verifiableCredential).toJson();
+
+
+        final String vaultSecretAlias = "foo";
+        Mockito.when(ssiSettings.getMembershipVerifiableCredentialAlias()).thenReturn(vaultSecretAlias);
+        Mockito.when(vault.resolveSecret(vaultSecretAlias)).thenReturn(serializedVerifiableCredential);
+
+        // when
+        VerifiableCredential result = ssiVaultStorageWallet.getMembershipCredential();
+
+        System.out.println(verifiableCredential);
+        System.out.println(result);
+
+        // then
+        Assertions.assertEquals(verifiableCredential, result);
+    }
+
 }
 

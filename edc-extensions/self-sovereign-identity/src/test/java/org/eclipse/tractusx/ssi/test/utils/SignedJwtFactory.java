@@ -1,4 +1,4 @@
-package org.eclipse.tractusx.ssi.extensions.core.jwt;
+package org.eclipse.tractusx.ssi.test.utils;
 
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.JWSHeader;

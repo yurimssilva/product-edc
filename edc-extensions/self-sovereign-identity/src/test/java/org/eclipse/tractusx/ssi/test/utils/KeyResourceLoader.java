@@ -1,4 +1,4 @@
-package org.eclipse.tractusx.ssi.extensions.core.testUtils;
+package org.eclipse.tractusx.ssi.test.utils;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;

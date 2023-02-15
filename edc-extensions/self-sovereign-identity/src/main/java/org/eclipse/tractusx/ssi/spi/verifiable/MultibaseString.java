@@ -1,5 +1,6 @@
 package org.eclipse.tractusx.ssi.spi.verifiable;
 
+import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 
 

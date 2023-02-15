@@ -1,87 +1,87 @@
 package org.eclipse.tractusx.ssi.extensions.core.proof;
 
 import lombok.SneakyThrows;
-import org.bouncycastle.math.ec.rfc8032.Ed25519;
+import org.eclipse.edc.spi.monitor.Monitor;
 import org.eclipse.tractusx.ssi.extensions.core.proof.hash.LinkedDataHasher;
 import org.eclipse.tractusx.ssi.extensions.core.proof.transform.LinkedDataTransformer;
 import org.eclipse.tractusx.ssi.extensions.core.proof.verify.LinkedDataSigner;
 import org.eclipse.tractusx.ssi.extensions.core.proof.verify.LinkedDataVerifier;
+import org.eclipse.tractusx.ssi.test.utils.TestIdentity;
+import org.eclipse.tractusx.ssi.test.utils.TestIdentityFactory;
 import org.eclipse.tractusx.ssi.spi.did.Did;
 import org.eclipse.tractusx.ssi.spi.did.DidMethod;
 import org.eclipse.tractusx.ssi.spi.did.DidMethodIdentifier;
 import org.eclipse.tractusx.ssi.spi.verifiable.Ed25519Proof;
 import org.eclipse.tractusx.ssi.spi.verifiable.credential.VerifiableCredential;
 import org.eclipse.tractusx.ssi.spi.verifiable.credential.VerifiableCredentialType;
-import org.eclipse.tractusx.ssi.extensions.core.testUtils.TestDidDocumentResolver;
+import org.eclipse.tractusx.ssi.test.utils.TestDidDocumentResolver;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import java.net.URI;
-import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import static org.eclipse.tractusx.ssi.extensions.core.testUtils.TestDidDocumentResolver.DID_TEST_OPERATOR;
-
 public class LinkedDataProofValidationComponentTest {
 
-  private LinkedDataProofValidation linkedDataProofValidation;
+    private LinkedDataProofValidation linkedDataProofValidation;
 
-  // fake
-  private TestDidDocumentResolver didDocumentResolver;
+    // fake
+    private TestDidDocumentResolver didDocumentResolver;
+    private TestIdentity testIdentity;
 
-  @BeforeEach
-  public void setup() {
+    // mocks
+    private Monitor monitor;
 
-    didDocumentResolver = new TestDidDocumentResolver();
+    @BeforeEach
+    public void setup() {
 
-    linkedDataProofValidation =
-        new LinkedDataProofValidation(
-            new LinkedDataHasher(),
-            new LinkedDataTransformer(),
-            new LinkedDataVerifier(didDocumentResolver),
-            new LinkedDataSigner());
-  }
+        testIdentity = TestIdentityFactory.newIdentity();
+        didDocumentResolver = new TestDidDocumentResolver();
+        didDocumentResolver.register(testIdentity);
+        monitor = Mockito.mock(Monitor.class);
 
-  @Test
-  public void test() {
+        linkedDataProofValidation =
+                new LinkedDataProofValidation(
+                        new LinkedDataHasher(),
+                        new LinkedDataTransformer(),
+                        new LinkedDataVerifier(didDocumentResolver.withRegistry(), monitor),
+                        new LinkedDataSigner(),
+                        monitor);
+    }
 
-    // prepare key
-    Did verificationMethod = new Did(new DidMethod("test"), new DidMethodIdentifier("myKey"));
-    byte[] privateKey = new byte[32];
-    byte[] publicKey = new byte[32];
+    @Test
+    public void testLinkedDataProofCheck() {
 
-    Ed25519.generatePrivateKey(new SecureRandom(), privateKey);
-    Ed25519.generatePublicKey(privateKey, 0, publicKey, 0);
+        // prepare key
+        Did verificationMethod = new Did(new DidMethod("test"), new DidMethodIdentifier("myKey"));
+        byte[] privateKey =testIdentity.getKeyPair().getPrivate().getEncoded();
 
-    didDocumentResolver.registerVerificationMethod(
-        DID_TEST_OPERATOR, verificationMethod, publicKey);
+        VerifiableCredential credential = createCredential(null);
 
-    VerifiableCredential credential = createCredential(null);
+        final Ed25519Proof proof =
+                linkedDataProofValidation.createProof(credential, verificationMethod, privateKey);
 
-    final Ed25519Proof proof =
-        linkedDataProofValidation.createProof(credential, verificationMethod, privateKey);
+        credential = createCredential(proof);
 
-    credential = createCredential(proof);
+        var isOk = linkedDataProofValidation.checkProof(credential);
 
-    var isOk = linkedDataProofValidation.checkProof(credential);
+        Assertions.assertTrue(isOk);
+    }
 
-    Assertions.assertTrue(isOk);
-  }
-
-  @SneakyThrows
-  private VerifiableCredential createCredential(Ed25519Proof proof) {
-    return VerifiableCredential.builder()
-            .id(URI.create("did:test:id"))
-            .types(List.of(VerifiableCredentialType.VERIFIABLE_CREDENTIAL))
-            .issuer(DID_TEST_OPERATOR.toUri())
-            .contexts(Arrays.asList(new URI("someUri")))
-            .expirationDate(new Date(2025, 1, 1))
-            .issuanceDate(new Date(2020, 1, 1))
-            .proof(proof)
-            .credentialStatus(null)
-            .build();
-  }
+    @SneakyThrows
+    private VerifiableCredential createCredential(Ed25519Proof proof) {
+        return VerifiableCredential.builder()
+                .id(URI.create("did:test:id"))
+                .types(List.of(VerifiableCredentialType.VERIFIABLE_CREDENTIAL))
+                .issuer(testIdentity.getDid().toUri())
+                .expirationDate(new Date(2025, 1, 1))
+                .issuanceDate(new Date(2020, 1, 1))
+                .proof(proof)
+                .credentialStatus(null)
+                .build();
+    }
 }

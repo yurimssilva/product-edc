@@ -25,7 +25,6 @@ public class LinkedDataTransformerTest {
     final VerifiableCredential credential =
         VerifiableCredential.builder()
             .id(URI.create("did:test:id"))
-                .contexts(Arrays.asList(new URI("testcontext")))
             .types(List.of(VerifiableCredentialType.VERIFIABLE_CREDENTIAL))
             .issuer(URI.create("did:test:isser"))
             .expirationDate(new Date(2025, 1, 1))

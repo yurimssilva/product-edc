@@ -1,10 +1,7 @@
 package org.eclipse.tractusx.ssi.spi.verifiable;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.Builder;
-import lombok.NonNull;
-import lombok.ToString;
-import lombok.Value;
+import lombok.*;
 import lombok.extern.jackson.Jacksonized;
 import org.eclipse.tractusx.ssi.extensions.core.base.Base58Bitcoin;
 
@@ -14,8 +11,7 @@ import java.util.Date;
 @Value
 @Builder
 @ToString
-@Jacksonized
-@JsonIgnoreProperties(ignoreUnknown = true)
+@EqualsAndHashCode
 public class Ed25519Proof {
 
   public static final String TYPE = "Ed25519Signature2020";

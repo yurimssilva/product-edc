@@ -1,11 +1,13 @@
 package org.eclipse.tractusx.ssi.extensions.core.base;
 
 import io.ipfs.multibase.Multibase;
+import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 import lombok.Value;
 import org.eclipse.tractusx.ssi.spi.verifiable.MultibaseString;
 
 @Value
+@EqualsAndHashCode
 public class Base58Flickr implements MultibaseString {
 
   public static boolean canDecode(String encoded) {
