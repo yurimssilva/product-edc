@@ -23,8 +23,7 @@ public class Base64 implements MultibaseString {
     return new Base64(base64, encoded);
   }
 
-  @NonNull
-  byte[] decoded;
+  byte @NonNull [] decoded;
   @NonNull
   String encoded;
 }

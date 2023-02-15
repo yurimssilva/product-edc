@@ -15,7 +15,7 @@ public class Base58Flickr implements MultibaseString {
   public static Base58Flickr create(String encoded) {
 
     if (!canDecode(encoded)) {
-      throw new IllegalArgumentException(); // TODO
+      throw new IllegalArgumentException("Encoded base58 String not in Base58Flickr format");
     }
 
     final byte[] base58 = Multibase.decode(encoded);
@@ -23,8 +23,7 @@ public class Base58Flickr implements MultibaseString {
     return new Base58Flickr(base58, encoded);
   }
 
-  @NonNull
-  byte[] decoded;
+  byte @NonNull [] decoded;
   @NonNull
   String encoded;
 }

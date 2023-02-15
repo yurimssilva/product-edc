@@ -15,7 +15,7 @@ public class Base64WithPadding implements MultibaseString {
   public static Base64WithPadding create(String encoded) {
 
     if (!canDecode(encoded)) {
-      throw new IllegalArgumentException(); // TODO
+      throw new IllegalArgumentException("Encoded base64 String not in Base64 format (with padding)");
     }
 
     final byte[] base64 = Multibase.decode(encoded);
@@ -23,8 +23,7 @@ public class Base64WithPadding implements MultibaseString {
     return new Base64WithPadding(base64, encoded);
   }
 
-  @NonNull
-  byte[] decoded;
+  byte @NonNull [] decoded;
   @NonNull
   String encoded;
 }
