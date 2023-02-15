@@ -45,7 +45,7 @@ public class SsiIdentityServiceExtension implements ServiceExtension {
     public void initialize(ServiceExtensionContext context) {
         final Monitor monitor = context.getMonitor();
         final Vault vault = context.getService(Vault.class);
-        final SsiSettingsFactory settingsFactory = new SsiSettingsFactoryImpl(monitor, vault, context);
+        final SsiSettingsFactory settingsFactory = new SsiSettingsFactoryImpl(monitor, context);
         final SsiSettings settings = settingsFactory.createSettings();
 
         final VerifiableCredentialWalletRegistry walletRegistry = context.getService(VerifiableCredentialWalletRegistry.class);

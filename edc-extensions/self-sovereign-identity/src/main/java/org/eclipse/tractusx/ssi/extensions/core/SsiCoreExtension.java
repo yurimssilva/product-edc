@@ -72,6 +72,7 @@ public class SsiCoreExtension implements ServiceExtension {
   public void start() {
     // TODO Check whether configured wallet was registered during initialize phase
     // TODO Check whether verifiable presentation signing key is supported / valid
+    // TODO Check if credentials from settings are in the wallet
   }
 
   @Override

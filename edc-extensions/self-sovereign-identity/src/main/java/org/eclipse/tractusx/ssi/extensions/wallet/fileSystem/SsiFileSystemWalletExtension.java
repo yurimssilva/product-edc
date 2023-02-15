@@ -58,7 +58,7 @@ public class SsiFileSystemWalletExtension implements ServiceExtension {
       return Path.of(credentialFilePath);
     } catch (InvalidPathException e) {
       throw new SsiException(
-          String.format("Setting '%s' does not contain a path.", SETTINGS_WALLET_PATH), e);
+          String.format("Setting '%s' does not contain a valid path.", SETTINGS_WALLET_PATH), e);
     }
   }
 }

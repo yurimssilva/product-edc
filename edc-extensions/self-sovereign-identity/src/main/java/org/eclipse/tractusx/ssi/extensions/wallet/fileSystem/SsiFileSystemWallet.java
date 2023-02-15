@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 public class SsiFileSystemWallet implements VerifiableCredentialWallet {
+
   private static final String Identifier = "FileSystem";
 
   private final Path credentialDirectory;
@@ -66,7 +67,7 @@ public class SsiFileSystemWallet implements VerifiableCredentialWallet {
     try (InputStream is = Files.newInputStream(path)) {
       try (InputStreamReader reader = new InputStreamReader(is)) {
         var dtCredential =
-            com.danubetech.verifiablecredentials.VerifiableCredential.fromJson(reader); // TODO Replace with own Mapper (Jacksonised)
+            com.danubetech.verifiablecredentials.VerifiableCredential.fromJson(reader);
         return DanubTechMapper.map(dtCredential);
       }
     }
