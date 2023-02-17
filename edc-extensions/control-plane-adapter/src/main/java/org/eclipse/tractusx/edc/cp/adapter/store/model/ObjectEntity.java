@@ -12,14 +12,18 @@
  *
  */
 
-package org.eclipse.tractusx.edc.cp.adapter.dto;
+package org.eclipse.tractusx.edc.cp.adapter.store.model;
 
-import lombok.NoArgsConstructor;
-import org.eclipse.tractusx.edc.cp.adapter.messaging.Message;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
-@NoArgsConstructor
-public class DataReferenceRetrievalDto extends Message<ProcessData> {
-  public DataReferenceRetrievalDto(ProcessData payload, int retryLimit) {
-    super(payload, retryLimit);
-  }
+@Getter
+@Setter
+@Builder
+public class ObjectEntity {
+  private String id;
+  private long createdAt;
+  private String type;
+  private String object;
 }
