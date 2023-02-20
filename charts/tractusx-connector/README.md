@@ -1,13 +1,13 @@
 # tractusx-connector
 
-![Version: 0.2.0](https://img.shields.io/badge/Version-0.2.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.2.0](https://img.shields.io/badge/AppVersion-0.2.0-informational?style=flat-square)
+![Version: 0.3.0](https://img.shields.io/badge/Version-0.3.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.3.0](https://img.shields.io/badge/AppVersion-0.3.0-informational?style=flat-square)
 
 A Helm chart for Tractus-X Eclipse Data Space Connector
 
 ## TL;DR
 ```shell
 $ helm repo add catenax-ng-product-edc https://catenax-ng.github.io/product-edc
-$ helm install tractus-x-connector catenax-ng-product-edc/tractus-x-connector --version 0.2.0
+$ helm install tractusx-connector catenax-ng-product-edc/tractusx-connector --version 0.3.0
 ```
 
 ## Values
@@ -50,7 +50,7 @@ $ helm install tractus-x-connector catenax-ng-product-edc/tractus-x-connector --
 | controlplane.envValueFrom | object | `{}` |  |
 | controlplane.image.pullPolicy | string | `"IfNotPresent"` | [Kubernetes image pull policy](https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy) to use |
 | controlplane.image.repository | string | `""` | Which derivate of the control plane to use. when left empty the deployment will select the correct image automatically |
-| controlplane.image.tag | string | `"0.1.2"` | Overrides the image tag whose default is the chart appVersion |
+| controlplane.image.tag | string | `""` | Overrides the image tag whose default is the chart appVersion |
 | controlplane.ingresses[0].annotations | object | `{}` | Additional ingress annotations to add |
 | controlplane.ingresses[0].certManager.clusterIssuer | string | `""` | If preset enables certificate generation via cert-manager cluster-wide issuer |
 | controlplane.ingresses[0].certManager.issuer | string | `""` | If preset enables certificate generation via cert-manager namespace scoped issuer |
@@ -112,7 +112,7 @@ $ helm install tractus-x-connector catenax-ng-product-edc/tractus-x-connector --
 | controlplane.service.type | string | `"ClusterIP"` | [Service type](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types) to expose the running application on a set of Pods as a network service. |
 | controlplane.tolerations | list | `[]` |  |
 | controlplane.url.ids | string | `""` | Explicitly declared url for reaching the ids api (e.g. if ingresses not used) |
-| controlplane.volumeMounts | list | `[]` | declare where to mount [volumes](https://kubernetes.io/docs/concepts/storage/volumes/) into the container  |
+| controlplane.volumeMounts | list | `[]` | declare where to mount [volumes](https://kubernetes.io/docs/concepts/storage/volumes/) into the container |
 | controlplane.volumes | list | `[]` | [volume](https://kubernetes.io/docs/concepts/storage/volumes/) directories |
 | customLabels | object | `{}` |  |
 | daps.clientId | string | `""` |  |
@@ -147,7 +147,7 @@ $ helm install tractus-x-connector catenax-ng-product-edc/tractus-x-connector --
 | dataplane.envValueFrom | object | `{}` |  |
 | dataplane.image.pullPolicy | string | `"IfNotPresent"` | [Kubernetes image pull policy](https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy) to use |
 | dataplane.image.repository | string | `""` | Which derivate of the data plane to use. when left empty the deployment will select the correct image automatically |
-| dataplane.image.tag | string | `"0.1.2"` | Overrides the image tag whose default is the chart appVersion |
+| dataplane.image.tag | string | `""` | Overrides the image tag whose default is the chart appVersion |
 | dataplane.ingresses[0].annotations | object | `{}` | Additional ingress annotations to add |
 | dataplane.ingresses[0].certManager.clusterIssuer | string | `""` | If preset enables certificate generation via cert-manager cluster-wide issuer |
 | dataplane.ingresses[0].certManager.issuer | string | `""` | If preset enables certificate generation via cert-manager namespace scoped issuer |
@@ -193,7 +193,7 @@ $ helm install tractus-x-connector catenax-ng-product-edc/tractus-x-connector --
 | dataplane.service.type | string | `"ClusterIP"` | [Service type](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types) to expose the running application on a set of Pods as a network service. |
 | dataplane.tolerations | list | `[]` |  |
 | dataplane.url.public | string | `""` | Explicitly declared url for reaching the public api (e.g. if ingresses not used) |
-| dataplane.volumeMounts | list | `[]` | declare where to mount [volumes](https://kubernetes.io/docs/concepts/storage/volumes/) into the container  |
+| dataplane.volumeMounts | list | `[]` | declare where to mount [volumes](https://kubernetes.io/docs/concepts/storage/volumes/) into the container |
 | dataplane.volumes | list | `[]` | [volume](https://kubernetes.io/docs/concepts/storage/volumes/) directories |
 | fullnameOverride | string | `""` |  |
 | imagePullSecrets | list | `[]` | Existing image pull secret to use to [obtain the container image from private registries](https://kubernetes.io/docs/concepts/containers/images/#using-a-private-registry) |
@@ -204,7 +204,7 @@ $ helm install tractus-x-connector catenax-ng-product-edc/tractus-x-connector --
 | postgresql.username | string | `""` |  |
 | serviceAccount.annotations | object | `{}` |  |
 | serviceAccount.create | bool | `true` |  |
-| serviceAccount.imagePullSecrets | list | `[]` | Existing image pull secret bound to the servic eaccount to use to [obtain the container image from private registries](https://kubernetes.io/docs/concepts/containers/images/#using-a-private-registry) |
+| serviceAccount.imagePullSecrets | list | `[]` | Existing image pull secret bound to the service account to use to [obtain the container image from private registries](https://kubernetes.io/docs/concepts/containers/images/#using-a-private-registry) |
 | serviceAccount.name | string | `""` |  |
 | vault.azure.certificate | string | `""` |  |
 | vault.azure.client | string | `""` |  |
@@ -212,7 +212,7 @@ $ helm install tractus-x-connector catenax-ng-product-edc/tractus-x-connector --
 | vault.azure.name | string | `""` |  |
 | vault.azure.secret | string | `""` |  |
 | vault.azure.tenant | string | `""` |  |
-| vault.hashicorp.enabled | bool | `true` |  |
+| vault.hashicorp.enabled | bool | `false` |  |
 | vault.hashicorp.healthCheck.enabled | bool | `true` |  |
 | vault.hashicorp.healthCheck.standbyOk | bool | `true` |  |
 | vault.hashicorp.paths.health | string | `"/v1/sys/health"` |  |
