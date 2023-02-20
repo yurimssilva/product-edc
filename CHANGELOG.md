@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0] - 2023-02-20
+
 ## [0.2.0] - 2022-12-15
 
 ### Fixed
@@ -131,7 +133,9 @@ corresponding [documentation](/docs/migration/Version_0.0.x_0.1.x.md).
 
 ## [0.0.1] - 2022-05-13
 
-[Unreleased]: https://github.com/catenax-ng/product-edc/compare/0.2.0...HEAD
+[Unreleased]: https://github.com/catenax-ng/product-edc/compare/0.3.0...HEAD
+
+[0.3.0]: https://github.com/catenax-ng/product-edc/compare/0.2.0...0.3.0
 
 [0.2.0]: https://github.com/catenax-ng/product-edc/compare/0.1.3...0.2.0
 
