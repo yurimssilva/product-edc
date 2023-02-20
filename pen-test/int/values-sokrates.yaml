@@ -1,0 +1,38 @@
+---
+txdc:
+  dataplane:
+    ingresses:
+      - enabled: true
+        hostname: "pen-test-sokrates-txdc.int.demo.catena-x.net"
+        endpoints:
+          - public
+        className: "nginx"
+        # -- Enables TLS on the ingress resource
+        tls:
+          enabled: true
+          secretName: tls-secret
+  controlplane:
+    ingresses:
+      - enabled: true
+        hostname: "pen-test-sokrates-txdc.int.demo.catena-x.net"
+        endpoints:
+          - data
+          - ids
+        className: "nginx"
+        # -- Enables TLS on the ingress resource
+        tls:
+          enabled: true
+          secretName: tls-secret
+  daps:
+    clientId: E7:07:2D:74:56:66:31:F0:7B:10:EA:B6:03:06:4C:23:7F:ED:A6:65:keyid:E7:07:2D:74:56:66:31:F0:7B:10:EA:B6:03:06:4C:23:7F:ED:A6:65
+  backendService:
+    httpProxyTokenReceiverUrl: "http://pen-test-sokrates-txdc-backend"
+  postgresql:
+    jdbcUrl: "jdbc:postgresql://pen-test-sokrates-txdc-postgres:5432/edc"
+  vault:
+    secretNames:
+      dapsPrivateKey: dev-sokrates-EDC_OAUTH_PRIVATE_KEY_ALIAS
+      dapsPublicKey: dev-sokrates-EDC_OAUTH_PUBLIC_KEY_ALIAS
+      transferProxyTokenEncryptionAesKey: dev-sokrates-EDC_DATA_ENCRYPTION_KEYS_ALIAS
+      transferProxyTokenSignerPrivateKey: dev-sokrates-EDC_TRANSFER_PROXY_TOKEN_SIGNER_PRIVATEKEY_ALIAS
+      transferProxyTokenSignerPublicKey: dev-sokrates-EDC_TRANSFER_PROXY_TOKEN_VERIFIER_PUBLICKEY_ALIAS
