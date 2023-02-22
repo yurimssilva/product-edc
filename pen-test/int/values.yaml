@@ -17,10 +17,10 @@ postgres:
 txdc:
   dataplane:
     image:
-      tag: 0.2.0
+      tag: 0.3.0
   controlplane:
     image:
-      tag: 0.2.0
+      tag: 0.3.0
     endpoints:
       data:
         authKey: ""
