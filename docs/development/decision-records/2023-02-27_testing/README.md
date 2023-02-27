@@ -6,14 +6,15 @@ Henceforth, testing shall be done in accordance with the herein outlined rules a
 
 - separation-of-concerns
 - fast test execution speed
+- debuggability
 - low resource footprint
 - leverage features provided by, and adopt standards set by the [Eclipse Dataspace Project](https://github.com/eclipse-edc/Connector)
 - easy setup on developer systems
 
 ## Rationale
 
-Past experiences with product-edc's testing setup has shown that it is time- and resource-consuming, which also makes it unreliable at times.
-Furthermore, a finer-grained test classification such as the one outlined in this document is neither present nor documented. 
+Past experiences with product-edc's testing setup has shown that it is time- and resource-consuming, which also makes it unreliable at times. It is also not fully debuggable and quite tedious to set up.
+Furthermore, a finer-grained test classification such as the one outlined in this document is currently neither present nor documented.
 
 ### Definitions and distinction
 
@@ -21,17 +22,17 @@ This section is largely taken from the [EDC's testing documentation](https://git
 
 - **unit tests**: test one single class by mocking/stubbing all collaborating objects.
 
-- **integration tests**: test one particular aspect of a software, that may involve external systems. Example: testing a particular object store based on PostgreSQL. External systems are to be provided out-of-band, e.g. through a CI pipeline or a script that runs on a local machine. Starting external systems from code violates the separation of concerns, and it violates the separation of concerns. It also may cause problems on some systems, e.g. when docker is not on the `PATH`, or not available at all. Integration tests only involve _one connector instance_. A _component test_ is a special form of an integration test, where real collaborators, but no external systems are used.
+- **integration tests**: test one particular aspect of a software, that may involve external systems. Example: testing a particular object store based on PostgreSQL. External systems are to be provided out-of-band, e.g. through a CI pipeline or a script that runs on a local machine. Starting external systems from code violates the separation of concerns and it may also cause problems on some systems, e.g. when docker is not on the `PATH`, or not available at all. Integration tests typically only involve parts of a connector. A _component test_ is a special form of an integration test, where real collaborators, but no external systems are used.
 
-- **system test**: rely on the _entire system_ being present. This is specific for each variant, for example testing a request against a system's API and verifying that a particular entry was created in the database. System tests involve _one connector_ and the external service.
+- **system tests**: rely on the _entire system_ being present. This is specific for each variant, for example testing a request against a system's API and verifying that a particular entry was created in the database. System tests involve _one connector_ and the external service.
 
-- **end-to-end-test**: similar to system tests, but they involve several connectors plus external services such as databases, identity providers, objects stores, etc. For example, one connector starts a contract negotiation with another connector, so in the test we verify that both parties have the correct entries in the database. To keep things simple, end-to-end tests can be conjoined with system tests.
+- **end-to-end-tests**: similar to system tests, but they involve several connectors plus external services such as databases, identity providers, objects stores, etc. This type of test is used to verify that certain business requirements are fulfilled by simulating real user scenarios from start to finish, hence they are sometimes dubbed "business tests". For example, one would send a data request to a connector's public API and expect the connector to behave in a certain way and expect a certain response back. To keep things simple, end-to-end tests can be conjoined with system tests.
 
-- **deployment test**: tests deployment artifacts such a Docker images or a Helm charts. The purpose of such a test is to verify the correct configuration and composition of an artifact, its purpose is _not_ to test application logic. However, we can use normal requests to _verify_ the correct installation. Sometimes this is referred to as "Smoke test".
+- **deployment tests**: tests deployment artifacts such a Docker images or a Helm charts. The purpose of such a test is to verify the correct configuration and composition of an artifact, its purpose is _not_ to test application logic. However, we can use normal requests to _verify_ the correct installation. Sometimes this is referred to as "Smoke test".
 
-- **performance test**: measure whether a certain iteration of the software fulfills pre-established performance goals. These tests are highly specific and may have dependencies onto specific hardware and network parameters.
+- **performance tests**: measure whether a certain iteration of the software fulfills pre-established performance goals. These tests are highly specific and may have dependencies onto specific hardware and network parameters.
 
-It is a [well-established](https://martinfowler.com/articles/practical-test-pyramid.html) fact that unit tests should make up for the majority of tests, because they are easy and quick to write and quick to execute, whereas integration and end-to-end tests are usually more complex and time-consuming to write and run. 
+It is a [well-established](https://martinfowler.com/articles/practical-test-pyramid.html) fact that unit tests should make up for the majority of tests, because they are easy and quick to write and quick to execute, whereas integration and end-to-end tests are usually more complex and time-consuming to write and run.
 
 ## Approach
 
