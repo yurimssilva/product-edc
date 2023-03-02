@@ -2,7 +2,7 @@
 
 ## Decision
 
-The product-edc project will henceforth use Gradle as its build-tool. This decision
+Product-EDC will move to Gradle as its build system. This decision
 record outlines the reasoning behind the decision as well as the migration path.
 
 ## Rationale
