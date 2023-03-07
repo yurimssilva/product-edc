@@ -34,6 +34,7 @@ import java.util.stream.Collectors;
 import lombok.Data;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -42,6 +43,8 @@ import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.message.BasicHeader;
+import org.eclipse.dataspaceconnector.spi.types.domain.edr.EndpointDataReference;
 import org.eclipse.tractusx.edc.tests.data.*;
 
 @Slf4j
@@ -53,6 +56,7 @@ public class DataManagementAPI {
   private static final String CATALOG_PATH = "/catalog";
   private static final String NEGOTIATIONS_PATH = "/contractnegotiations";
   private static final String TRANSFER_PATH = "/transferprocess";
+  private static final String ADAPTER_PATH = "/adapter/asset/sync/";
 
   private final String dataMgmtUrl;
   private final String dataMgmtAuthKey;
@@ -161,6 +165,12 @@ public class DataManagementAPI {
     return new Transfer(transferId);
   }
 
+  public Asset initiateTransferProcess(
+      String endpointUrl, String endpointAuthKey, String endpointAuthCode) throws IOException {
+    Header header = new BasicHeader(endpointAuthKey, endpointAuthCode);
+    return get(endpointUrl, header, new TypeToken<Asset>() {});
+  }
+
   public TransferProcess getTransferProcess(String id) throws IOException {
     final ManagementApiTransferProcess transferProcess =
         get(TRANSFER_PATH + "/" + id, new TypeToken<ManagementApiTransferProcess>() {});
@@ -196,6 +206,16 @@ public class DataManagementAPI {
     post(CONTRACT_DEFINITIONS_PATH, mapContractDefinition(contractDefinition));
   }
 
+  public EndpointDataReference getEdcEndpoint(String assetId, String receivingConnectorUrl)
+      throws IOException {
+    final String encodedUrl = ADAPTER_PATH + assetId + "?providerUrl=" + receivingConnectorUrl;
+
+    final EndpointDataReference endpoint =
+        get(encodedUrl, new TypeToken<EndpointDataReference>() {});
+
+    return endpoint;
+  }
+
   private <T> T get(String path, String params, TypeToken<?> typeToken) throws IOException {
     return get(path + "?" + params, typeToken);
   }
@@ -203,6 +223,17 @@ public class DataManagementAPI {
   private <T> T get(String path, TypeToken<?> typeToken) throws IOException {
 
     final HttpGet get = new HttpGet(dataMgmtUrl + path);
+    final HttpResponse response = sendRequest(get);
+    final byte[] json = response.getEntity().getContent().readAllBytes();
+
+    log.debug("Received response: {}", new String(json, StandardCharsets.UTF_8));
+    return new Gson().fromJson(new String(json, StandardCharsets.UTF_8), typeToken.getType());
+  }
+
+  private <T> T get(String path, Header header, TypeToken<?> typeToken) throws IOException {
+
+    final HttpGet get = new HttpGet(path);
+    get.addHeader(header);
     final HttpResponse response = sendRequest(get);
     final byte[] json = response.getEntity().getContent().readAllBytes();
 
