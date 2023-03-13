@@ -241,7 +241,7 @@ controlplane:
     otel.javaagent.debug=false
   # -- configuration of the [Java Util Logging Facade](https://docs.oracle.com/javase/7/docs/technotes/guides/logging/overview.html)
   logging: |-
-    .level=FINE
+    .level=INFO
     org.eclipse.dataspaceconnector.level=ALL
     handlers=java.util.logging.ConsoleHandler
     java.util.logging.ConsoleHandler.formatter=java.util.logging.SimpleFormatter
