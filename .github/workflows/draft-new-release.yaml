@@ -33,7 +33,7 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
-          cache: 'maven'
+          cache: 'gradle'
       -
         name: Bump version in pom.xml
         run: |-

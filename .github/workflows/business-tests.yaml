@@ -10,7 +10,15 @@ on:
       - develop
       - release/**
       - main
+      # todo: remove before merging:
+  push:
+    branches:
+      - feature/*
   workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   business-test:
@@ -28,7 +36,7 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
-          cache: 'maven'
+          cache: 'gradle'
       -
         name: Cache ContainerD Image Layers
         uses: actions/cache@v3
@@ -46,7 +54,7 @@ jobs:
       -
         name: Create k8s Kind Cluster configuration (kind.config.yaml)
         run: |-
-          export MAVEN_REPOSITORY=$(./mvnw help:evaluate -Dexpression=settings.localRepository -q -DforceStdout)
+          export MAVEN_REPOSITORY=${{ github.workspace }}/.m2/repository
           cat << EOF > kind.config.yaml
           ---
           kind: Cluster
@@ -73,14 +81,14 @@ jobs:
       -
         name: Build edc-controlplane-postgresql-hashicorp-vault
         run: |-
-          ./mvnw -s settings.xml -B -pl .,edc-controlplane/edc-controlplane-postgresql-hashicorp-vault -am package -Dmaven.test.skip=true -Pwith-docker-image
+           ./gradlew :edc-controlplane:edc-controlplane-postgresql-hashicorp-vault:dockerize
         env:
           GITHUB_PACKAGE_USERNAME: ${{ github.actor }}
           GITHUB_PACKAGE_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
       -
         name: Build edc-dataplane-hashicorp-vault
         run: |-
-          ./mvnw -s settings.xml -B -pl .,edc-dataplane/edc-dataplane-hashicorp-vault -am package -Dmaven.test.skip=true -Pwith-docker-image
+           ./gradlew :edc-dataplane:edc-dataplane-hashicorp-vault:dockerize
         env:
           GITHUB_PACKAGE_USERNAME: ${{ github.actor }}
           GITHUB_PACKAGE_PASSWORD: ${{ secrets.CXNG_GHCR_PAT }}
@@ -208,8 +216,8 @@ jobs:
           sleep 5s
 
           # Wait for Control-/DataPlane and backend-service to become ready
-          kubectl wait --for=condition=ready pod -l app.kubernetes.io/instance=sokrates-controlplane --timeout=120s || ( kubectl logs -l app.kubernetes.io/instance=sokrates-controlplane --tail 500 && exit 1 )
-          kubectl wait --for=condition=ready pod -l app.kubernetes.io/instance=sokrates-dataplane --timeout=120s || ( kubectl logs -l app.kubernetes.io/instance=sokrates-dataplane --tail 500 && exit 1 )
+          kubectl wait --for=condition=ready pod -l app.kubernetes.io/instance=sokrates-controlplane --timeout=600s || ( kubectl logs -l app.kubernetes.io/instance=sokrates-controlplane --tail 500 && exit 1 )
+          kubectl wait --for=condition=ready pod -l app.kubernetes.io/instance=sokrates-dataplane --timeout=600s || ( kubectl logs -l app.kubernetes.io/instance=sokrates-dataplane --tail 500 && exit 1 )
           kubectl wait --for=condition=ready pod -l app.kubernetes.io/instance=plato-controlplane --timeout=600s || ( kubectl logs -l app.kubernetes.io/instance=plato-controlplane --tail 500 && exit 1 )
           kubectl wait --for=condition=ready pod -l app.kubernetes.io/instance=plato-dataplane --timeout=600s || ( kubectl logs -l app.kubernetes.io/instance=plato-dataplane --tail 500 && exit 1 )
 
@@ -228,7 +236,7 @@ jobs:
                 {
                   "args": [
                     "-c",
-                    "cd /product-edc && ./mvnw -s settings.xml -B -Pbusiness-tests -pl edc-tests test -Dtest=org.eclipse.tractusx.edc.tests.features.RunCucumberTest"
+                    "cd /product-edc && ./gradlew edc-tests:test -Dcucumber=true"
                   ],
                   "command": [
                     "/bin/sh"

@@ -72,7 +72,7 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
-          cache: 'maven'
+          cache: 'gradle'
       -
         name: Deploy
         run: |-
@@ -177,7 +177,7 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
-          cache: 'maven'
+          cache: 'gradle'
       -
         name: Merge main back into develop and set new snapshot version
         if: github.event.pull_request.base.ref == 'main'
