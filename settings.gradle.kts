@@ -85,6 +85,7 @@ dependencyResolutionManagement {
             library("auth-tokenbased", "org.eclipse.edc", "auth-tokenbased").versionRef("edc")
             library("auth-oauth2-core", "org.eclipse.edc", "oauth2-core").versionRef("edc")
             library("auth-oauth2-daps", "org.eclipse.edc", "oauth2-daps").versionRef("edc")
+            library("transaction-local", "org.eclipse.edc", "transaction-local").versionRef("edc")
 
             // implementations
             library("sql-assetindex", "org.eclipse.edc", "asset-index-sql").versionRef("edc")
@@ -141,7 +142,8 @@ dependencyResolutionManagement {
             bundle(
                 "sqlstores",
                 listOf(
-                    "sql-assetindex", "sql-contract-definition",
+                    "sql-assetindex",
+                    "sql-contract-definition",
                     "sql-contract-negotiation",
                     "sql-transferprocess",
                     "sql-policydef"

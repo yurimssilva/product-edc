@@ -12,6 +12,8 @@ dependencies {
     implementation(project(":edc-extensions:postgresql-migration"))
     implementation(project(":edc-extensions:hashicorp-vault"))
     implementation(edc.bundles.sqlstores)
+    implementation(edc.transaction.local)
+    implementation(edc.sql.pool)
     implementation(edc.core.controlplane)
     implementation(edc.dpf.transfer)
 
