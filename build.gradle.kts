@@ -3,6 +3,7 @@ import com.github.jengelman.gradle.plugins.shadow.ShadowJavaPlugin
 
 plugins {
     `java-library`
+    `maven-publish`
     id("io.freefair.lombok") version "6.6.2"
     id("com.diffplug.spotless") version "6.15.0"
     id("com.github.johnrengelman.shadow") version "8.0.0"
@@ -44,7 +45,7 @@ allprojects {
     }
     dependencies {
         implementation("org.projectlombok:lombok:1.18.26")
-        implementation("org.slf4j:slf4j-api:2.0.3")
+        implementation("org.slf4j:slf4j-api:2.0.5")
     }
 
     // configure which version of the annotation processor to use. defaults to the same version as the plugin
@@ -87,6 +88,23 @@ allprojects {
         configDirectory.set(rootProject.file("resources"))
     }
 
+
+    // this is a temporary workaround until we're fully moved to TractusX:
+    // publishing to OSSRH is handled by the build plugin, but publishing to GH packages
+    // must be configured explicitly
+    publishing{
+        repositories {
+            maven {
+                name = "GitHubPackages"
+                url = uri("https://maven.pkg.github.com/catenax-ng/product-edc")
+                credentials {
+                    username = System.getenv("GITHUB_PACKAGE_USERNAME")
+                    password = System.getenv("GITHUB_PACKAGE_PASSWORD")
+                }
+            }
+        }
+    }
+
 }
 
 // the "dockerize" task is added to all projects that use the `shadowJar` plugin
@@ -113,7 +131,7 @@ subprojects {
     }
 
     sonarqube {
-        properties{
+        properties {
             property("sonar.moduleKey", "${project.group}-${project.name}")
         }
     }
