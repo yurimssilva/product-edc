@@ -6,7 +6,7 @@
 ### 1. Build all modules with maven and produce docker images
 
 ```shell
-./mvnw package -Pwith-docker-image
+./gradlew dockerize
 ```
 
 ### 2. Install the all-in-one supporting infrastructure environment (Daps, Vault, PostgreSql, Minio, Backend-Service)

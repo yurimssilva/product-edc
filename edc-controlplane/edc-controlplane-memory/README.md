@@ -3,7 +3,7 @@
 ### Building
 
 ```shell
-./mvnw -pl .,edc-controlplane/edc-controlplane-memory -am package -Pwith-docker-image
+./gradlew :edc-controlplane:edc-controlplane-memory:dockerize
 ```
 
 ### Configuration (configuration.properties)
