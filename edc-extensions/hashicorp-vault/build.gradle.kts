@@ -11,5 +11,5 @@ dependencies {
     implementation(libs.okhttp)
     implementation("org.testcontainers:junit-jupiter:1.17.6")
     implementation("org.testcontainers:vault:1.17.6")
-    testImplementation("org.mockito:mockito-inline:4.2.0")
+    testImplementation(libs.mockito.inline)
 }

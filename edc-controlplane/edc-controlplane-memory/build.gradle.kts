@@ -10,8 +10,6 @@ dependencies {
     implementation(project(":edc-controlplane:edc-controlplane-base"))
     implementation(edc.core.controlplane)
     implementation(edc.azure.vault)
-    //todo: exclusion of azure security keyvault secrets and azure identity necessary?
-
     implementation(edc.azure.identity)
 
 }

@@ -13,9 +13,9 @@ plugins {
 }
 
 val javaVersion: String by project
-//val fccScmConnection: String by project
-//val fccWebsiteUrl: String by project
-//val fccScmUrl: String by project
+val scmConnection: String by project
+val websiteUrl: String by project
+val scmUrl: String by project
 val groupId: String by project
 val defaultVersion: String by project
 val annotationProcessorVersion: String by project
@@ -80,10 +80,9 @@ allprojects {
             groupId = gid
             projectName.set(project.name)
             description.set("edc :: ${project.name}")
-            //todo: fill this
-//            projectUrl.set(fccWebsiteUrl)
-//            scmConnection.set(fccScmConnection)
-//            scmUrl.set(fccScmUrl)
+            projectUrl.set(websiteUrl)
+            scmConnection.set(scmConnection)
+            scmUrl.set(scmUrl)
         }
         swagger {
             title.set((project.findProperty("apiTitle") ?: "Tractus-X REST API") as String)

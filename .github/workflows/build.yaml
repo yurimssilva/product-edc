@@ -95,7 +95,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           JACOCO: true
-        # todo: aggregate jacoco reports
         run: |-
           ./gradlew sonar \
             -Pcoverage,failsafe \
@@ -190,7 +189,6 @@ jobs:
           file: edc-controlplane/${{ matrix.name }}/src/main/docker/Dockerfile
           build-args: |
             JAR=edc-controlplane/${{ matrix.name }}/build/libs/${{ matrix.name }}.jar
-#            LIB=edc-controlplane/${{ matrix.name }}/target/lib
           push: |
             ${{ (needs.secret-presence.outputs.CXNG_GHCR_PAT && github.event_name != 'pull_request' && 'true') || 'false' }}
           tags: ${{ steps.edc_controlplane_meta.outputs.tags }}
@@ -255,7 +253,6 @@ jobs:
           file: edc-dataplane/${{ matrix.name }}/src/main/docker/Dockerfile
           build-args: |
             JAR=edc-dataplane/${{ matrix.name }}/build/libs/${{ matrix.name }}.jar
-#            LIB=edc-dataplane/${{ matrix.name }}/target/lib
           push: |
             ${{ (needs.secret-presence.outputs.CXNG_GHCR_PAT && github.event_name != 'pull_request' && 'true') || 'false' }}
           tags: ${{ steps.edc_dataplane_meta.outputs.tags }}

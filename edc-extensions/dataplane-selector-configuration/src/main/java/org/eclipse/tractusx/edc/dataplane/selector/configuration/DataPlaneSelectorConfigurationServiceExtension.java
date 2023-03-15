@@ -37,7 +37,6 @@ import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
 import org.eclipse.edc.spi.system.configuration.Config;
 
-//deleted comment because it violates the Javadoc guidelines
 @Requires({DataPlaneSelectorService.class})
 public class DataPlaneSelectorConfigurationServiceExtension implements ServiceExtension {
 

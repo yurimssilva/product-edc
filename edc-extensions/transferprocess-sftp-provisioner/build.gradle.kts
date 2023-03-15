@@ -12,6 +12,6 @@ dependencies {
     implementation(edc.spi.transfer)
 
     testImplementation(edc.junit)
-    testImplementation("org.mockito:mockito-inline:4.2.0")
+    testImplementation(libs.mockito.inline)
     testImplementation("org.testcontainers:junit-jupiter:1.17.6")
 }
