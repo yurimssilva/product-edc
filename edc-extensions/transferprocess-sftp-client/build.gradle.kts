@@ -22,5 +22,5 @@ dependencies {
     testImplementation(edc.junit)
 
     testImplementation("org.mockito:mockito-inline:4.2.0")
-    testImplementation("org.testcontainers:junit-jupiter:+")
+    testImplementation("org.testcontainers:junit-jupiter:1.17.6")
 }
