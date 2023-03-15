@@ -15,12 +15,12 @@ dependencies {
     implementation(edc.policy.engine)
     implementation(libs.bouncyCastle.bcpkix)
 
-    implementation("org.apache.sshd:sshd-core:2.9.2")
-    implementation("org.apache.sshd:sshd-sftp:2.9.2")
+    implementation(libs.apache.sshd.core)
+    implementation(libs.apache.sshd.sftp)
 
     testImplementation(libs.awaitility)
     testImplementation(edc.junit)
 
     testImplementation(libs.mockito.inline)
-    testImplementation("org.testcontainers:junit-jupiter:1.17.6")
+    testImplementation(libs.testcontainers.junit)
 }

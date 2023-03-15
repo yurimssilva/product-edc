@@ -9,5 +9,4 @@ dependencies {
     testImplementation(edc.junit)
 
     testImplementation(libs.mockito.inline)
-    testImplementation("org.testcontainers:junit-jupiter:1.17.6")
-}
+    testImplementation(libs.testcontainers.junit)}
