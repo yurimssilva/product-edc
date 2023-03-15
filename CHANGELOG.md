@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.3.0] - 2023-02-20
 
+**Important Note**: This version introduces multiple breaking changes. Before updating **always** consolidate the
+corresponding [documentation](/docs/migration/Version_0.1.x_0.3.x.md).
+
 ### Added
 - Add contract id to data source http call (#732)
 - Support also support releases in ci pipeline
