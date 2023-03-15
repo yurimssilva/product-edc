@@ -4,6 +4,7 @@ import com.github.jengelman.gradle.plugins.shadow.ShadowJavaPlugin
 plugins {
     `java-library`
     `maven-publish`
+    `jacoco-report-aggregation`
     id("io.freefair.lombok") version "6.6.2"
     id("com.diffplug.spotless") version "6.15.0"
     id("com.github.johnrengelman.shadow") version "8.0.0"
@@ -33,6 +34,18 @@ buildscript {
         val edcGradlePluginsVersion: String by project
         classpath("org.eclipse.edc.edc-build:org.eclipse.edc.edc-build.gradle.plugin:${edcGradlePluginsVersion}")
     }
+}
+
+// include all subprojects in the jacoco report aggregation
+project.subprojects.forEach{
+    dependencies{
+        jacocoAggregation(project(it.path))
+    }
+}
+
+// make sure the test report aggregation is done before reporting to sonar
+tasks.sonar {
+    dependsOn(tasks.named<JacocoReport>("testCodeCoverageReport"))
 }
 
 allprojects {
@@ -91,7 +104,7 @@ allprojects {
 
     // this is a temporary workaround until we're fully moved to TractusX:
     // publishing to OSSRH is handled by the build plugin, but publishing to GH packages
-    // must be configured explicitly
+    // must be configured separately
     publishing{
         repositories {
             maven {
