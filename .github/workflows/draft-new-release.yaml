@@ -33,11 +33,12 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
-          cache: 'maven'
+          cache: 'gradle'
       -
         name: Bump version in pom.xml
         run: |-
-          ./mvnw -s settings.xml -B versions:set -DnewVersion=${{ github.event.inputs.version }} -DprocessAllModules
+           # replace the project's (default) version, could be overwritten later with the -Pversion=... flag
+           sed -i  's/defaultVersion=.*/defaultVersion=${{ github.event.inputs.version }}/g' gradle.properties
         env:
           GITHUB_PACKAGE_USERNAME: ${{ github.actor }}
           GITHUB_PACKAGE_PASSWORD: ${{ secrets.CXNG_GHCR_PAT }}

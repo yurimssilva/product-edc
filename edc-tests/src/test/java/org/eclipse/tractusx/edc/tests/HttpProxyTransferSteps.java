@@ -5,11 +5,15 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import java.io.IOException;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
+import org.awaitility.Awaitility;
 import org.eclipse.tractusx.edc.tests.data.*;
 import org.junit.jupiter.api.Assertions;
+
+import static org.awaitility.Awaitility.await;
 
 @Slf4j
 public class HttpProxyTransferSteps {
@@ -71,8 +75,13 @@ public class HttpProxyTransferSteps {
   @Then("the backend application of '{connector}' has received data")
   public void theBackendApplicationOfSocratesHasReceivedData(Connector consumer) {
     final BackendServiceBackendAPI api = consumer.getBackendServiceBackendAPI();
-    final List<String> transferredData = api.list("/");
-    Assertions.assertNotEquals(0, transferredData.size());
+    await()
+            .atMost(Duration.ofSeconds(20))
+            .pollInterval(Duration.ofSeconds(1))
+            .untilAsserted(() ->{
+              final List<String> transferredData = api.list("/");
+              Assertions.assertNotEquals(0, transferredData.size());
+            });
   }
 
   private enum Oauth2DataAddressFields {

@@ -3,7 +3,7 @@
 ### Building
 
 ```shell
-./mvnw -pl .,edc-dataplane/edc-dataplane-hashicorp-vault -am package -Pwith-docker-image
+./gardlew :edc-dataplane:edc-dataplane-hashicorp-vault:dockerize
 ```
 
 ### Configuration

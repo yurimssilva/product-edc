@@ -1,7 +1,7 @@
 # Invoke Business-Tests via Maven
 
 ```shell
-./mvnw -pl edc-tests -Pbusiness-tests -pl edc-tests test -Dtest=org.eclipse.tractusx.edc.tests.features.RunCucumberTest
+./gradlew :edc-tests:test -Dcucumber=true
 ```
 
 # Test locally using Act Tool

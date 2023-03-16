@@ -72,14 +72,11 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
-          cache: 'maven'
+          cache: 'gradle'
       -
         name: Deploy
-        run: |-
-          ./mvnw -s settings.xml \
-            -Pdelombok -pl '!edc-tests' \
-            -DaltReleaseDeploymentRepository=github::https://maven.pkg.github.com/${{ github.repository }} \
-            -Dmaven.test.skip=true -B package deploy:deploy
+        run: |
+          ./gradlew build -x test publishAllPublicationsToGithubPackagesRepository
         env:
           GITHUB_PACKAGE_USERNAME: ${{ github.actor }}
           GITHUB_PACKAGE_PASSWORD: ${{ secrets.CXNG_GHCR_PAT }}
@@ -177,7 +174,7 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
-          cache: 'maven'
+          cache: 'gradle'
       -
         name: Merge main back into develop and set new snapshot version
         if: github.event.pull_request.base.ref == 'main'
@@ -195,8 +192,9 @@ jobs:
           VERSION="$RELEASE_VERSION_MAJOR.$RELEASE_VERSION_MINOR.$((RELEASE_VERSION_PATCH+1))-SNAPSHOT"
           SNAPSHOT_VERSION=$VERSION
 
-          # Persist new version into each pom
-          ./mvnw -s settings.xml -B versions:set -DnewVersion="$SNAPSHOT_VERSION" -DprocessAllModules
+          # Persist the "defaultVersion" in the gradle.properties
+          sed -i  's/defaultVersion=.*/defaultVersion=${{ github.event.inputs.version }}/g' gradle.properties
+
 
           # Commit and push to origin develop
           git add $(find -name pom.xml)

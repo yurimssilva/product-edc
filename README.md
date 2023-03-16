@@ -92,7 +92,7 @@ Derivatives of the Data-Plane can be found here
 
 Build Product-EDC together with its Container Images
 ```shell
-./mvnw package -Pwith-docker-image
+./gradlew dockerize
 ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>

@@ -3,7 +3,7 @@
 ### Building
 
 ```shell
-./mvnw -pl .,edc-controlplane/edc-controlplane-postgresql -am package -Pwith-docker-image
+./gardlew :edc-controlplane:edc-controlplane-postgresql:dockerize
 ```
 
 ### Configuration
